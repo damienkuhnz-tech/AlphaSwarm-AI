@@ -1,0 +1,61 @@
+classDiagram
+  class agents {
+  }
+  class base_agent {
+  }
+  class equity_research_agent {
+  }
+  class execution_agent {
+  }
+  class mandate_agent {
+  }
+  class portfolio_construction_agent {
+  }
+  class risk_management_agent {
+  }
+  class models {
+  }
+  class execution {
+  }
+  class mandate {
+  }
+  class portfolio {
+  }
+  class research {
+  }
+  class risk {
+  }
+  class state {
+  }
+  agents --> equity_research_agent
+  agents --> execution_agent
+  agents --> mandate_agent
+  agents --> portfolio_construction_agent
+  agents --> risk_management_agent
+  base_agent --> state
+  equity_research_agent --> base_agent
+  equity_research_agent --> research
+  equity_research_agent --> state
+  execution_agent --> base_agent
+  execution_agent --> execution
+  execution_agent --> state
+  mandate_agent --> base_agent
+  mandate_agent --> mandate
+  mandate_agent --> state
+  portfolio_construction_agent --> base_agent
+  portfolio_construction_agent --> portfolio
+  portfolio_construction_agent --> state
+  risk_management_agent --> base_agent
+  risk_management_agent --> risk
+  risk_management_agent --> state
+  models --> execution
+  models --> mandate
+  models --> portfolio
+  models --> research
+  models --> risk
+  models --> state
+  state --> execution
+  state --> mandate
+  state --> portfolio
+  state --> research
+  state --> risk

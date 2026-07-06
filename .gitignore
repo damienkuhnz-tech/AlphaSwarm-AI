@@ -1,0 +1,29 @@
+# Secrets
+.env
+
+# Environnements & caches Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Cache de prix (moteur quant, expire chaque jour)
+.cache/
+
+# Journaux & sorties générées
+logs/
+*.log
+outputs/
+exports/
+
+# Outillage local (IDE / assistants)
+.claude/
+.augment/
+.agents/
+skills/
+skills-lock.json
+
+# OS
+.DS_Store
+Thumbs.db

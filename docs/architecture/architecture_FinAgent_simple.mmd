@@ -1,0 +1,63 @@
+%%{init: {'theme':'base', 'themeVariables': {'fontSize':'15px'}}}%%
+flowchart TB
+
+    subgraph L1["Interface (HTML / JS)"]
+        UI["Navigateur du gerant<br/>mandat · resultats · chat"]
+    end
+
+    subgraph L2["API REST (Flask)"]
+        API["api.py"]
+        WF["Orchestrateur<br/>pipeline + boucle"]
+    end
+
+    subgraph L3["Etat partage"]
+        STATE[("portfolioState<br/>memoire + journal auditable")]
+    end
+
+    subgraph L4["Les 5 agents specialises"]
+        direction LR
+        A1["1 Mandat"]
+        A2["2 Research"]
+        A3["3 Portfolio"]
+        A4["4 Risque"]
+        A5["5 Execution"]
+    end
+
+    LLM["Moteur LLM multi-provider<br/>Anthropic · Groq"]
+    EXT["Sources de donnees<br/>+ calculs deterministes"]
+
+    %% flux principal
+    UI -->|mandat| API --> WF
+    WF -->|lance les agents| L4
+
+    %% etat partage
+    A1 <--> STATE
+    A2 <--> STATE
+    A3 <--> STATE
+    A4 <--> STATE
+    A5 <--> STATE
+
+    %% boucle de retroaction
+    A4 -.->|AJUSTER : corriger, max 3x| A3
+    A4 -.->|FAIL : bloque| WF
+
+    %% raisonnement vs donnees/calculs
+    A2 & A4 -.-> LLM
+    A2 -->|donnees marche| EXT
+    A4 -->|metriques + backtest| EXT
+
+    %% retours
+    STATE -.->|polling| API
+    A5 -.->|validation requise| UI
+
+    classDef agent fill:#fbeee8,stroke:#c47a52,color:#4a2a18;
+    classDef state fill:#eaf6ee,stroke:#3a9d5d,color:#143a22;
+    classDef io fill:#eef3fb,stroke:#5b7cb5,color:#1a2a44;
+    classDef ext fill:#fdf6e3,stroke:#c9a83a,color:#4a3c10;
+    classDef llm fill:#f3eafb,stroke:#8a5bb5,color:#2e1844;
+
+    class A1,A2,A3,A4,A5 agent;
+    class STATE state;
+    class UI,API,WF io;
+    class EXT ext;
+    class LLM llm;

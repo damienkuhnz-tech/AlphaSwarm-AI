@@ -1,0 +1,93 @@
+%%{init: {'theme':'base', 'themeVariables': {'fontSize':'14px'}}}%%
+flowchart TB
+
+    %% ============================================================
+    %%  AlphaSwarm — Architecture globale (5 agents, état partagé)
+    %% ============================================================
+
+    subgraph L1["LAYER 1 — Interface utilisateur (HTML + JavaScript)"]
+        UI["Navigateur du gérant<br/>• Formulaire de mandat<br/>• Affichage des résultats<br/>• Chat par agent"]
+    end
+
+    subgraph L2["LAYER 2 — API REST (Flask, port 5001)"]
+        API["api.py<br/>/api/run · /api/run/&lt;id&gt; (polling)<br/>/api/*/briefing · /api/chat"]
+    end
+
+    subgraph ORCH["Orchestrateur (orchestrator/workflow.py)"]
+        WF["WorkflowEngine<br/>pipeline séquentiel + boucle de rétroaction<br/>(target_step : run complet ou ciblé)"]
+    end
+
+    subgraph L3["LAYER 3 — État partagé (models/state.py)"]
+        STATE[("portfolioState<br/>dictionnaire commun<br/>= mémoire + journal auditable")]
+    end
+
+    subgraph L4["LAYER 4 — Les 5 agents (héritent de BaseAgent)"]
+        A1["1 · Agent MANDAT<br/>choix gérant → contraintes"]
+        A2["2 · Agent RESEARCH<br/>analyse equity research + score"]
+        A3["3 · Agent PORTFOLIO<br/>sélection + allocation"]
+        A4["4 · Agent RISQUE<br/>métriques + statut PASS/AJUSTER/FAIL"]
+        A5["5 · Agent EXÉCUTION<br/>ordres prêts OMS"]
+    end
+
+    subgraph LLM["Moteur LLM (multi-provider — llm/)"]
+        MODELS["Anthropic (Claude Sonnet)<br/>Groq (gpt-oss-20b, qwen3-32b)<br/>override par agent"]
+    end
+
+    subgraph SRC["LAYER 5 — Sources de données (tools/)"]
+        DS["yfinance · FMP<br/>SEC EDGAR · Tavily (web)"]
+    end
+
+    subgraph CALC["LAYER 6 — Calculs déterministes (tools/)"]
+        FM["financial_metrics.py<br/>volatilité · bêta · tracking error · concentration"]
+        BT["backtest.py<br/>rendement · Sharpe · drawdown"]
+    end
+
+    %% ---- Flux principal (requête / réponse) ----
+    UI -->|HTTP JSON| API
+    API --> WF
+    WF -->|lance chaque agent| A1
+    WF --> A2
+    WF --> A3
+    WF --> A4
+    WF --> A5
+
+    %% ---- Communication via l'état partagé (lecture/écriture) ----
+    A1 <-->|écrit mandate| STATE
+    A2 <-->|lit mandate · écrit research| STATE
+    A3 <-->|lit research+mandate · écrit portfolio| STATE
+    A4 <-->|lit portfolio · écrit risk_report| STATE
+    A5 <-->|lit portfolio · écrit ordres| STATE
+
+    %% ---- Boucle de rétroaction Risque -> Portfolio ----
+    A4 -.->|AJUSTER : violations à corriger<br/>max 3 itérations| A3
+    A4 -.->|FAIL : workflow bloqué| WF
+
+    %% ---- Appels LLM (raisonnement) ----
+    A1 -.-> MODELS
+    A2 -.-> MODELS
+    A3 -.-> MODELS
+    A4 -.-> MODELS
+    A5 -.-> MODELS
+
+    %% ---- Données et calculs ----
+    A2 -->|récupère données| DS
+    A4 -->|calcule sur historique| FM
+    A4 --> BT
+
+    %% ---- Résultats renvoyés à l'interface ----
+    STATE -.->|polling : résultats| API
+    API -.->|affichage temps réel| UI
+
+    %% ---- Validation humaine ----
+    A5 -.->|ordres EN ATTENTE<br/>validation du gérant| UI
+
+    classDef layer fill:#eef3fb,stroke:#5b7cb5,color:#1a2a44;
+    classDef agent fill:#fbeee8,stroke:#c47a52,color:#4a2a18;
+    classDef state fill:#eaf6ee,stroke:#3a9d5d,color:#143a22;
+    classDef llm fill:#f3eafb,stroke:#8a5bb5,color:#2e1844;
+    classDef data fill:#fdf6e3,stroke:#c9a83a,color:#4a3c10;
+
+    class A1,A2,A3,A4,A5 agent;
+    class STATE state;
+    class MODELS llm;
+    class DS,FM,BT data;

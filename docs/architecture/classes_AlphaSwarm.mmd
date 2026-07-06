@@ -1,0 +1,247 @@
+classDiagram
+  class Backtest {
+    benchmark_utilise : str
+    courbe_valeur : Optional[List[dict]]
+    jours : Optional[int]
+    max_drawdown : Optional[float]
+    message : str
+    periode : str
+    rendement_benchmark : Optional[float]
+    rendement_total : Optional[float]
+    sharpe : Optional[float]
+    statut : str
+    surperformance : Optional[float]
+    tickers_exclus : Optional[List[str]]
+    volatilite_realisee : Optional[float]
+  }
+  class BaseAgent {
+    AGENT_KEY : str
+    SYSTEM_PROMPT : str
+    TOOLS : List[Dict]
+    client : GroqAnthropicCompatClient, NoneType
+    max_tokens : int
+    model : NoneType
+    run(state: PortfolioState)* Dict[str, Any]
+  }
+  class BudgetRisque {
+    beta_max : float
+    beta_min : float
+    concentration_top10_max : float
+    drawdown_max : float
+    tracking_error_max : float
+    volatilite_max : float
+  }
+  class ContrainteGeographique {
+    max : float
+    min : float
+    model_config : dict
+  }
+  class ContrainteSectorielle {
+    max : float
+    min : float
+    model_config : dict
+  }
+  class CoutsTransaction {
+    commissions_estimees_usd : float
+    market_impact_estime_usd : float
+    total_bps : float
+    total_estime_usd : float
+  }
+  class EquityResearchAgent {
+    AGENT_KEY : str
+    OUTPUT_DIR : str
+    SYSTEM_PROMPT : str
+    TOOLS : list
+    run(state: PortfolioState) Dict[str, Any]
+  }
+  class ExecutionAgent {
+    AGENT_KEY : str
+    SYSTEM_PROMPT : str
+    run(state: PortfolioState) Dict[str, Any]
+  }
+  class ExecutionOutput {
+    avertissement : str
+    calendrier_suggere : Optional[dict]
+    capital_cash : float
+    capital_investi : float
+    capital_total : float
+    couts_transaction
+    nombre_ordres : int
+    ordres : List[Order]
+    statut : str
+  }
+  class MandateAgent {
+    AGENT_KEY : str
+    SYSTEM_PROMPT : str
+    run(state: PortfolioState) Dict[str, Any]
+  }
+  class MandateOutput {
+    actifs_exclus : Optional[List[str]]
+    alertes_incoherence : Optional[List[str]]
+    benchmark : str
+    budget_risque : Optional[BudgetRisque]
+    capital : float
+    cash_max : float
+    cash_min : float
+    contraintes_geographiques : Optional[Dict[str, ContrainteGeographique]]
+    contraintes_sectorielles : Optional[Dict[str, ContrainteSectorielle]]
+    criteres_ESG : Optional[Dict[str, Any]]
+    frequence_rebalancement : str
+    horizon : str
+    limite_turnover : float
+    liquidite_min_adv_usd : float
+    nombre_positions_cible : str
+    poids_max_par_position : Optional[float]
+    poids_min_par_position : Optional[float]
+    profil_risque : str
+    recommandations_correctives : Optional[List[str]]
+    strategie : str
+    univers : List[str]
+  }
+  class MetriquesRisque {
+    benchmark_utilise : str
+    beta_estime : str
+    concentration_top1 : str
+    concentration_top10 : str
+    concentration_top5 : str
+    exposition_sectorielle : dict
+    periode : str
+    tracking_error_estimee : str
+    volatilite_estimee : str
+  }
+  class Order {
+    action : Literal['BUY', 'SELL']
+    algo_suggere : str
+    notes_execution : str
+    poids_cible : float
+    prerequis_reglementaire : Optional[str]
+    priorite : Literal['HIGH', 'NORMAL', 'LOW']
+    ticker : str
+    valeur_usd : float
+  }
+  class PortfolioConstructionAgent {
+    AGENT_KEY : str
+    MAX_TOKENS_OVERRIDE : int
+    SYSTEM_PROMPT : str
+    run(state: PortfolioState) Dict[str, Any]
+  }
+  class PortfolioOutput {
+    capital_total : float
+    cash_poids : float
+    cash_valeur_usd : float
+    decisions_notables : Optional[List[str]]
+    iteration : int
+    nombre_positions : int
+    positions : Optional[List[Position]]
+    profil_attendu : Optional[ProfilAttendu]
+    repartition_sectorielle : Optional[RepartitionSectorielle]
+    model_post_init(\_\_context: Any) None
+  }
+  class PortfolioState {
+    benchmark : str
+    beta_max_override : Optional[float]
+    beta_min_override : Optional[float]
+    capital : float
+    current_step : str
+    errors : List[str]
+    execution_output : Optional[ExecutionOutput]
+    horizon : str
+    human_approved : bool
+    mandate : Optional[MandateOutput]
+    perte_max_toleree : Optional[float]
+    portfolio : Optional[PortfolioOutput]
+    portfolio_briefing : Optional[List[dict]]
+    portfolio_iteration : int
+    priorite_principale : Optional[str]
+    profil_risque : str
+    requires_human_review : bool
+    research : Optional[List[ResearchOutput]]
+    research_brief : Optional[dict]
+    research_briefing_messages : Optional[List[dict]]
+    risk_report : Optional[RiskReport]
+    run_id : str
+    strategie : str
+    tickers : Optional[List[str]]
+  }
+  class Position {
+    geographie : str
+    justification : str
+    nom : str
+    poids : Optional[float]
+    role_portefeuille : str
+    secteur : str
+    ticker : str
+    valeur_usd : float
+  }
+  class ProfilAttendu {
+    beta : str
+    rendement_annualise : str
+    sharpe_estime : Optional[str]
+    tracking_error : str
+    volatilite_estimee : str
+  }
+  class RepartitionSectorielle {
+    Autre : float
+    Consommation_courante : float
+    Consommation_discretionnaire : float
+    Energie : float
+    Finance : float
+    Immobilier : float
+    Industrie : float
+    Materiaux : float
+    Sante : float
+    Services_publics : float
+    Technologie : float
+    Telecom : float
+    model_config : dict
+  }
+  class ResearchOutput {
+    catalyseurs : Optional[List[str]]
+    donnees_marche : Optional[Dict[str, Any]]
+    executive_summary : str
+    nom : str
+    poids_suggere_initial : Optional[float]
+    recommandation : str
+    risques_cles : Optional[List[str]]
+    score_conviction : Optional[int]
+    these_investissement : str
+    ticker : str
+    valorisation : Optional[Valorisation]
+    model_post_init(\_\_context: Any) None
+  }
+  class RiskManagementAgent {
+    AGENT_KEY : str
+    SYSTEM_PROMPT : str
+    TOOLS : list
+    run(state: PortfolioState) Dict[str, Any]
+  }
+  class RiskReport {
+    backtest : Optional[Backtest]
+    commentaire : str
+    commentaire_backtest : str
+    metriques_risque
+    recommandations : Optional[List[str]]
+    score_risque_global : Optional[int]
+    statut : Literal['PASS', 'FAIL', 'AJUSTER']
+    violations : Optional[List[ViolationRisque]]
+  }
+  class Valorisation {
+    EV_EBITDA_NTM : Optional[str]
+    PER_estime_NTM : Optional[str]
+    commentaire_valorisation : str
+    methode_principale : str
+    upside_potentiel : Optional[str]
+  }
+  class ViolationRisque {
+    action : str
+    detail : str
+    severite : Literal['MINEURE', 'MAJEURE', 'CRITIQUE', 'INFORMATIVE']
+    type : str
+  }
+  EquityResearchAgent --|> BaseAgent
+  ExecutionAgent --|> BaseAgent
+  MandateAgent --|> BaseAgent
+  PortfolioConstructionAgent --|> BaseAgent
+  RiskManagementAgent --|> BaseAgent
+  ExecutionOutput --> CoutsTransaction : couts_transaction
+  RiskReport --> MetriquesRisque : metriques_risque

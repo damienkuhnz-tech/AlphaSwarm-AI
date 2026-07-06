@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AlphaSwarm — Portfolio Intelligence</title>
+<meta name="description" content="Cinq agents autonomes pour la gestion de portefeuille. De la recherche à l'exécution, l'intelligence opère en continu." />
+
+<link rel="stylesheet" href="/landing/css/style.css" />
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- FIXED HEADER                                                 -->
+<!-- ============================================================ -->
+<header class="site-header">
+  <div class="site-header-inner">
+    <a href="/" class="brand">
+      <span class="brand-mark" aria-label="AlphaSwarm">
+        <svg viewBox="0 0 156 96" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block;">
+          <g stroke="currentColor" stroke-linecap="square">
+            <path d="M14 88 L52 10 L90 88" stroke-width="12"/>
+            <path d="M32 62 H72" stroke-width="10"/>
+          </g>
+          <path d="M16 78 L100 26" stroke="#081310" stroke-width="7"/>
+          <g stroke="#3DDC97" stroke-width="2.4">
+            <line x1="107" y1="28" x2="107" y2="88"/>
+            <line x1="125" y1="14" x2="125" y2="78"/>
+            <line x1="143" y1="36" x2="143" y2="90"/>
+          </g>
+          <g fill="#3DDC97">
+            <rect x="102" y="42" width="10" height="28" rx="1"/>
+            <rect x="120" y="24" width="10" height="34" rx="1"/>
+            <rect x="138" y="50" width="10" height="24" rx="1"/>
+          </g>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <span class="brand-name">AlphaSwarm</span>
+        <span class="brand-sub">Portfolio Intelligence</span>
+      </span>
+    </a>
+    <nav class="site-nav">
+      <a href="#vision">Vision</a>
+      <a href="#agents">Agents</a>
+      <a href="#methode">Méthode</a>
+      <a href="/app" class="nav-cta">Accéder →</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================ -->
+<!-- HERO STANDALONE (100vh)                                      -->
+<!-- ============================================================ -->
+<section class="hero-standalone">
+  <div class="hero-grid">
+    <div class="hero-corner hero-corner-tl">
+      <span class="dot-mark"></span>
+      <span class="hero-label">001 / Système actif</span>
+    </div>
+    <div class="hero-corner hero-corner-tr">
+      <span class="hero-label">v2.1 · 2026</span>
+    </div>
+
+    <div class="hero-body">
+      <h1 class="hero-heading">
+        <span class="hero-word"><span>Cinq</span></span>
+        <span class="hero-word"><span>agents.</span></span>
+        <span class="hero-word"><span>Un</span></span>
+        <span class="hero-word"><span class="hero-italic">portefeuille.</span></span>
+        <span class="hero-word"><span>Zéro</span></span>
+        <span class="hero-word"><span>hésitation.</span></span>
+      </h1>
+      <p class="hero-tagline">
+        Une équipe de gestion autonome qui scrute les marchés, construit, dimensionne le risque,
+        et exécute — pendant que vous dormez.
+      </p>
+    </div>
+
+    <div class="hero-corner hero-corner-bl">
+      <span class="hero-meta-key">latence moyenne</span>
+      <span class="hero-meta-val">0.18s</span>
+    </div>
+    <div class="hero-corner hero-corner-br">
+      <a href="#vision" class="hero-scroll-cue">
+        <span>défiler</span>
+        <svg viewBox="0 0 24 40" width="14" height="22" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="20" height="36" rx="10"/><line x1="12" y1="10" x2="12" y2="18"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Dark overlay (for stats section) -->
+<div id="dark-overlay"></div>
+
+<!-- ============================================================ -->
+<!-- MARQUEE (fixed, slides on scroll)                            -->
+<!-- ============================================================ -->
+<div class="marquee-wrap" data-scroll-speed="-32">
+  <div class="marquee-text">
+    FINANCE&nbsp;·&nbsp;INTELLIGENCE&nbsp;·&nbsp;AUTOMATION&nbsp;·&nbsp;ALPHA&nbsp;·&nbsp;EXECUTION&nbsp;·&nbsp;FINANCE&nbsp;·&nbsp;INTELLIGENCE&nbsp;·&nbsp;AUTOMATION&nbsp;·&nbsp;ALPHA&nbsp;·&nbsp;EXECUTION&nbsp;·&nbsp;
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SCROLL CONTAINER (800vh)                                     -->
+<!-- ============================================================ -->
+<main id="scroll-container">
+
+  <!-- 002 / VISION -->
+  <section id="vision" class="scroll-section section-content align-left"
+           data-enter="8" data-leave="22" data-animation="slide-left">
+    <div class="section-inner">
+      <span class="section-label"><span class="dot-mark"></span>002 / Vision</span>
+      <h2 class="section-heading">Une <em>équipe</em> qui ne dort jamais.</h2>
+      <p class="section-body">
+        AlphaSwarm orchestre cinq agents spécialisés — mandat, recherche, construction,
+        risque, exécution — qui collaborent en continu pour faire vivre votre portefeuille.
+        Pas de copilote. Une équipe entière.
+      </p>
+      <p class="section-note">Disponible 24 / 7 · Auditable · Déterministe</p>
+    </div>
+  </section>
+
+  <!-- 003 / AGENTS -->
+  <section id="agents" class="scroll-section section-content align-right"
+           data-enter="26" data-leave="42" data-animation="slide-right">
+    <div class="section-inner">
+      <span class="section-label">003 / Agents</span>
+      <h2 class="section-heading">Cinq spécialistes, <em>une</em> stratégie.</h2>
+      <ul class="agent-list">
+        <li><span class="agent-idx">01</span><span class="agent-name">Mandate</span><span class="agent-role">contraintes, benchmarks, horizon</span></li>
+        <li><span class="agent-idx">02</span><span class="agent-name">Research</span><span class="agent-role">analyse fondamentale &amp; sectorielle</span></li>
+        <li><span class="agent-idx">03</span><span class="agent-name">Portfolio</span><span class="agent-role">construction, allocation, poids cibles</span></li>
+        <li><span class="agent-idx">04</span><span class="agent-name">Risk</span><span class="agent-role">VaR, tracking error, stress tests</span></li>
+        <li><span class="agent-idx">05</span><span class="agent-name">Execution</span><span class="agent-role">ordres, slippage, suivi temps réel</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 004 / STATS (dark overlay) -->
+  <section class="scroll-section section-stats"
+           data-enter="46" data-leave="62" data-animation="stagger-up">
+    <div class="stats-inner">
+      <span class="section-label section-label-light">004 / Capacité</span>
+      <h2 class="stats-heading">Le <em>chiffre</em> qui parle.</h2>
+      <div class="stats-grid">
+        <div class="stat">
+          <span class="stat-number" data-value="5" data-decimals="0">0</span>
+          <span class="stat-label">agents autonomes</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" data-value="2400" data-decimals="0">0</span>
+          <span class="stat-suffix">+</span>
+          <span class="stat-label">tickers couverts</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" data-value="0.18" data-decimals="2">0</span>
+          <span class="stat-suffix">s</span>
+          <span class="stat-label">latence agent</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" data-value="99.7" data-decimals="1">0</span>
+          <span class="stat-suffix">%</span>
+          <span class="stat-label">déterminisme</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 005 / MÉTHODE -->
+  <section id="methode" class="scroll-section section-content align-left"
+           data-enter="66" data-leave="80" data-animation="clip-reveal">
+    <div class="section-inner">
+      <span class="section-label">005 / Méthode</span>
+      <h2 class="section-heading">De la <em>thèse</em> à l'ordre.</h2>
+      <ol class="method-list">
+        <li><span class="method-num">→</span><span class="method-text"><strong>Mandat</strong> — paramètres, contraintes, benchmark</span></li>
+        <li><span class="method-num">→</span><span class="method-text"><strong>Recherche</strong> — fondamentaux, momentum, sectoriel</span></li>
+        <li><span class="method-num">→</span><span class="method-text"><strong>Construction</strong> — poids cibles &amp; optimisation</span></li>
+        <li><span class="method-num">→</span><span class="method-text"><strong>Risque</strong> — validation, stress, ajustements</span></li>
+        <li><span class="method-num">→</span><span class="method-text"><strong>Exécution</strong> — ordres &amp; reporting</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 006 / CTA (persist) -->
+  <section id="acces" class="scroll-section section-cta align-right"
+           data-enter="84" data-leave="100" data-animation="rotate-in" data-persist="true">
+    <div class="section-inner">
+      <span class="section-label">006 / Accès</span>
+      <h2 class="section-heading section-heading-tight">Entrez dans le <em>terminal</em>.</h2>
+      <p class="section-body">
+        L'interface complète vous attend. Cinq agents, un mandat, votre portefeuille — en quelques clics.
+      </p>
+      <a href="/app" class="cta-button">
+        <span>Ouvrir l'interface</span>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 5 19 12 13 19"/></svg>
+      </a>
+      <p class="section-note section-note-foot">AlphaSwarm v2.1 · Damien K. · Session sécurisée</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================ -->
+<!-- SCRIPTS                                                      -->
+<!-- ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/ScrollTrigger.min.js"></script>
+<script src="/vendor/three/three.min.js"></script>
+<script src="/landing/js/swarm.js"></script>
+<script src="/landing/js/app.js"></script>
+
+</body>
+</html>
