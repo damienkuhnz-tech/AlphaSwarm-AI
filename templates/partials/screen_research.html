@@ -1,0 +1,73 @@
+<!-- Écran 2 — Equity Research Agent (grille research + chat analyste) -->
+<div class="screen" id="screen-2">
+  <div class="section-header">
+    <span class="section-title">Equity Research Agent</span>
+    <span id="step-badge-2" class="badge badge-locked">VERROUILLÉ</span>
+    <button type="button" id="launch-btn-2" class="btn-launch-agent">Lancer l'agent</button>
+    <span class="section-duration"></span>
+  </div>
+
+  <div class="agent-sub-tabs">
+    <div class="agent-sub-tab active" data-panel="analyse-2">Analyse</div>
+    <div class="agent-sub-tab chat-sub-tab" data-panel="chat-2">Chat — Assistant Analyste</div>
+  </div>
+
+  <div id="analyse-2" class="agent-tab-content active">
+
+  <div class="sub-tabs" id="researchTabs">
+    <div class="sub-tab active" data-group="research" data-tab="companies">Analyse Entreprises</div>
+    <div class="sub-tab" data-group="research" data-tab="sectors">Analyse Sectorielle</div>
+  </div>
+
+  <div class="sub-tab-content active" id="research-companies">
+    <!-- Filter Bar -->
+    <div class="filter-bar" id="researchFilterBar">
+      <button type="button" class="filter-btn active" data-filter="all">Tous (0)</button>
+      <button type="button" class="filter-btn" data-filter="strong-buy">STRONG BUY (0)</button>
+      <button type="button" class="filter-btn" data-filter="buy">BUY (0)</button>
+      <button type="button" class="filter-btn" data-filter="hold">HOLD (0)</button>
+    </div>
+    <div class="research-grid" id="researchGrid">
+      <div class="empty-placeholder u-empty-slot">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
+    </div>
+  </div>
+
+  <div class="sub-tab-content" id="research-sectors">
+      <div class="empty-placeholder u-empty-slot">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
+    </div>
+  <div class="u-actions-right">
+    <button type="button" class="btn-validate-step" id="btn-validate-2">Approuver l'analyse</button>
+  </div>
+
+  </div><!-- /analyse-2 -->
+
+  <div id="chat-2" class="agent-tab-content">
+    <div class="chat-panel active" id="chat-panel-2">
+      <div class="chat-messages" id="chat-messages-2">
+        <div class="chat-msg agent">
+          <div class="chat-avatar avatar-agent">AI</div>
+          <div>
+            <div class="chat-sender">Assistant Analyste</div>
+            <div class="chat-bubble">Analyse terminée. Je peux vous générer un rapport complet sur un titre, comparer des valeurs, ou approfondir l'investment thesis. Que souhaitez-vous ?</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-suggestions" id="chat-suggestions-2">
+        <div class="chat-suggestion">Rapport complet ASML</div><div class="chat-suggestion">Comparer NVDA vs TSM</div><div class="chat-suggestion">Risques secteur semi</div><div class="chat-suggestion">Top conviction du portefeuille</div>
+      </div>
+      <div class="chat-input-area">
+        <textarea class="chat-input" id="chat-input-2" rows="1" placeholder="Ex: Génère un rapport complet sur ASML..."></textarea>
+        <div class="chat-send-btn" id="chat-send-2">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div><!-- /chat-2 -->
+
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 3 : PORTFOLIO CONSTRUCTION -->
+<!-- ============================================================ -->

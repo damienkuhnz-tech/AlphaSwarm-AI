@@ -1,0 +1,76 @@
+<!-- Écran 3 — Portfolio Construction Agent (table + chat PM) -->
+<div class="screen" id="screen-3">
+  <div class="section-header">
+    <span class="section-title">Portfolio Construction Agent</span>
+    <span id="step-badge-3" class="badge badge-locked">VERROUILLÉ</span>
+    <button type="button" id="launch-btn-3" class="btn-launch-agent">Lancer l'agent</button>
+    <span class="section-duration"></span>
+  </div>
+
+  <div class="agent-sub-tabs">
+    <div class="agent-sub-tab active" data-panel="analyse-3">Analyse</div>
+    <div class="agent-sub-tab chat-sub-tab" data-panel="chat-3">Chat — Portfolio Manager</div>
+  </div>
+
+  <div id="analyse-3" class="agent-tab-content active">
+
+  <div class="two-col-65">
+    <!-- LEFT -->
+    <div>
+      <div class="panel">
+        <div class="panel-title"><span class="u-title-ico-8"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></span>Portefeuille Construit</div>
+        <div class="table-wrap u-scroll-x">
+          <table class="u-table-700">
+            <thead>
+              <tr><th>#</th><th>Ticker</th><th>Nom</th><th>Secteur</th><th>Géo</th><th>RATING</th><th>Poids</th><th>Valeur USD</th><th>Rôle</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="u-empty-slot" colspan="9">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour construire le portefeuille.</td></tr>
+            </tbody>
+            <tfoot></tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div id="portfolioRightPanels">
+      <div class="empty-placeholder u-empty-slot">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
+    </div>
+  </div>
+  <div class="u-actions-right">
+    <button type="button" class="btn-validate-step" id="btn-validate-3">Valider la construction du portefeuille</button>
+  </div>
+
+  </div><!-- /analyse-3 -->
+
+  <div id="chat-3" class="agent-tab-content">
+    <div class="chat-panel active" id="chat-panel-3">
+      <div class="chat-messages" id="chat-messages-3">
+        <div class="chat-msg agent">
+          <div class="chat-avatar avatar-agent">AI</div>
+          <div>
+            <div class="chat-sender">Portfolio Manager</div>
+            <div class="chat-bubble">Portefeuille construit. Je peux optimiser les allocations, simuler des scénarios stress, ou vous expliquer la thèse d'un titre. Que souhaitez-vous ?</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-suggestions" id="chat-suggestions-3">
+        <div class="chat-suggestion">Optimiser l'allocation NVDA</div><div class="chat-suggestion">Simuler -20% marché</div><div class="chat-suggestion">Réduire exposition Tech</div><div class="chat-suggestion">Ajouter position défensive</div>
+      </div>
+      <div class="chat-input-area">
+        <textarea class="chat-input" id="chat-input-3" rows="1" placeholder="Ex: Que se passe-t-il si on réduit NVDA à 4% ?"></textarea>
+        <div class="chat-send-btn" id="chat-send-3">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div><!-- /chat-3 -->
+
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 4 : RISK MANAGEMENT AGENT -->
+<!-- ============================================================ -->

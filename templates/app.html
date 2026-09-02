@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlphaSwarm — Portfolio Management Interface</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Serif:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- CSS extrait du bloc <style> historique — ORDRE DE CHARGEMENT IMPÉRATIF :
+       les couches theme-overrides (PREMIUM + skin Essaim) puis responsive doivent
+       rester en fin de cascade (cf. docs de refactorisation). -->
+  <link rel="stylesheet" href="/static/css/base.css">
+  <link rel="stylesheet" href="/static/css/cards.css">
+  <link rel="stylesheet" href="/static/css/workflow.css">
+  <link rel="stylesheet" href="/static/css/report.css">
+  <link rel="stylesheet" href="/static/css/dashboard.css">
+  <link rel="stylesheet" href="/static/css/forms-chat.css">
+  <link rel="stylesheet" href="/static/css/theme-overrides.css">
+  <link rel="stylesheet" href="/static/css/responsive.css">
+  <link rel="stylesheet" href="/static/css/utilities.css">
+</head>
+<body>
+
+<!-- PROGRESS BAR -->
+<div id="agentProgressBar"><div id="agentProgressFill"></div></div>
+
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="logo-mark" aria-label="AlphaSwarm">
+        <svg viewBox="0 0 156 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="currentColor" stroke-linecap="square">
+            <path d="M14 88 L52 10 L90 88" stroke-width="12"/>
+            <path d="M32 62 H72" stroke-width="10"/>
+          </g>
+          <path d="M16 78 L100 26" stroke="#081310" stroke-width="7"/>
+          <g stroke="#3DDC97" stroke-width="2.4">
+            <line x1="107" y1="28" x2="107" y2="88"/>
+            <line x1="125" y1="14" x2="125" y2="78"/>
+            <line x1="143" y1="36" x2="143" y2="90"/>
+          </g>
+          <g fill="#3DDC97">
+            <rect x="102" y="42" width="10" height="28" rx="1"/>
+            <rect x="120" y="24" width="10" height="34" rx="1"/>
+            <rect x="138" y="50" width="10" height="24" rx="1"/>
+          </g>
+        </svg>
+      </div>
+      <div class="login-brand">
+        <div class="logo-name">AlphaSwarm</div>
+        <div class="logo-sub">Portfolio Management</div>
+      </div>
+    </div>
+    <div class="login-title">Connexion</div>
+    <div class="login-subtitle">Entrez votre nom pour accéder à l'interface</div>
+    <div class="login-form">
+      <div class="login-field">
+        <label class="login-label">Nom</label>
+        <input type="text" id="loginUser" class="login-input" placeholder="Prénom Nom" autocomplete="username">
+      </div>
+      <div id="loginError" class="login-error u-hidden-init">Veuillez entrer votre nom</div>
+      <button type="button" class="login-btn" id="btn-login">Accéder →</button>
+    </div>
+    <div class="login-footer">AlphaSwarm v2.1 · Session sécurisée · 2026</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TOPBAR -->
+<!-- ============================================================ -->
+<nav class="topbar">
+  <div class="logo">
+    <div class="logo-mark" aria-label="AlphaSwarm">
+      <svg viewBox="0 0 156 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="currentColor" stroke-linecap="square">
+          <path d="M14 88 L52 10 L90 88" stroke-width="12"/>
+          <path d="M32 62 H72" stroke-width="10"/>
+        </g>
+        <path d="M16 78 L100 26" stroke="#081310" stroke-width="7"/>
+        <g stroke="#3DDC97" stroke-width="2.4">
+          <line x1="107" y1="28" x2="107" y2="88"/>
+          <line x1="125" y1="14" x2="125" y2="78"/>
+          <line x1="143" y1="36" x2="143" y2="90"/>
+        </g>
+        <g fill="#3DDC97">
+          <rect x="102" y="42" width="10" height="28" rx="1"/>
+          <rect x="120" y="24" width="10" height="34" rx="1"/>
+          <rect x="138" y="50" width="10" height="24" rx="1"/>
+        </g>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="logo-name">AlphaSwarm</span>
+      <span class="logo-sub">Portfolio Management</span>
+    </div>
+  </div>
+
+  <div class="tab-bar" id="tabBar">
+    <!-- Tabs injected by JS -->
+  </div>
+
+</nav>
+
+<!-- ============================================================ -->
+<!-- SCREEN 1 : MANDATE AGENT -->
+<!-- ============================================================ -->
+{% include 'partials/screen_mandate.html' %}
+
+{% include 'partials/screen_research.html' %}
+
+{% include 'partials/screen_portfolio.html' %}
+
+{% include 'partials/screen_risk.html' %}
+
+{% include 'partials/screen_execution.html' %}
+
+{% include 'partials/screen_market.html' %}
+
+<div class="screen-footer">
+  <button type="button" class="btn-nav btn-nav-prev" id="btnPrev" disabled>← Précédent</button>
+  <span class="step-info" id="stepInfo">Étape 1 / 5</span>
+  <button type="button" class="btn-nav btn-nav-next" id="btnNext">Suivant →</button>
+</div>
+
+<!-- ============================================================ -->
+<!-- SUCCESS OVERLAY -->
+<!-- ============================================================ -->
+
+{% include 'partials/modals.html' %}
+
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- JAVASCRIPT -->
+<!-- ============================================================ -->
+  <!-- JS extrait du <script> monolithique — scripts CLASSIQUES (pas de modules ES),
+       ORDRE SOURCE IMPÉRATIF : scope global partagé + handlers inline. -->
+  <script src="/static/js/dataviz.js"></script>
+  <script src="/static/js/mandate.js"></script>
+  <script src="/static/js/auth.js"></script>
+  <script src="/static/js/run-core.js"></script>
+  <script src="/static/js/run-polling.js"></script>
+  <script src="/static/js/effects.js"></script>
+  <script src="/static/js/render-screens.js"></script>
+  <script src="/static/js/render-risk.js"></script>
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/chat.js"></script>
+  <script src="/static/js/market.js"></script>
+  <script src="/static/js/events.js"></script>
+</body>
+</html>

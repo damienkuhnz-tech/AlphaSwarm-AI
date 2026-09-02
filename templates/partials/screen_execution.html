@@ -1,0 +1,54 @@
+<!-- Écran 5 — Execution Agent (ordres + chat trader) -->
+<div class="screen" id="screen-5">
+  <div class="section-header">
+    <span class="section-title">Execution Agent</span>
+    <span id="step-badge-5" class="badge badge-locked">VERROUILLÉ</span>
+    <button type="button" id="launch-btn-5" class="btn-launch-agent">Lancer l'agent</button>
+    <span class="section-duration"></span>
+  </div>
+
+  <div class="agent-sub-tabs">
+    <div class="agent-sub-tab active" data-panel="analyse-5">Analyse</div>
+    <div class="agent-sub-tab chat-sub-tab" data-panel="chat-5">Chat — Execution Trader</div>
+  </div>
+
+  <div id="analyse-5" class="agent-tab-content active">
+
+  <div class="alert alert-yellow">Les ordres ci-dessous sont préparés pour transmission à l'OMS. Aucune exécution automatique. Validation PM obligatoire.</div>
+
+  <div class="two-col-65" id="executionContent">
+      <div class="empty-placeholder u-empty-slot">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
+    </div>
+
+  </div><!-- /analyse-5 -->
+
+  <div id="chat-5" class="agent-tab-content">
+    <div class="chat-panel active" id="chat-panel-5">
+      <div class="chat-messages" id="chat-messages-5">
+        <div class="chat-msg agent">
+          <div class="chat-avatar avatar-agent">AI</div>
+          <div>
+            <div class="chat-sender">Execution Trader</div>
+            <div class="chat-bubble">Plan d'exécution prêt. Je peux optimiser la stratégie d'exécution, ajuster les algos, ou analyser les coûts de transaction. Que souhaitez-vous ?</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-suggestions" id="chat-suggestions-5">
+        <div class="chat-suggestion">Optimiser VWAP NVDA</div><div class="chat-suggestion">Réduire impact marché</div><div class="chat-suggestion">Coûts pour ASML Euronext</div><div class="chat-suggestion">Priorité d'exécution J+1</div>
+      </div>
+      <div class="chat-input-area">
+        <textarea class="chat-input" id="chat-input-5" rows="1" placeholder="Ex: Comment exécuter NESN sur SIX Swiss ?"></textarea>
+        <div class="chat-send-btn" id="chat-send-5">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div><!-- /chat-5 -->
+
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN MARKET : DONNÉES DE MARCHÉ TEMPS RÉEL -->
+<!-- ============================================================ -->

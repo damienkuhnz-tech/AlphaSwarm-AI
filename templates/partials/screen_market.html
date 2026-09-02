@@ -1,0 +1,44 @@
+<!-- Écran Marché — cotations temps réel (watchlist yfinance) -->
+<div class="screen" id="screen-market">
+  <div class="section-header">
+    <span class="section-title">Données de Marché</span>
+    <span class="badge badge-green u-inline-gap-6" id="market-live-badge"><span class="market-live-dot"></span>LIVE</span>
+    <span class="section-duration" id="market-timestamp">Connexion aux cours…</span>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Watchlist — cours en direct</div>
+
+    <!-- Barre d'ajout / recherche -->
+    <div class="u-toolbar">
+      <input type="text" id="market-ticker-input" class="form-input u-flex-input" placeholder="Ajouter un ticker (ex: AAPL, GOOGL, TSLA)…">
+      <button type="button" class="btn-validate-step u-mt-0" id="btn-market-add">+ Ajouter</button>
+      <label class="u-check-label">
+        <input class="u-accent-check" type="checkbox" id="market-auto" checked>
+        Auto-refresh 8s
+      </label>
+      <button type="button" class="btn-report u-mt-0" id="btn-market-refresh"><span id="market-refresh-label">↻ Actualiser</span></button>
+    </div>
+
+    <div class="table-wrap">
+      <table class="u-minw-820" id="market-table">
+        <thead>
+          <tr>
+            <th>Ticker</th><th>Cours</th><th>Var. jour</th><th>%</th>
+            <th>Ouv.</th><th>Haut j.</th><th>Bas j.</th><th>52 sem.</th><th>Volume</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="market-tbody">
+          <tr><td class="u-empty-40" colspan="10">Connexion aux cours en direct…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="u-note-italic">
+      Cours en direct via yfinance (fast_info). Rafraîchi automatiquement toutes les 8 s tant que cet onglet est ouvert. Les prix peuvent être différés de 15 min selon la place boursière.
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- FIXED FOOTER NAV -->
+<!-- ============================================================ -->

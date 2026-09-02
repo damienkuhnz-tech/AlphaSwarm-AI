@@ -42,7 +42,7 @@ if sys.platform == "win32":
 # │  IMPORTS FLASK ET MODULES INTERNES                                          │
 # └─────────────────────────────────────────────────────────────────────────────┘
 
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, render_template, request, jsonify, send_from_directory
 # Flask          : micro-framework web — gère les routes HTTP
 # request        : accède au body JSON des requêtes POST
 # jsonify        : convertit un dict Python en réponse JSON avec Content-Type correct
@@ -68,7 +68,7 @@ from config.settings import settings
 app = Flask(__name__, static_folder=".")
 # __name__     : nom du module courant (api) → Flask utilise ce répertoire comme base
 # static_folder="." : sert les fichiers statiques depuis la racine du projet
-#                     → permet de servir finagent_full_interface.html directement
+#                     → sert static/, vendor/, landing/ depuis la racine
 
 CORS(app, origins=["http://localhost:5001", "http://127.0.0.1:5001"])
 # Autorise les requêtes cross-origin uniquement depuis le serveur local
@@ -914,8 +914,8 @@ def index():
 
 @app.route("/app")
 def app_interface():
-    """Interface principale AlphaSwarm (anciennement servie sur /)."""
-    return send_from_directory(".", "finagent_full_interface.html")
+    """Interface principale AlphaSwarm (templates/app.html + partials par écran)."""
+    return render_template("app.html")
 
 
 @app.route("/landing/<path:filepath>")

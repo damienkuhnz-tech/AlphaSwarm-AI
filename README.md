@@ -23,7 +23,7 @@ Modules principaux :
 - `orchestrator/` — enchaînement du pipeline et gestion d'état
 - `models/` — schémas Pydantic partagés
 - `api.py` — serveur Flask (port 5001) : API de pilotage + interface web
-- `finagent_full_interface.html` — interface de la plateforme (`/app`)
+- `templates/` + `static/` — interface de la plateforme (`/app`) : templates Jinja par écran, CSS/JS modulaires
 - `landing/` — page d'accueil (`/`)
 - `docs/architecture/` — diagrammes Mermaid
 

@@ -1,0 +1,54 @@
+<!-- Écran 4 — Risk Management Agent (dashboard quant + chat risk) -->
+<div class="screen" id="screen-4">
+  <div class="section-header">
+    <span class="section-title">Risk Management Agent</span>
+    <span id="step-badge-4" class="badge badge-locked">VERROUILLÉ</span>
+    <button type="button" id="launch-btn-4" class="btn-launch-agent">Lancer l'agent</button>
+    <span class="section-duration"></span>
+  </div>
+
+  <div class="agent-sub-tabs">
+    <div class="agent-sub-tab active" data-panel="analyse-4">Analyse</div>
+    <div class="agent-sub-tab chat-sub-tab" data-panel="chat-4">Chat — Risk Analyst</div>
+  </div>
+
+  <div id="analyse-4" class="agent-tab-content active">
+
+  <div class="alert alert-orange" id="riskAlert">Analyse en cours...</div>
+
+  <div class="risk-two-col" id="riskContent">
+      <div class="empty-placeholder u-empty-slot">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
+    </div>
+
+  </div><!-- /analyse-4 -->
+
+  <div id="chat-4" class="agent-tab-content">
+    <div class="chat-panel active" id="chat-panel-4">
+      <div class="chat-messages" id="chat-messages-4">
+        <div class="chat-msg agent">
+          <div class="chat-avatar avatar-agent">AI</div>
+          <div>
+            <div class="chat-sender">Risk Analyst</div>
+            <div class="chat-bubble">Analyse de risque complète. Je peux simuler des stress tests, analyser les corrélations, ou proposer des ajustements pour réduire le risque. Que souhaitez-vous ?</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-suggestions" id="chat-suggestions-4">
+        <div class="chat-suggestion">Stress test -30% marchés</div><div class="chat-suggestion">Risque géopolitique Taiwan</div><div class="chat-suggestion">Réduire concentration IA</div><div class="chat-suggestion">Hedging recommandations</div>
+      </div>
+      <div class="chat-input-area">
+        <textarea class="chat-input" id="chat-input-4" rows="1" placeholder="Ex: Quel est l'impact d'une crise de liquidité ?"></textarea>
+        <div class="chat-send-btn" id="chat-send-4">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div><!-- /chat-4 -->
+
+</div>
+
+<!-- ============================================================ -->
+<!-- SCREEN 5 : EXECUTION AGENT -->
+<!-- ============================================================ -->

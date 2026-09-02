@@ -1,0 +1,29 @@
+<!-- Overlays — succès export OMS + modale de rejet PM -->
+<div class="overlay" id="successOverlay">
+  <div class="overlay-card">
+    <div class="overlay-icon u-success-ico">&#10003;</div>
+    <div class="overlay-title">Ordres Exportés</div>
+    <div class="overlay-ref">Référence : ORD-20260318-D54763C8</div>
+    <div class="overlay-sub">13 ordres transmis — En attente exécution OMS</div>
+    <button type="button" class="btn-download">Télécharger le rapport complet</button>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- REJECT MODAL -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="rejectModal">
+  <div class="modal-card">
+    <div class="modal-title">Motif de rejet</div>
+    <div class="u-sub-note">Veuillez indiquer le motif de rejet du workflow :</div>
+    <textarea class="form-textarea u-w-100" id="rejectReason" placeholder="Ex : Concentration IA trop élevée, revoir allocation NVDA/MSFT..."></textarea>
+    <div class="u-row-10-mt">
+      <button class="u-btn-cancel" type="button" id="btn-reject-cancel">Annuler</button>
+      <button type="button" class="btn-modal-confirm u-flex-1" id="btn-reject-confirm">Confirmer le rejet</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- ============================================================ -->

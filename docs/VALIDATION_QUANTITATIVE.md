@@ -211,7 +211,7 @@ formellement le risque d'hallucination sur la décision de conformité.
 
 ## 6. Dashboard de validation (UI)
 
-`renderRisk()` (finagent_full_interface.html) rend désormais 11 sections avec
+`renderRisk()` (static/js/render-risk.js) rend désormais 11 sections avec
 navigation par ancres : Executive Summary (verdict, jauge, 8 KPI),
 Violations & Recommandations, Mandate Compliance (tableau PASS/FAIL),
 Performance (courbe 10 ans base 100 + tableau complet + structure), Train/Test,
