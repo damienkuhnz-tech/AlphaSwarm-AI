@@ -76,6 +76,9 @@ from tools.market_data import (
     get_annual_financials, # Revenue, Net Income, EBIT margin sur 4 ans
     get_price_series,      # Série normalisée base 100 vs benchmark (pour graphique HTML)
 )
+from tools.financial_metrics import (
+    benchmark_to_etf,      # "MSCI World" → "URTH" : proxy ETF du benchmark du mandat
+)
 
 from tools.fmp_data import (
     get_fmp_historical_financials, # Revenus, NI, EPS, marges sur 5 ans (FMP)
@@ -290,7 +293,7 @@ class EquityResearchAgent(BaseAgent):
     # Raison : le tool use est séquentiel (1 appel → attente → suivant).
 
     # ── Univers par défaut élargi ─────────────────────────────────────────────
-    # 40 grandes capitalisations diversifiées (secteurs/géo) utilisées quand aucun
+    # Grandes capitalisations diversifiées (secteurs/géo) utilisées quand aucun
     # ticker n'est fourni. Tronqué selon le nombre de positions cible du mandat,
     # pour que la recherche fournisse assez de BUY au PortfolioConstructionAgent.
     _DEFAULT_UNIVERSE = [
@@ -870,6 +873,63 @@ class EquityResearchAgent(BaseAgent):
             # En cas d'échec du screening, on rend l'univers benchmark validé tronqué.
             return univers[:univers_taille]
 
+    @staticmethod
+    def _enrich_idea_from_market(idea: Any, market_pkg: dict) -> None:
+        """
+        Complète nom / secteur / geographie d'une idée à partir de get_stock_info.
+        N'écrase jamais une valeur déjà renseignée (un screening LLM peut avoir
+        fourni un secteur plus pertinent). Silencieux si la source a échoué.
+        """
+        info = (market_pkg or {}).get("info") or {}
+        if info.get("statut") != "OK":
+            return
+
+        def _clean(value):
+            text = str(value or "").strip()
+            return text if text and text.upper() not in ("N/D", "N/A", "NONE") else ""
+
+        if not getattr(idea, "secteur", None):
+            idea.secteur = _clean(info.get("secteur")) or None
+        if not getattr(idea, "geographie", None):
+            idea.geographie = _clean(info.get("pays")) or None
+        # Le nom vaut par défaut le ticker : on le remplace par la raison sociale.
+        nom_reel = _clean(info.get("nom"))
+        if nom_reel and (not getattr(idea, "nom", None) or idea.nom == idea.ticker):
+            idea.nom = nom_reel
+
+    @staticmethod
+    def _as_int(value, default: int) -> int:
+        """
+        Cast tolérant : le modèle écrit parfois "75/100", "75 pts" ou "75.0".
+        Avant, un int() direct levait et faisait basculer TOUT le titre en
+        analyse dégradée (HOLD / score 50) sans le signaler (défaut C5).
+        """
+        try:
+            return int(float(value))
+        except (TypeError, ValueError):
+            pass
+        import re as _re
+        match = _re.search(r"-?\d+(?:[.,]\d+)?", str(value or ""))
+        if match:
+            try:
+                return int(float(match.group(0).replace(",", ".")))
+            except ValueError:
+                pass
+        return int(default)
+
+    @staticmethod
+    def _as_float(value, default: float, lo: float = None, hi: float = None) -> float:
+        """Cast tolérant + bornage, pour ne pas déclencher de ValidationError."""
+        try:
+            parsed = float(str(value).replace("%", "").replace(",", "."))
+        except (TypeError, ValueError):
+            parsed = float(default)
+        if lo is not None:
+            parsed = max(lo, parsed)
+        if hi is not None:
+            parsed = min(hi, parsed)
+        return parsed
+
     def _analyze_ticker(
         self,
         idea:           Any,
@@ -886,7 +946,15 @@ class EquityResearchAgent(BaseAgent):
         console.print(f"  [yellow]⟳[/yellow]  Recherche {idx} : [bold]{idea.ticker}[/bold] ...")
 
         # ── SOUS-ÉTAPE 1 : Pre-fetch données marché ───────────────────────────
-        market_pkg  = self._fetch_all_market_data(idea.ticker)
+        market_pkg  = self._fetch_all_market_data(
+            idea.ticker, benchmark_etf=benchmark_to_etf(benchmark))
+
+        # ── SOUS-ÉTAPE 1b : Renseigner l'idée avec les métadonnées réelles ────
+        # Les idées sont créées avec secteur=None et geographie=None : sans ce
+        # complément, le prompt recevait "N/D" et _generate_sector_reports
+        # regroupait TOUS les titres sous "Autre", ne produisant qu'un seul
+        # rapport sectoriel (défaut C1). Le secteur est pourtant déjà là.
+        self._enrich_idea_from_market(idea, market_pkg)
 
         # ── SOUS-ÉTAPE 2 : Formatage texte pour le prompt ─────────────────────
         market_text = self._format_market_data(market_pkg)
@@ -930,6 +998,7 @@ class EquityResearchAgent(BaseAgent):
 
         # ── SOUS-ÉTAPE 7 : Construction du dict rapport HTML ──────────────────
         report_data = self._build_report_data(claude_data, market_pkg, idea, report_date_iso)
+        report_data["benchmark_label"] = benchmark or "S&P 500"
 
         # ── SOUS-ÉTAPE 8 : Génération et sauvegarde HTML ──────────────────────
         filepath = None
@@ -1065,7 +1134,8 @@ class EquityResearchAgent(BaseAgent):
     # │  Chaque appel est dans son propre try/except pour isolation d'erreurs. │
     # └─────────────────────────────────────────────────────────────────────────┘
 
-    def _fetch_all_market_data(self, ticker: str) -> Dict[str, Any]:
+    def _fetch_all_market_data(self, ticker: str,
+                               benchmark_etf: str = "^GSPC") -> Dict[str, Any]:
         """Pre-fetche toutes les donnees marche pour un ticker (appels parallelises)."""
 
         # ── Initialisation du package ─────────────────────────────────────────
@@ -1101,7 +1171,10 @@ class EquityResearchAgent(BaseAgent):
             "financials":        (get_financials, ticker),
             "price_history":     (get_price_history, ticker, "1y"),
             "annual_financials": (get_annual_financials, ticker),
-            "price_series":      (get_price_series, ticker, "^GSPC", "1y"),
+            # Benchmark du mandat (URTH, ACWI, ^GSPC…) et non plus le S&P 500
+            # codé en dur : la courbe comparait le titre à un indice qui n'était
+            # pas celui du mandat, sous un titre de graphique figé (défaut C10).
+            "price_series":      (get_price_series, ticker, benchmark_etf, "1y"),
             "fmp_financials":    (get_fmp_historical_financials, ticker),
             "fmp_ratios":        (get_fmp_historical_ratios, ticker),
             "fmp_analyst":       (get_fmp_analyst_targets, ticker),
@@ -1326,17 +1399,19 @@ class EquityResearchAgent(BaseAgent):
             catalyseurs = claude_data.get("catalyseurs", []),
             # Ex: ["Lancement GB200", "Expansion data centers", "Résultats Q2"]
 
-            score_conviction = int(claude_data.get("score_conviction", 50)),
-            # int() : force la conversion si Claude retourne un float (ex: 75.0 → 75)
-            # Range 0-100 défini dans le prompt.
+            score_conviction = max(0, min(100, self._as_int(claude_data.get("score_conviction"), 50))),
+            # _as_int : tolère "75/100", "75 pts", 75.0 — et borne à [0, 100] pour
+            # ne pas déclencher de ValidationError Pydantic (défaut C5).
             # Utilisé par PortfolioAgent pour pondérer les positions.
 
             recommandation = recommandation,
             # BUY / HOLD / SELL — aligné sur rating si incohérence détectée.
             # C'est LE champ critique : PortfolioAgent ne garde que les BUY.
 
-            poids_suggere_initial = float(claude_data.get("poids_suggere_initial", 0.03)),
-            # float() : force la conversion (ex: "0.05" → 0.05)
+            poids_suggere_initial = self._as_float(
+                claude_data.get("poids_suggere_initial"), 0.03, lo=0.0, hi=0.10),
+            # _as_float borné à [0, 0.10] : le champ Pydantic refuse au-delà, et
+            # un dépassement faisait basculer tout le titre en repli (défaut C5).
             # Suggestion de poids initial. PortfolioAgent peut l'ajuster.
 
             donnees_marche = {},

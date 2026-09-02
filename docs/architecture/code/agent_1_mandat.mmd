@@ -1,0 +1,36 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "JetBrains Mono, Consolas, Menlo, monospace"
+    fontSize: 13.5px
+    lineColor: "#8496AC"
+    primaryColor: "#FFFFFF"
+    primaryTextColor: "#101720"
+    primaryBorderColor: "#8496AC"
+    edgeLabelBackground: "#FFFFFF"
+  flowchart:
+    curve: basis
+    padding: 14
+    nodeSpacing: 38
+    rankSpacing: 46
+    wrappingWidth: 200
+---
+flowchart LR
+  IN("<b>ENTRÉE</b> — state[…]<br/>strategie · capital · benchmark · horizon<br/>profil_risque · beta_min/max_override")
+  PY("<b>MandateAgent.run() — préparation</b><br/>_RISK_PARAMS[profil] : 5 enveloppes<br/>build_sector_weights(profil)<br/>get_sector_classification(profil)<br/>format_sector_directive_for_prompt()<br/><i>tools/sector_beta.py</i>")
+  L("<b>appel</b><br/>_call_llm_with_retry(user_msg)<br/>system = MANDATE_PROMPT<br/>data = _parse_json(raw)")
+  FX("<b>forçage</b><br/>data['capital'] = capital du state<br/>data['profil_risque'] = profil effectif")
+  OUT("<b>SORTIE</b><br/>MandateOutput(**data)<br/>@field_validator _drop_scalar_constraints<br/>return {'mandate': …}")
+  IN --> PY --> L --> FX --> OUT
+  class IN,OUT io;
+  class PY,FX calc;
+  class L juge;
+
+  classDef juge fill:#FCF3E4,stroke:#B8801F,stroke-width:2px,color:#4A3208,rx:6,ry:6;
+  classDef calc fill:#DAEEE8,stroke:#0D6B59,stroke-width:2px,color:#0A362E,rx:6,ry:6;
+  classDef io fill:#EBF1FA,stroke:#3A5A8C,stroke-width:1.8px,color:#16253C,rx:6,ry:6;
+  classDef stop fill:#FBE4E1,stroke:#9C2A22,stroke-width:2px,color:#4A110D,rx:6,ry:6;
+  classDef ext fill:#FFFFFF,stroke:#8496AC,stroke-width:1.4px,color:#101720,rx:6,ry:6;
+
+  linkStyle default stroke-width:1.5px;

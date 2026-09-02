@@ -104,54 +104,6 @@ def _show_risk(risk) -> None:
             console.print(f"  [dim]→ {r}[/dim]")
 
 
-def _show_compliance(compliance) -> None:
-    if not compliance:
-        return
-    color = {
-        "APPROUVE": "green",
-        "APPROUVE_CONDITIONNEL": "yellow",
-        "REJETE": "red",
-    }.get(compliance.statut, "white")
-    console.print(
-        f"\n  Compliance : [{color}]{compliance.statut}[/{color}]"
-    )
-    for p in compliance.problemes:
-        type_color = {"BLOQUANT": "red", "CONDITIONNEL": "yellow", "INFORMATION": "dim"}.get(
-            p.type, "white"
-        )
-        console.print(f"  [{type_color}]•[/{type_color}]  {p.detail}")
-
-
-def _show_supervisor(decision) -> None:
-    if not decision:
-        return
-    color = {
-        "APPROUVE": "green",
-        "APPROUVE_CONDITIONNEL": "yellow",
-        "REJETE": "red",
-        "MODIFIER": "orange3",
-    }.get(decision.decision_finale, "white")
-
-    console.print(Panel(
-        f"[bold {color}]{decision.decision_finale}[/bold {color}]\n\n"
-        f"{decision.resume}\n\n"
-        f"[dim]Niveau de confiance : {decision.niveau_confiance}/100[/dim]",
-        title="[bold]SUPERVISOR — Décision Finale[/bold]",
-        border_style=color,
-        padding=(1, 2),
-    ))
-
-    if decision.risques_cles:
-        console.print("\n  [bold]Risques clés :[/bold]")
-        for r in decision.risques_cles:
-            console.print(f"  [yellow]⚠[/yellow]  {r.risque}  [dim]({r.probabilite} / {r.impact})[/dim]")
-
-    if decision.conditions_suspensives:
-        console.print("\n  [bold]Conditions suspensives :[/bold]")
-        for c in decision.conditions_suspensives:
-            console.print(f"  [cyan]□[/cyan]  {c}")
-
-
 def _show_orders(execution) -> None:
     if not execution:
         return
@@ -228,9 +180,7 @@ def _export_full_run(state: PortfolioState, run_id: str) -> str:
         "research":   _serial(state.get("research", [])),
         "portfolio":  _serial(state.get("portfolio")),
         "risk":       _serial(state.get("risk_report")),
-        "compliance": _serial(state.get("compliance_report")),
         "execution":  _serial(state.get("execution_output")),
-        "supervisor": _serial(state.get("supervisor_decision")),
     }
 
     filepath = os.path.join(settings.OUTPUTS_DIR, f"run_{run_id}.json")
@@ -257,7 +207,7 @@ def run_workflow(
     settings.validate()
 
     # Chargement des agents AVANT l'affichage (masque la latence d'init)
-    with console.status("[bold gold1]Chargement des 8 agents...[/bold gold1]", spinner="dots"):
+    with console.status("[bold gold1]Chargement des 5 agents...[/bold gold1]", spinner="dots"):
         workflow = build_workflow()
 
     run_id = uuid.uuid4().hex[:8].upper()
@@ -279,9 +229,7 @@ def run_workflow(
         "research":            None,
         "portfolio":           None,
         "risk_report":         None,
-        "compliance_report":   None,
         "execution_output":    None,
-        "supervisor_decision": None,
         "current_step":        "mandate",
         "portfolio_iteration": 1,
         "errors":              [],
@@ -293,14 +241,11 @@ def run_workflow(
     console.print("  [bold]Lancement du workflow...[/bold]\n")
 
     step_labels = {
-        "mandate":    "1/8  Mandate Agent",
-        "ideas":      "2/8  Idea Generation Agent",
-        "research":   "3/8  Equity Research Agent",
-        "portfolio":  "4/8  Portfolio Construction Agent",
-        "risk":       "5/8  Risk Management Agent",
-        "compliance": "6/8  Compliance Agent",
-        "execution":  "7/8  Execution Agent",
-        "supervisor": "8/8  Supervisor Agent",
+        "mandate":    "1/5  Mandate Agent",
+        "research":   "2/5  Equity Research Agent",
+        "portfolio":  "3/5  Portfolio Construction Agent",
+        "risk":       "4/5  Risk Management Agent",
+        "execution":  "5/5  Execution Agent",
     }
     step_times: dict = {}
 
@@ -312,13 +257,10 @@ def run_workflow(
 
         label = step_labels.get(node, node)
         risk_r = state.get("risk_report")
-        comp_r = state.get("compliance_report")
 
         status = "done"
         if node == "risk" and risk_r and risk_r.statut != "PASS":
             status = "warn"
-        elif node == "compliance" and comp_r and comp_r.statut == "REJETE":
-            status = "fail"
 
         _step_badge(label, status, dt)
 
@@ -330,14 +272,10 @@ def run_workflow(
     # ── Affichage des résultats ───────────────────────────────────────
     portfolio  = final_state.get("portfolio")
     risk       = final_state.get("risk_report")
-    compliance = final_state.get("compliance_report")
     execution  = final_state.get("execution_output")
-    supervisor = final_state.get("supervisor_decision")
 
     _show_portfolio(portfolio)
     _show_risk(risk)
-    _show_compliance(compliance)
-    _show_supervisor(supervisor)
 
     # ── Erreurs non fatales remontées par les agents ──────────────────
     # Sans ça, un agent en échec produit un résultat partiel qui paraît

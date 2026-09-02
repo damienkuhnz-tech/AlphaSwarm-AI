@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  CONFIG / PROMPTS — SYSTEM PROMPTS DES 8 AGENTS                             ║
+║  CONFIG / PROMPTS — SYSTEM PROMPTS DES 5 AGENTS                             ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : centraliser les instructions système envoyées à chaque agent LLM.  ║
 ║         Ces prompts définissent la PERSONNALITÉ et les RÈGLES de chaque     ║

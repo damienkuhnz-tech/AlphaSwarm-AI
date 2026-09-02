@@ -1,0 +1,36 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "JetBrains Mono, Consolas, Menlo, monospace"
+    fontSize: 13.5px
+    lineColor: "#8496AC"
+    primaryColor: "#FFFFFF"
+    primaryTextColor: "#101720"
+    primaryBorderColor: "#8496AC"
+    edgeLabelBackground: "#FFFFFF"
+  flowchart:
+    curve: basis
+    padding: 14
+    nodeSpacing: 38
+    rankSpacing: 46
+    wrappingWidth: 200
+---
+flowchart LR
+  IN("<b>ENTRÉE</b> — state[…]<br/>research · mandate · risk_report<br/>portfolio_briefing · portfolio_iteration")
+  PY("<b>préparation</b><br/>sorted(research, key=score_conviction, reverse=True)<br/>poids_max_effectif = max(mandate.poids_max_par_position,<br/>(1 − cash_min) / nb_cible)<br/>briefing_block + corrections_block si iteration &gt; 1")
+  L("<b>appel</b><br/>_call_llm_with_retry(user_msg)<br/>MAX_TOKENS_OVERRIDE = 8000<br/>data = _parse_json(raw)")
+  FX("<b>corrections</b><br/>data.pop('portfolio' | 'portefeuille') → data.update(inner)<br/>data['capital_total'] = mandate.capital<br/>facteur = (1 − cash) / Σ poids ; p['poids'] *= facteur<br/>cash = 1 − Σ poids ; p['valeur_usd'] = capital × p['poids']")
+  OUT("<b>SORTIE</b><br/>PortfolioOutput(**data) → model_post_init()<br/>return {'portfolio': …,<br/>'portfolio_iteration': i + 1}")
+  IN --> PY --> L --> FX --> OUT
+  class IN,OUT io;
+  class PY,FX calc;
+  class L juge;
+
+  classDef juge fill:#FCF3E4,stroke:#B8801F,stroke-width:2px,color:#4A3208,rx:6,ry:6;
+  classDef calc fill:#DAEEE8,stroke:#0D6B59,stroke-width:2px,color:#0A362E,rx:6,ry:6;
+  classDef io fill:#EBF1FA,stroke:#3A5A8C,stroke-width:1.8px,color:#16253C,rx:6,ry:6;
+  classDef stop fill:#FBE4E1,stroke:#9C2A22,stroke-width:2px,color:#4A110D,rx:6,ry:6;
+  classDef ext fill:#FFFFFF,stroke:#8496AC,stroke-width:1.4px,color:#101720,rx:6,ry:6;
+
+  linkStyle default stroke-width:1.5px;

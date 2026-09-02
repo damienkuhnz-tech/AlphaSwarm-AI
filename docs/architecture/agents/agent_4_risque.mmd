@@ -1,0 +1,64 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "Segoe UI, Helvetica Neue, Arial, sans-serif"
+    fontSize: 15px
+    lineColor: "#8496AC"
+    primaryColor: "#FFFFFF"
+    primaryTextColor: "#101720"
+    primaryBorderColor: "#8496AC"
+    clusterBkg: "#FAFBFD"
+    clusterBorder: "#D3DBE6"
+    edgeLabelBackground: "#FFFFFF"
+  flowchart:
+    curve: basis
+    padding: 16
+    nodeSpacing: 42
+    rankSpacing: 50
+    wrappingWidth: 420
+---
+flowchart TB
+
+  IN("<b>ENTRÉE</b><br/>portefeuille construit et mandat")
+
+  Q("<b>MOTEUR QUANTITATIF</b> — quant/<br/>backtest 10 ans · validation hors échantillon · walk-forward<br/>bootstrap 1000× · Monte Carlo 2000× · stress tests<br/>test placebo · conformité au mandat<br/><i>un seul téléchargement de prix alimente toute la chaîne</i>")
+
+  DEC{"Le moteur<br/>a-t-il abouti ?"}
+
+  OKP("<b>Résumé complet</b><br/>métriques, tests en échec, résultats des simulations<br/>environ 1 500 tokens — jamais les prix")
+  KOP("<b>Résumé dégradé</b><br/>structure seule : concentrations, secteurs, cash<br/><i>consigne explicite : préférer AJUSTER à PASS en cas de doute</i>")
+
+  L("<b>APPEL AU MODÈLE</b> — un seul<br/>rend un jugement : statut, violations, recommandations")
+
+  subgraph GF["&nbsp;&nbsp;TROIS GARDE-FOUS DÉTERMINISTES&nbsp;&nbsp;"]
+    direction TB
+    G1("<b>1</b> · toutes les métriques du rapport sont réécrites<br/>depuis le calcul — le modèle ne contrôle aucun chiffre")
+    G2("<b>2</b> · un PASS alors que des tests de conformité<br/>échouent est rétrogradé en AJUSTER")
+    G3("<b>3</b> · tout test en échec passé sous silence<br/>est réinjecté comme violation majeure")
+  end
+
+  OUT("<b>SORTIE</b> — RiskReport<br/>PASS ouvre la voie aux ordres<br/>AJUSTER renvoie à la construction, trois fois au plus<br/>FAIL bloque la préparation des ordres")
+
+  IN --> Q --> DEC
+  DEC -->|oui| OKP
+  DEC -->|non| KOP
+  OKP --> L
+  KOP --> L
+  L -->|verdict| GF
+  GF --> OUT
+  Q -.->|"les tests calculés l'emportent<br/>toujours sur le verdict du modèle"| GF
+
+  class IN,OUT io;
+  class Q,G1,G2,G3,OKP calc;
+  class L juge;
+  class KOP stop;
+  class DEC data;
+
+  classDef juge fill:#FCF3E4,stroke:#B8801F,stroke-width:2px,color:#4A3208,rx:8,ry:8;
+  classDef calc fill:#DAEEE8,stroke:#0D6B59,stroke-width:2px,color:#0A362E,rx:8,ry:8;
+  classDef io fill:#EBF1FA,stroke:#3A5A8C,stroke-width:1.8px,color:#16253C,rx:8,ry:8;
+  classDef stop fill:#FBE4E1,stroke:#9C2A22,stroke-width:2px,color:#4A110D,rx:8,ry:8;
+  classDef data fill:#FFFFFF,stroke:#8496AC,stroke-width:1.4px,color:#101720,rx:8,ry:8;
+
+  linkStyle default stroke-width:1.6px;

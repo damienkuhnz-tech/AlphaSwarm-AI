@@ -1,0 +1,57 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "Segoe UI, Helvetica Neue, Arial, sans-serif"
+    fontSize: 15px
+    lineColor: "#8496AC"
+    primaryColor: "#FFFFFF"
+    primaryTextColor: "#101720"
+    primaryBorderColor: "#8496AC"
+    clusterBkg: "#FAFBFD"
+    clusterBorder: "#D3DBE6"
+    edgeLabelBackground: "#FFFFFF"
+  flowchart:
+    curve: basis
+    padding: 16
+    nodeSpacing: 42
+    rankSpacing: 50
+    wrappingWidth: 420
+---
+flowchart TB
+
+  IN("<b>ENTRÉE</b><br/>positions cibles du portefeuille validé<br/>et contraintes de liquidité du mandat")
+
+  subgraph AVANT["&nbsp;&nbsp;CE QUE PYTHON POSE AVANT L'APPEL&nbsp;&nbsp;"]
+    direction TB
+    P1("<b>Portefeuille actuel = vide</b><br/>hypothèse de premier investissement, codée en dur :<br/><i>il n'y a pas de calcul d'ordres différentiels</i>")
+    P2("<b>Règles d'exécution imposées dans le prompt</b><br/>maximum 10 % du volume quotidien par ordre<br/>VWAP au-delà d'un million · TWAP si urgent<br/>ordre à cours limité en marché volatil")
+  end
+
+  LLM("<b>APPEL AU MODÈLE</b> — un seul<br/>par ordre : priorité, algorithme, coûts estimés<br/>et prérequis réglementaires déduits de la géographie")
+
+  VAL("<b>Validation Pydantic</b><br/>action limitée à BUY ou SELL, priorité à HIGH,<br/>NORMAL ou LOW, tous les montants en nombres")
+
+  MEM("<b>SORTIE</b> — ExecutionOutput<br/><i>objet en mémoire : rien n'est encore écrit</i>")
+
+  GATE{"Le gérant<br/>approuve ?"}
+  FILE("<b>exports/orders_&lt;id&gt;.json</b><br/>fichier destiné à un système d'exécution externe")
+  RIEN("<b>Aucun fichier</b><br/>le run reste consultable, rien n'est transmis")
+
+  IN --> AVANT --> LLM --> VAL --> MEM --> GATE
+  GATE -->|oui| FILE
+  GATE -->|non| RIEN
+
+  class IN,MEM,FILE io;
+  class P1,P2,VAL calc;
+  class LLM juge;
+  class RIEN stop;
+  class GATE data;
+
+  classDef juge fill:#FCF3E4,stroke:#B8801F,stroke-width:2px,color:#4A3208,rx:8,ry:8;
+  classDef calc fill:#DAEEE8,stroke:#0D6B59,stroke-width:2px,color:#0A362E,rx:8,ry:8;
+  classDef io fill:#EBF1FA,stroke:#3A5A8C,stroke-width:1.8px,color:#16253C,rx:8,ry:8;
+  classDef stop fill:#FBE4E1,stroke:#9C2A22,stroke-width:2px,color:#4A110D,rx:8,ry:8;
+  classDef data fill:#FFFFFF,stroke:#8496AC,stroke-width:1.4px,color:#101720,rx:8,ry:8;
+
+  linkStyle default stroke-width:1.6px;

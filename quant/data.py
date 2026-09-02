@@ -51,6 +51,26 @@ def _disk_path(ticker: str, period: str) -> Path:
     return CACHE_DIR / f"{h}.pkl"
 
 
+def _purge_stale_cache(max_age_days: int = 7) -> None:
+    """
+    Supprime les pickles de prix plus vieux que max_age_days.
+    La clé de cache intègre la date du jour : les fichiers de la veille ne sont
+    plus jamais relus, mais rien ne les effaçait — le dossier grossissait
+    indéfiniment (défaut D9). Appelé au plus une fois par téléchargement.
+    """
+    import time as _time
+    try:
+        limite = _time.time() - max_age_days * 86400
+        for f in CACHE_DIR.glob("*.pkl"):
+            try:
+                if f.stat().st_mtime < limite:
+                    f.unlink()
+            except OSError:
+                pass
+    except Exception:
+        logger.debug("Purge du cache disque impossible", exc_info=True)
+
+
 def load_prices(tickers: Iterable[str], period: str = DEFAULT_PERIOD) -> pd.DataFrame:
     """
     Retourne un DataFrame de prix de clôture ajustés (colonnes = tickers,
@@ -94,6 +114,7 @@ def load_prices(tickers: Iterable[str], period: str = DEFAULT_PERIOD) -> pd.Data
         )
         close = _extract_close(raw, missing)
         CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        _purge_stale_cache()
         for t in missing:
             if t not in close.columns:
                 continue

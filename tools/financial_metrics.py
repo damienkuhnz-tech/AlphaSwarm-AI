@@ -134,7 +134,7 @@ def compute_portfolio_metrics(
         if "Close" in raw.columns:
             # Un seul ticker → raw["Close"] est une Series, pas un DataFrame.
             # On force en DataFrame pour que les opérations suivantes fonctionnent.
-            prices = raw["Close"] if len(tickers) > 1 else raw[["Close"]]
+            prices = raw["Close"] if len(tickers) > 1 else raw[["Close"]].rename(columns={"Close": tickers[0]})
         else:
             prices = raw  # Fallback : yfinance retourne parfois sans MultiIndex
 

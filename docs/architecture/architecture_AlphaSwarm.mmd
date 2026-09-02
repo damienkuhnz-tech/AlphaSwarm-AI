@@ -1,93 +1,66 @@
-%%{init: {'theme':'base', 'themeVariables': {'fontSize':'14px'}}}%%
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "Segoe UI, Helvetica Neue, Arial, sans-serif"
+    fontSize: 15px
+    lineColor: "#8496AC"
+    primaryColor: "#FFFFFF"
+    primaryTextColor: "#101720"
+    primaryBorderColor: "#8496AC"
+    clusterBkg: "#FAFBFD"
+    clusterBorder: "#D3DBE6"
+    edgeLabelBackground: "#FFFFFF"
+    tertiaryColor: "#FFFFFF"
+  flowchart:
+    curve: basis
+    padding: 16
+    nodeSpacing: 45
+    rankSpacing: 52
+    wrappingWidth: 420
+    useMaxWidth: true
+---
 flowchart TB
 
-    %% ============================================================
-    %%  AlphaSwarm — Architecture globale (5 agents, état partagé)
-    %% ============================================================
+  GERANT("<b>GÉRANT DE PORTEFEUILLE</b><br/>stratégie · capital · benchmark<br/>horizon · profil de risque")
+  WEB("<b>INTERFACE ET API</b><br/>formulaire de mandat<br/>suivi du run en direct<br/><i>api.py — port 5001</i>")
 
-    subgraph L1["LAYER 1 — Interface utilisateur (HTML + JavaScript)"]
-        UI["Navigateur du gérant<br/>• Formulaire de mandat<br/>• Affichage des résultats<br/>• Chat par agent"]
-    end
+  subgraph PIPE["&nbsp;&nbsp;LES CINQ AGENTS — pipeline séquentiel&nbsp;&nbsp;"]
+    direction TB
+    A1("<b>1 · MANDAT</b><br/>contraintes chiffrées")
+    A2("<b>2 · RECHERCHE</b><br/>univers analysé et noté")
+    A3("<b>3 · PORTEFEUILLE</b><br/>sélection et pondération")
+    A4("<b>4 · RISQUE</b><br/>validation et verdict")
+    A5("<b>5 · EXÉCUTION</b><br/>bordereau d'ordres")
+    A1 -->|mandate| A2
+    A2 -->|research| A3
+    A3 -->|portfolio| A4
+    A4 ==>|"risk_report = PASS"| A5
+    A4 -.->|"AJUSTER — corriger<br/>3 itérations au maximum"| A3
+  end
 
-    subgraph L2["LAYER 2 — API REST (Flask, port 5001)"]
-        API["api.py<br/>/api/run · /api/run/&lt;id&gt; (polling)<br/>/api/*/briefing · /api/chat"]
-    end
+  SRC("<b>SOURCES DE MARCHÉ</b><br/>yfinance · FMP<br/>SEC EDGAR · Tavily")
+  STOP("<b>FAIL</b><br/>aucun ordre n'est préparé")
+  QUANT("<b>MOTEUR QUANTITATIF</b> — quant/<br/>backtest 10 ans · validation hors échantillon<br/>walk-forward · bootstrap 1000× · Monte Carlo 2000×<br/>stress tests · conformité au mandat<br/><i>100 % Python — seedé, reproductible</i>")
+  OK("<b>VALIDATION HUMAINE</b><br/>le fichier d'ordres n'est écrit<br/>qu'après l'approbation du gérant")
 
-    subgraph ORCH["Orchestrateur (orchestrator/workflow.py)"]
-        WF["WorkflowEngine<br/>pipeline séquentiel + boucle de rétroaction<br/>(target_step : run complet ou ciblé)"]
-    end
+  GERANT -->|définit le mandat| WEB
+  WEB -->|lance le run| A1
+  A2 -->|"10 requêtes par titre<br/>5 titres en parallèle"| SRC
+  A4 -->|tout le calcul| QUANT
+  A4 -.->|FAIL| STOP
+  A5 --> OK
 
-    subgraph L3["LAYER 3 — État partagé (models/state.py)"]
-        STATE[("portfolioState<br/>dictionnaire commun<br/>= mémoire + journal auditable")]
-    end
+  classDef juge fill:#FCF3E4,stroke:#B8801F,stroke-width:1.8px,color:#4A3208,rx:8,ry:8;
+  classDef calc fill:#DAEEE8,stroke:#0D6B59,stroke-width:2.4px,color:#0A362E,rx:8,ry:8;
+  classDef io fill:#EBF1FA,stroke:#3A5A8C,stroke-width:1.8px,color:#16253C,rx:8,ry:8;
+  classDef stop fill:#FBE4E1,stroke:#9C2A22,stroke-width:2.4px,color:#4A110D,rx:8,ry:8;
+  classDef data fill:#FFFFFF,stroke:#8496AC,stroke-width:1.4px,color:#101720,rx:8,ry:8;
 
-    subgraph L4["LAYER 4 — Les 5 agents (héritent de BaseAgent)"]
-        A1["1 · Agent MANDAT<br/>choix gérant → contraintes"]
-        A2["2 · Agent RESEARCH<br/>analyse equity research + score"]
-        A3["3 · Agent PORTFOLIO<br/>sélection + allocation"]
-        A4["4 · Agent RISQUE<br/>métriques + statut PASS/AJUSTER/FAIL"]
-        A5["5 · Agent EXÉCUTION<br/>ordres prêts OMS"]
-    end
+  class A1,A2,A3,A5 juge;
+  class A4,QUANT calc;
+  class GERANT,WEB,OK io;
+  class STOP stop;
+  class SRC data;
 
-    subgraph LLM["Moteur LLM (multi-provider — llm/)"]
-        MODELS["Anthropic (Claude Sonnet)<br/>Groq (gpt-oss-20b, qwen3-32b)<br/>override par agent"]
-    end
-
-    subgraph SRC["LAYER 5 — Sources de données (tools/)"]
-        DS["yfinance · FMP<br/>SEC EDGAR · Tavily (web)"]
-    end
-
-    subgraph CALC["LAYER 6 — Calculs déterministes (tools/)"]
-        FM["financial_metrics.py<br/>volatilité · bêta · tracking error · concentration"]
-        BT["backtest.py<br/>rendement · Sharpe · drawdown"]
-    end
-
-    %% ---- Flux principal (requête / réponse) ----
-    UI -->|HTTP JSON| API
-    API --> WF
-    WF -->|lance chaque agent| A1
-    WF --> A2
-    WF --> A3
-    WF --> A4
-    WF --> A5
-
-    %% ---- Communication via l'état partagé (lecture/écriture) ----
-    A1 <-->|écrit mandate| STATE
-    A2 <-->|lit mandate · écrit research| STATE
-    A3 <-->|lit research+mandate · écrit portfolio| STATE
-    A4 <-->|lit portfolio · écrit risk_report| STATE
-    A5 <-->|lit portfolio · écrit ordres| STATE
-
-    %% ---- Boucle de rétroaction Risque -> Portfolio ----
-    A4 -.->|AJUSTER : violations à corriger<br/>max 3 itérations| A3
-    A4 -.->|FAIL : workflow bloqué| WF
-
-    %% ---- Appels LLM (raisonnement) ----
-    A1 -.-> MODELS
-    A2 -.-> MODELS
-    A3 -.-> MODELS
-    A4 -.-> MODELS
-    A5 -.-> MODELS
-
-    %% ---- Données et calculs ----
-    A2 -->|récupère données| DS
-    A4 -->|calcule sur historique| FM
-    A4 --> BT
-
-    %% ---- Résultats renvoyés à l'interface ----
-    STATE -.->|polling : résultats| API
-    API -.->|affichage temps réel| UI
-
-    %% ---- Validation humaine ----
-    A5 -.->|ordres EN ATTENTE<br/>validation du gérant| UI
-
-    classDef layer fill:#eef3fb,stroke:#5b7cb5,color:#1a2a44;
-    classDef agent fill:#fbeee8,stroke:#c47a52,color:#4a2a18;
-    classDef state fill:#eaf6ee,stroke:#3a9d5d,color:#143a22;
-    classDef llm fill:#f3eafb,stroke:#8a5bb5,color:#2e1844;
-    classDef data fill:#fdf6e3,stroke:#c9a83a,color:#4a3c10;
-
-    class A1,A2,A3,A4,A5 agent;
-    class STATE state;
-    class MODELS llm;
-    class DS,FM,BT data;
+  linkStyle default stroke-width:1.6px;

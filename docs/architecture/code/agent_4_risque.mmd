@@ -1,0 +1,38 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "JetBrains Mono, Consolas, Menlo, monospace"
+    fontSize: 13.5px
+    lineColor: "#8496AC"
+    primaryColor: "#FFFFFF"
+    primaryTextColor: "#101720"
+    primaryBorderColor: "#8496AC"
+    edgeLabelBackground: "#FFFFFF"
+  flowchart:
+    curve: basis
+    padding: 14
+    nodeSpacing: 38
+    rankSpacing: 46
+    wrappingWidth: 200
+---
+flowchart LR
+  IN("<b>ENTRÉE</b><br/>state['portfolio'] · state['mandate']")
+  Q("<b>calcul — quant/</b><br/>benchmark_to_etf(mandate.benchmark)<br/>run_full_validation(positions, mandate, portfolio, …)<br/>load_prices → portfolio_returns → M.full_metrics<br/>train_test_split · walk_forward · bootstrap · monte_carlo<br/>stress_tests · compare_benchmarks<br/>check_mandate_compliance")
+  PR("<b>prompt</b><br/>conc = top1/top5/top10 depuis les poids<br/>_build_judgment_prompt(portfolio, mandate, quant, conc)<br/><i>~1500 tokens · variante dégradée si quant KO</i>")
+  L("<b>appel</b><br/>_call_llm_with_retry()<br/>RISK_MANAGEMENT_PROMPT<br/>data = _parse_json(raw)")
+  GF("<b>garde-fous</b><br/>data['metriques_risque'] ← quant['performance']<br/>_merge_violations(data['violations'], compliance)<br/>n_fail &gt; 0 et 'PASS' → 'AJUSTER'<br/>n_fail == 0 et 'FAIL' → 'PASS'<br/>_legacy_backtest(quant, bench_etf)")
+  OUT("<b>SORTIE</b><br/>RiskReport(**data)<br/>statut ∈ PASS · AJUSTER · FAIL")
+  IN --> Q --> PR --> L --> GF --> OUT
+  Q -.->|"quant['compliance']"| GF
+  class IN,OUT io;
+  class Q,PR,GF calc;
+  class L juge;
+
+  classDef juge fill:#FCF3E4,stroke:#B8801F,stroke-width:2px,color:#4A3208,rx:6,ry:6;
+  classDef calc fill:#DAEEE8,stroke:#0D6B59,stroke-width:2px,color:#0A362E,rx:6,ry:6;
+  classDef io fill:#EBF1FA,stroke:#3A5A8C,stroke-width:1.8px,color:#16253C,rx:6,ry:6;
+  classDef stop fill:#FBE4E1,stroke:#9C2A22,stroke-width:2px,color:#4A110D,rx:6,ry:6;
+  classDef ext fill:#FFFFFF,stroke:#8496AC,stroke-width:1.4px,color:#101720,rx:6,ry:6;
+
+  linkStyle default stroke-width:1.5px;

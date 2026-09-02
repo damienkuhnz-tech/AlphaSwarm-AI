@@ -1,0 +1,35 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "JetBrains Mono, Consolas, Menlo, monospace"
+    fontSize: 13.5px
+    lineColor: "#8496AC"
+    primaryColor: "#FFFFFF"
+    primaryTextColor: "#101720"
+    primaryBorderColor: "#8496AC"
+    edgeLabelBackground: "#FFFFFF"
+  flowchart:
+    curve: basis
+    padding: 14
+    nodeSpacing: 38
+    rankSpacing: 46
+    wrappingWidth: 200
+---
+flowchart LR
+  A("<b>agents/base_agent.py</b><br/>appelé par les 5 agents")
+  R("<b>_call_llm_with_retry(msg)</b><br/>3 essais réseau : 5 s · 10 s · 15 s<br/>8 essais 429/5xx, respecte Retry-After")
+  C("<b>_call_llm(msg, tools)</b><br/>boucle while : end_turn / max_tokens / tool_use<br/>max_tool_calls = 15<br/>max_tokens → relance 1×, budget ×2, plafond 16000<br/>cache_control ephemeral si provider == anthropic")
+  P("<b>_parse_json(text)</b><br/>1. bloc ```json  2. bloc ```  3. premier { … dernier }<br/>si JSONDecodeError → <b>_repair_truncated_json()</b><br/>automate à pile : referme chaînes, objets, tableaux")
+  M("<b>XxxOutput(**data)</b><br/>validation Pydantic<br/>ValidationError → repli de l'agent")
+  A --> R --> C --> P --> M
+  class A,M io;
+  class R,C,P calc;
+
+  classDef juge fill:#FCF3E4,stroke:#B8801F,stroke-width:2px,color:#4A3208,rx:6,ry:6;
+  classDef calc fill:#DAEEE8,stroke:#0D6B59,stroke-width:2px,color:#0A362E,rx:6,ry:6;
+  classDef io fill:#EBF1FA,stroke:#3A5A8C,stroke-width:1.8px,color:#16253C,rx:6,ry:6;
+  classDef stop fill:#FBE4E1,stroke:#9C2A22,stroke-width:2px,color:#4A110D,rx:6,ry:6;
+  classDef ext fill:#FFFFFF,stroke:#8496AC,stroke-width:1.4px,color:#101720,rx:6,ry:6;
+
+  linkStyle default stroke-width:1.5px;

@@ -895,10 +895,10 @@ def generate_company_report(data: dict) -> str:
         </div>
       </div>
 
-      <!-- Share Performance : courbe ticker vs S&P 500 sur 12 mois -->
+      <!-- Share Performance : courbe ticker vs benchmark du mandat, 12 mois -->
       <div class="sidebar-card">
         <h3>Share Performance</h3>
-        <div class="chart-title">{_esc(ticker)} vs S&amp;P 500 — Change % Over the Past Year</div>
+        <div class="chart-title">{_esc(ticker)} vs {_esc(data.get("benchmark_label") or "S&P 500")} — Change % Over the Past Year</div>
         {price_svg}
       </div>
 

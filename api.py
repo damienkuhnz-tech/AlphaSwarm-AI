@@ -24,6 +24,8 @@ import threading # threading.Thread : lance le workflow sans bloquer l'API
 import traceback # traceback.format_exc : capture la stack complète d'un agent qui crashe
 from datetime import datetime  # datetime.utcnow : horodatage des runs
 from pathlib import Path       # Path.mkdir : crée les dossiers outputs/exports
+import copy                      # deepcopy : snapshot cohérent de l'état d'un run
+import html as _html             # escape : neutralise le HTML dans les pages d'erreur
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
 # │  FIX UTF-8 WINDOWS                                                          │
@@ -144,6 +146,19 @@ def _serialize(obj):
 # │  Met à jour _runs[run_id] à chaque étape pour que le polling fonctionne.  │
 # └─────────────────────────────────────────────────────────────────────────────┘
 
+def _positive_float(value, default: float) -> float:
+    """
+    Convertit une saisie de formulaire en nombre strictement positif.
+    Une valeur absente, vide, non numérique ou <= 0 retombe sur le défaut
+    plutôt que de lever une ValueError au fond du thread (défaut C13).
+    """
+    try:
+        parsed = float(value)
+    except (TypeError, ValueError):
+        return float(default)
+    return parsed if parsed > 0 else float(default)
+
+
 def _run_workflow_thread(run_id: str, params: dict):
     """
     Lance le workflow dans un thread séparé pour ne pas bloquer l'API.
@@ -163,8 +178,9 @@ def _run_workflow_thread(run_id: str, params: dict):
             "strategie":            params.get("strategie", "long-only equity global"),
             # Stratégie d'investissement : "long-only equity global", "long/short", etc.
 
-            "capital":              float(params.get("capital", 100_000_000)),
-            # Capital en USD. float() : sécurité si le formulaire envoie un string.
+            "capital":              _positive_float(params.get("capital"), 100_000_000),
+            # Capital en USD. _positive_float : rejette proprement une saisie non
+            # numérique ou négative au lieu de lever dans le thread (défaut C13).
 
             "benchmark":            params.get("benchmark", "MSCI World"),
             # Indice de référence pour mesurer la performance relative.
@@ -221,6 +237,32 @@ def _run_workflow_thread(run_id: str, params: dict):
             "run_id":               run_id,      # ID du run (tracé dans tout le workflow)
         }
 
+        # ── BLOC 2b : REPRISE D'UN RUN PRÉCÉDENT (défaut A2) ──────────────────
+        # Sans ceci, relancer un seul agent repartait d'un état vide : le moteur
+        # reconstruisait mandat, recherche et portefeuille depuis zéro, puis
+        # jugeait CE nouveau portefeuille — pas celui affiché à l'écran.
+        # On réutilise donc les objets Pydantic du run précédent tels quels
+        # (jamais leur version sérialisée, qui ne se reconstruit pas fidèlement).
+        from_run_id = params.get("from_run_id")
+        if from_run_id:
+            with _runs_lock:
+                prev = _runs.get(from_run_id)
+                prev_state = dict(prev.get("_state_obj") or {}) if prev else {}
+            reprises = []
+            for key in ("mandate", "research", "research_reports",
+                        "portfolio", "risk_report", "execution_output",
+                        "portfolio_iteration"):
+                value = prev_state.get(key)
+                if value:
+                    initial_state[key] = value
+                    reprises.append(key)
+            if reprises:
+                print(f"[run {run_id}] reprise depuis {from_run_id} : "
+                      f"{', '.join(reprises)}", flush=True)
+            else:
+                print(f"[run {run_id}] from_run_id={from_run_id} sans état "
+                      f"réutilisable — reconstruction complète.", flush=True)
+
         # ── BLOC 3 : Hook de progression pour la recherche ────────────────────
         # EquityResearchAgent appelle ce hook après chaque ticker analysé.
         # Permet à l'interface d'afficher "3/10 tickers analysés" en temps réel
@@ -267,11 +309,15 @@ def _run_workflow_thread(run_id: str, params: dict):
                 _runs[run_id]["current_step"] = node
                 # Snapshot partiel : les 4 premières étapes sont affichées pendant le run
                 # pour que l'interface puisse montrer du contenu progressivement.
-                _runs[run_id]["partial_state"] = {
+                # FUSION et non écrasement : une réécriture complète effaçait ce
+                # que _research_progress_hook venait de publier (défaut C3).
+                snapshot = _runs[run_id].get("partial_state") or {}
+                snapshot.update({
                     "mandate":   _serialize(state.get("mandate")),
                     "research":  _serialize(state.get("research", [])),
                     "portfolio": _serialize(state.get("portfolio")),
-                }
+                })
+                _runs[run_id]["partial_state"] = snapshot
 
         # ── BLOC 6 : Lancement du workflow ────────────────────────────────────
         # Si target_step est fourni dans params → mode agent individuel.
@@ -286,7 +332,7 @@ def _run_workflow_thread(run_id: str, params: dict):
         # ── BLOC 7 : Export automatique du run complet ────────────────────────
         # Sauvegarde l'état final dans outputs/run_{run_id}.json.
         # Utile pour : debug, audit, replay, export manuel.
-        Path(settings.OUTPUTS_DIR).mkdir(exist_ok=True)
+        Path(settings.OUTPUTS_DIR).mkdir(parents=True, exist_ok=True)
         run_path = os.path.join(settings.OUTPUTS_DIR, f"run_{run_id}.json")
 
         # _serialize (définie ligne 48) gère : None, Pydantic, list, dict récursifs.
@@ -316,6 +362,10 @@ def _run_workflow_thread(run_id: str, params: dict):
             _runs[run_id]["status"]      = "done"
             _runs[run_id]["final_state"] = run_payload   # Résultats sérialisés
             _runs[run_id]["run_path"]    = run_path      # Chemin du fichier JSON
+            # Objets Pydantic conservés en mémoire pour permettre à un run ciblé
+            # de repartir de cet état (from_run_id). Jamais renvoyés au client :
+            # get_run_status ne sérialise qu'une liste blanche de champs.
+            _runs[run_id]["_state_obj"]  = final_state
 
     except Exception as e:
         # ── BLOC 9 : Gestion d'erreur fatale ─────────────────────────────────
@@ -411,17 +461,30 @@ def get_run_status(run_id: str):
     Polling : l'interface appelle toutes les 2s pour mettre à jour l'affichage.
     Returns : {run_id, status, current_step, log, partial_state, final_state}
     """
+    # Snapshot COMPLET pris SOUS verrou (défaut C2) : auparavant seule la
+    # référence était copiée, et jsonify() itérait le dict hors verrou pendant
+    # que le thread worker le mutait — snapshot incohérent, voire RuntimeError.
     with _runs_lock:
         run = _runs.get(run_id)
-        # Copie la référence sous lock → lecture hors lock pour ne pas bloquer
+        snapshot = copy.deepcopy({
+            # Liste blanche : ni traceback, ni params, ni _state_obj ne sortent
+            # du serveur (défaut A7). Le détail de l'erreur reste dans la console.
+            "run_id":            run.get("run_id"),
+            "status":            run.get("status"),
+            "current_step":      run.get("current_step"),
+            "log":               run.get("log"),
+            "partial_state":     run.get("partial_state"),
+            "research_progress": run.get("research_progress"),
+            "final_state":       run.get("final_state"),
+            "error":             run.get("error"),
+            "started_at":        run.get("started_at"),
+        }) if run else None
 
-    if not run:
+    if not snapshot:
         return jsonify({"error": f"Run {run_id} introuvable"}), 404
         # 404 : run_id invalide ou API redémarrée (les runs ne persistent pas au redémarrage)
 
-    return jsonify(run)
-    # jsonify sérialise automatiquement le dict en JSON
-    # L'interface lit : run.status, run.current_step, run.log, run.partial_state, run.final_state
+    return jsonify(snapshot)
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -451,7 +514,7 @@ def approve_run(run_id: str):
         # Cas : risk FAIL → ExecutionAgent sauté → pas d'ordres
 
     # ── Export du fichier OMS ─────────────────────────────────────────────────
-    Path(settings.EXPORTS_DIR).mkdir(exist_ok=True)
+    Path(settings.EXPORTS_DIR).mkdir(parents=True, exist_ok=True)
     filepath = os.path.join(settings.EXPORTS_DIR, f"orders_{run_id}.json")
     # Ex: exports/orders_A3F7B2C1.json
 
@@ -825,7 +888,8 @@ def get_sector_report(sector: str):
         return (
             f"<html><body style='font-family:sans-serif;background:#05080f;color:#eef0f7;padding:40px'>"
             f"<h2>Rapport sectoriel introuvable</h2>"
-            f"<p>Aucun rapport HTML pour le secteur <strong>{sector}</strong>.</p>"
+            f"<p>Aucun rapport HTML pour le secteur "
+            f"<strong>{_html.escape(sector)}</strong>.</p>"
             f"<p>Assurez-vous que l'agent Equity Research a bien tourné.</p>"
             f"</body></html>"
         ), 404
@@ -997,9 +1061,16 @@ Contexte actuel : {context}"""
                 + json.dumps(buy_list, ensure_ascii=False)[:3000]
             )
     # Reste de l'état courant (portefeuille construit, risque, exécution).
+    # Le client envoie désormais un RÉSUMÉ (positions réduites à ticker/nom/
+    # secteur/poids, métriques et violations de risque, volumétrie d'exécution)
+    # et non plus l'état complet : ~3,5 Ko pour un portefeuille de 30 lignes,
+    # contre ~68 Ko auparavant. L'ancien plafond de 2500 caractères datait de
+    # cette époque et coupait le JSON en plein milieu ; il est relevé pour
+    # laisser passer le résumé entier tout en gardant un garde-fou contre un
+    # client anormal.
     other_ctx = {k: v for k, v in context.items() if k not in ("mandate", "research")}
     if other_ctx:
-        ctx_parts.append("ÉTAT COURANT : " + json.dumps(other_ctx, ensure_ascii=False, default=str)[:2500])
+        ctx_parts.append("ÉTAT COURANT : " + json.dumps(other_ctx, ensure_ascii=False, default=str)[:12000])
 
     system = system.replace("{context}", "\n\n".join(ctx_parts) if ctx_parts else "Aucun contexte de run disponible pour l'instant.")
 
@@ -1222,7 +1293,9 @@ def research_skill_run(skill_id):
         client = get_client(provider=provider)
         response = client.messages.create(
             model=model,
-            max_tokens=4000,
+            # Les system_prompt des skills demandent 3 000 à 7 000 mots : à
+            # 4 000 tokens la sortie était structurellement tronquée (défaut C11).
+            max_tokens=16000,
             system=skill["system_prompt"],
             messages=[{"role": "user", "content": user_msg}],
         )

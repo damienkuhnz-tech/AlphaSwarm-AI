@@ -1,0 +1,38 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "JetBrains Mono, Consolas, Menlo, monospace"
+    fontSize: 13.5px
+    lineColor: "#8496AC"
+    primaryColor: "#FFFFFF"
+    primaryTextColor: "#101720"
+    primaryBorderColor: "#8496AC"
+    edgeLabelBackground: "#FFFFFF"
+  flowchart:
+    curve: basis
+    padding: 14
+    nodeSpacing: 38
+    rankSpacing: 46
+    wrappingWidth: 200
+---
+flowchart LR
+  IN("<b>ENTRÉE</b><br/>state['portfolio'] · state['mandate']")
+  PY("<b>préparation</b><br/>positions_cible = json.dumps([ticker, poids,<br/>valeur_usd, secteur, geographie])<br/>user_msg : PORTEFEUILLE ACTUEL = VIDE<br/>ADV 10 % · VWAP &gt; 1 M · TWAP · LIMITE · MARCHÉ")
+  L("<b>appel</b><br/>_call_llm_with_retry(user_msg)<br/>EXECUTION_PROMPT<br/>data = _parse_json(raw)")
+  EO("<b>SORTIE</b><br/>ExecutionOutput(**data)<br/>Literal['BUY','SELL']<br/>Literal['HIGH','NORMAL','LOW']<br/><i>objet en mémoire, aucune écriture</i>")
+  API("<b>api.py</b><br/>POST /api/run/&lt;id&gt;/approve<br/>→ exports/orders_&lt;id&gt;.json")
+  IN --> PY --> L --> EO
+  EO -.->|"clic du gérant"| API
+  class IN,EO io;
+  class PY calc;
+  class L juge;
+  class API ext;
+
+  classDef juge fill:#FCF3E4,stroke:#B8801F,stroke-width:2px,color:#4A3208,rx:6,ry:6;
+  classDef calc fill:#DAEEE8,stroke:#0D6B59,stroke-width:2px,color:#0A362E,rx:6,ry:6;
+  classDef io fill:#EBF1FA,stroke:#3A5A8C,stroke-width:1.8px,color:#16253C,rx:6,ry:6;
+  classDef stop fill:#FBE4E1,stroke:#9C2A22,stroke-width:2px,color:#4A110D,rx:6,ry:6;
+  classDef ext fill:#FFFFFF,stroke:#8496AC,stroke-width:1.4px,color:#101720,rx:6,ry:6;
+
+  linkStyle default stroke-width:1.5px;

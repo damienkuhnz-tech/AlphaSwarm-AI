@@ -1,0 +1,61 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "Segoe UI, Helvetica Neue, Arial, sans-serif"
+    fontSize: 15px
+    lineColor: "#8496AC"
+    primaryColor: "#FFFFFF"
+    primaryTextColor: "#101720"
+    primaryBorderColor: "#8496AC"
+    clusterBkg: "#FAFBFD"
+    clusterBorder: "#D3DBE6"
+    edgeLabelBackground: "#FFFFFF"
+  flowchart:
+    curve: basis
+    padding: 16
+    nodeSpacing: 42
+    rankSpacing: 50
+    wrappingWidth: 420
+---
+flowchart TB
+
+  IN("<b>ENTRÉE</b><br/>l'univers <b>complet</b> — achats, conservations et ventes —<br/>trié par conviction décroissante, plus le mandat")
+  BRIEF("<b>Briefing du gérant</b><br/>transcription de la conversation<br/>préalable, injectée comme directive")
+  VIOL("<b>Violations du risque</b><br/>présentes seulement à partir<br/>de la deuxième itération")
+
+  subgraph AVANT["&nbsp;&nbsp;CE QUE PYTHON DÉCIDE AVANT L'APPEL&nbsp;&nbsp;"]
+    direction TB
+    P1("<b>Poids maximum effectif recalculé</b><br/>six lignes visées et un plafond de 7 % par position rendent<br/>l'investissement intégral arithmétiquement impossible :<br/>le plafond est relevé juste assez pour que Σ poids + cash = 1")
+    P2("<b>Résumé borné des analyses</b><br/>neuf champs par titre, deux risques et deux catalyseurs,<br/>thèse tronquée — pour ne pas diluer l'attention du modèle")
+  end
+
+  LLM("<b>APPEL AU MODÈLE</b> — plafond relevé à 8 000 tokens<br/>sélectionne les titres et les pondère<br/><i>la recommandation est un signal de priorisation,<br/>jamais un filtre d'éligibilité</i>")
+
+  subgraph APRES["&nbsp;&nbsp;CE QUE PYTHON CORRIGE APRÈS L'APPEL&nbsp;&nbsp;"]
+    direction TB
+    R1("<b>Déballage de la structure</b><br/>le modèle encapsule sa réponse dans une clé<br/>« portfolio » ou « portefeuille » une fois sur deux")
+    R2("<b>Renormalisation des poids</b><br/>Σ poids ramenée exactement à 1 − cash<br/>le cash absorbe l'arrondi : le portefeuille boucle à 100 %")
+    R3("<b>Montants recalculés</b><br/>chaque valeur en dollars vient du poids et du capital<br/>du mandat — le modèle n'a pas la main sur les magnitudes")
+  end
+
+  OUT("<b>SORTIE</b> — PortfolioOutput<br/>positions, poids, cash, répartition sectorielle")
+
+  IN --> AVANT
+  BRIEF -.->|directives à respecter| LLM
+  VIOL -.->|corrections demandées| LLM
+  AVANT --> LLM
+  LLM -->|"JSON du portefeuille"| APRES
+  APRES --> OUT
+
+  class IN,OUT,BRIEF,VIOL io;
+  class P1,P2,R1,R2,R3 calc;
+  class LLM juge;
+
+  classDef juge fill:#FCF3E4,stroke:#B8801F,stroke-width:2px,color:#4A3208,rx:8,ry:8;
+  classDef calc fill:#DAEEE8,stroke:#0D6B59,stroke-width:2px,color:#0A362E,rx:8,ry:8;
+  classDef io fill:#EBF1FA,stroke:#3A5A8C,stroke-width:1.8px,color:#16253C,rx:8,ry:8;
+  classDef stop fill:#FBE4E1,stroke:#9C2A22,stroke-width:2px,color:#4A110D,rx:8,ry:8;
+  classDef data fill:#FFFFFF,stroke:#8496AC,stroke-width:1.4px,color:#101720,rx:8,ry:8;
+
+  linkStyle default stroke-width:1.6px;

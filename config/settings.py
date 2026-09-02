@@ -140,12 +140,16 @@ class Settings:
     # Utilisée par tools/fmp_data.py pour les données historiques 10 ans.
     # Si vide → fmp_data.py retourne {"statut": "SKIP"} sans erreur.
 
-    EXPORTS_DIR: str = "exports"
+    # Racine du projet, résolue depuis ce fichier : les dossiers de sortie ne
+    # dépendent plus du répertoire courant au lancement (C12).
+    _ROOT = Path(__file__).resolve().parent.parent
+
+    EXPORTS_DIR: str = str(_ROOT / os.getenv("EXPORTS_DIR", "exports"))
     # Répertoire des fichiers d'ordres JSON pour l'OMS.
     # Ex: exports/orders_57234B42.json
     # Créé automatiquement par runner.py si absent.
 
-    OUTPUTS_DIR: str = "outputs"
+    OUTPUTS_DIR: str = str(_ROOT / os.getenv("OUTPUTS_DIR", "outputs"))
     # Répertoire des runs complets (état final de tous les agents) et rapports HTML.
     # Ex: outputs/run_57234B42.json
     #     outputs/research/NVDA_report_20260322.html

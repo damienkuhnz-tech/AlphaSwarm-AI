@@ -1,0 +1,37 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "JetBrains Mono, Consolas, Menlo, monospace"
+    fontSize: 13.5px
+    lineColor: "#8496AC"
+    primaryColor: "#FFFFFF"
+    primaryTextColor: "#101720"
+    primaryBorderColor: "#8496AC"
+    edgeLabelBackground: "#FFFFFF"
+  flowchart:
+    curve: basis
+    padding: 14
+    nodeSpacing: 38
+    rankSpacing: 46
+    wrappingWidth: 200
+---
+flowchart LR
+  U("<b>univers</b> — EquityResearchAgent.run()<br/>_target_positions(mandate)<br/>a state['tickers'] · b _generate_tickers_from_brief()<br/>c _build_benchmark_universe() → _validate_tickers()<br/>→ _screen_universe() · d _DEFAULT_UNIVERSE<br/>_apply_beta_bias() : tri bêta + troncature 1,5×")
+  EX("<b>parallélisme</b><br/>ThreadPoolExecutor(max_workers=5)<br/>→ _analyze_ticker(idea, …)")
+  FM("<b>collecte</b><br/>_fetch_all_market_data(ticker, benchmark_etf)<br/>ThreadPoolExecutor(6) · _safe(fn) → statut au lieu de raise<br/>_enrich_idea_from_market(idea, pkg)<br/>_format_market_data(pkg)")
+  L("<b>appel</b> — 1 par titre<br/>_call_llm_with_retry()<br/>REPORT_NARRATIVE_PROMPT<br/>_parse_json(raw)")
+  BR("<b>construction</b><br/>_build_research_output()<br/>_as_int() · _as_float() bornés<br/><i>except → _fallback_research()</i>")
+  RD("<b>SORTIE</b><br/>_build_report_data() → generate_company_report()<br/>outputs/research/&lt;TICKER&gt;_report_&lt;date&gt;.html<br/>_generate_sector_reports()<br/>return {'research': […]}")
+  U --> EX --> FM --> L --> BR --> RD
+  class U,RD io;
+  class EX,FM,BR calc;
+  class L juge;
+
+  classDef juge fill:#FCF3E4,stroke:#B8801F,stroke-width:2px,color:#4A3208,rx:6,ry:6;
+  classDef calc fill:#DAEEE8,stroke:#0D6B59,stroke-width:2px,color:#0A362E,rx:6,ry:6;
+  classDef io fill:#EBF1FA,stroke:#3A5A8C,stroke-width:1.8px,color:#16253C,rx:6,ry:6;
+  classDef stop fill:#FBE4E1,stroke:#9C2A22,stroke-width:2px,color:#4A110D,rx:6,ry:6;
+  classDef ext fill:#FFFFFF,stroke:#8496AC,stroke-width:1.4px,color:#101720,rx:6,ry:6;
+
+  linkStyle default stroke-width:1.5px;

@@ -1,0 +1,57 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: "Segoe UI, Helvetica Neue, Arial, sans-serif"
+    fontSize: 15px
+    lineColor: "#8496AC"
+    primaryColor: "#FFFFFF"
+    primaryTextColor: "#101720"
+    primaryBorderColor: "#8496AC"
+    clusterBkg: "#FAFBFD"
+    clusterBorder: "#D3DBE6"
+    edgeLabelBackground: "#FFFFFF"
+  flowchart:
+    curve: basis
+    padding: 16
+    nodeSpacing: 45
+    rankSpacing: 55
+    wrappingWidth: 430
+---
+flowchart TB
+
+  P("<b>Portefeuille proposé</b><br/>positions et poids issus de l'agent 3")
+
+  Q("<b>MOTEUR QUANTITATIF</b><br/>module quant/<br/>calcule toutes les métriques et exécute les tests de conformité<br/><i>déterministe · seedé · reproductible · aucun modèle de langage</i>")
+
+  L("<b>MODÈLE DE LANGAGE</b><br/>un seul appel<br/>rend un jugement : statut, violations, recommandations")
+
+  G1("<b>GARDE-FOU 1</b><br/>les métriques du rapport sont<br/>réécrites depuis le calcul<br/><i>le modèle ne contrôle aucun chiffre</i>")
+  G2("<b>GARDE-FOU 2</b><br/>un PASS alors que des tests<br/>de conformité échouent<br/><i>est rétrogradé en AJUSTER</i>")
+  G3("<b>GARDE-FOU 3</b><br/>un test en échec passé sous<br/>silence par le modèle<br/><i>est réinjecté en violation majeure</i>")
+
+  V("<b>RiskReport</b><br/>PASS ouvre la voie aux ordres<br/>AJUSTER renvoie à la construction<br/>FAIL bloque tout")
+
+  P --> Q
+  Q -->|"résumé compact d'environ 1 500 tokens, jamais les prix"| L
+  L --> G1
+  L --> G2
+  L --> G3
+  G1 --> V
+  G2 --> V
+  G3 --> V
+  Q -.->|"les tests calculés l'emportent<br/>toujours sur le verdict du modèle"| G2
+
+  classDef calc fill:#DAEEE8,stroke:#0D6B59,stroke-width:2.4px,color:#0A362E,rx:8,ry:8;
+  classDef juge fill:#FCF3E4,stroke:#B8801F,stroke-width:2.2px,color:#4A3208,rx:8,ry:8;
+  classDef neutre fill:#FFFFFF,stroke:#8496AC,stroke-width:1.4px,color:#101720,rx:8,ry:8;
+  classDef garde fill:#F4F7FC,stroke:#3A5A8C,stroke-width:1.7px,color:#16253C,rx:8,ry:8;
+  classDef sortie fill:#EBF1FA,stroke:#3A5A8C,stroke-width:2.4px,color:#16253C,rx:8,ry:8;
+
+  class Q calc;
+  class L juge;
+  class P neutre;
+  class G1,G2,G3 garde;
+  class V sortie;
+
+  linkStyle default stroke-width:1.6px;

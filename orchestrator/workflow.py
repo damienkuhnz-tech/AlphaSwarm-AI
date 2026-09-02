@@ -87,6 +87,55 @@ class WorkflowEngine:
         self.execution_agent = ExecutionAgent(client=shared_client)
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
+    # │  GRAPHE DE DÉPENDANCES DÉCLARÉ                                         │
+    # │  Une seule source de vérité pour l'ordre des étapes. Le mode ciblé      │
+    # │  s'en sert pour remonter les prérequis manquants ; ajouter un agent     │
+    # │  ne demande plus de toucher quatre branches de if/elif (E5).            │
+    # └─────────────────────────────────────────────────────────────────────────┘
+
+    _DEPS = {
+        "mandate":   [],
+        "research":  ["mandate"],
+        "portfolio": ["mandate", "research"],
+        "risk":      ["mandate", "research", "portfolio"],
+        "execution": ["mandate", "research", "portfolio", "risk"],
+    }
+
+    # Clé du state qui prouve qu'une étape a déjà produit son résultat.
+    _STATE_KEY = {
+        "mandate":   "mandate",
+        "research":  "research",
+        "portfolio": "portfolio",
+        "risk":      "risk_report",
+        "execution": "execution_output",
+    }
+
+    # ┌─────────────────────────────────────────────────────────────────────────┐
+    # │  _execution_blocked() — GARDE-FOU UNIQUE AVANT PRÉPARATION D'ORDRES     │
+    # │  Appliqué À L'IDENTIQUE au mode complet et au mode ciblé.               │
+    # │  AVANT : la branche target_step == "execution" n'exécutait jamais       │
+    # │  l'agent de risque et ne consultait jamais risk_report.statut — la      │
+    # │  seule contrainte dure du workflow était contournable (défaut A1).      │
+    # └─────────────────────────────────────────────────────────────────────────┘
+
+    def _execution_blocked(self, state: PortfolioState) -> bool:
+        """True si aucun ordre ne doit être préparé. Trace la raison dans errors."""
+        risk = state.get("risk_report")
+
+        if risk is None:
+            msg = ("execution bloquée — aucun rapport de risque disponible : "
+                   "aucun ordre ne peut être préparé sans verdict de risque.")
+        elif risk.statut == "FAIL":
+            msg = (f"execution bloquée — verdict de risque FAIL "
+                   f"({len(risk.violations)} violation(s) relevée(s)).")
+        else:
+            return False
+
+        console.print(f"  [red]⚠[/red]  {msg}")
+        state["errors"] = (state.get("errors") or []) + [msg]
+        return True
+
+    # ┌─────────────────────────────────────────────────────────────────────────┐
     # │  _run_step() — EXÉCUTION D'UNE ÉTAPE + MERGE DU STATE                  │
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -173,36 +222,45 @@ class WorkflowEngine:
         # │  MODE INDIVIDUEL — un seul agent                                    │
         # └─────────────────────────────────────────────────────────────────────┘
         if target_step:
-            # Mandate toujours nécessaire pour les autres agents
-            if target_step == "mandate":
-                step("mandate", self.mandate_agent.run)
+            agents = {
+                "mandate":   self.mandate_agent.run,
+                "research":  self.research_agent.run,
+                "portfolio": self.portfolio_agent.run,
+                "risk":      self.risk_agent.run,
+                "execution": self.execution_agent.run,
+            }
+            if target_step not in agents:
+                state["errors"] = (state.get("errors") or []) + [
+                    f"target_step inconnu : {target_step!r}"
+                ]
                 return state
-            # Pour les autres agents on s'assure que mandate existe
-            if "mandate" not in state or state.get("mandate") is None:
-                step("mandate", self.mandate_agent.run)
-            if target_step == "research":
-                step("research", self.research_agent.run)
-            elif target_step == "portfolio":
-                # Prérequis : research doit avoir des données
-                if not state.get("research"):
-                    step("research", self.research_agent.run)
-                state["portfolio_iteration"] = 1
-                step("portfolio", self.portfolio_agent.run)
-            elif target_step == "risk":
-                if not state.get("research"):
-                    step("research", self.research_agent.run)
-                if not state.get("portfolio"):
-                    state["portfolio_iteration"] = 1
-                    step("portfolio", self.portfolio_agent.run)
+
+            # ── Remontée récursive des prérequis ──────────────────────────────
+            # Une étape n'est rejouée QUE si son résultat est absent du state.
+            # Quand l'API repart d'un run précédent (from_run_id), les prérequis
+            # sont déjà là : on ne reconstruit rien et l'agent ciblé travaille
+            # bien sur le portefeuille que le gérant a sous les yeux (défaut A2).
+            def ensure(name: str) -> None:
+                nonlocal state
+                if state.get(self._STATE_KEY[name]):
+                    return
+                for dep in self._DEPS[name]:
+                    ensure(dep)
+                if name == "portfolio":
+                    state["portfolio_iteration"] = state.get("portfolio_iteration", 1)
+                state = self._run_step(name, agents[name], state, on_step_done)
+
+            for dep in self._DEPS[target_step]:
+                ensure(dep)
+
+            # ── Garde-fou identique au mode complet ───────────────────────────
+            if target_step == "execution" and self._execution_blocked(state):
+                return state
+
+            if target_step == "portfolio":
                 state["portfolio_iteration"] = state.get("portfolio_iteration", 1)
-                step("risk", self.risk_agent.run)
-            elif target_step == "execution":
-                if not state.get("research"):
-                    step("research", self.research_agent.run)
-                if not state.get("portfolio"):
-                    state["portfolio_iteration"] = 1
-                    step("portfolio", self.portfolio_agent.run)
-                step("execution", self.execution_agent.run)
+
+            step(target_step, agents[target_step])
             return state
 
         # ┌─────────────────────────────────────────────────────────────────────┐
@@ -265,23 +323,14 @@ class WorkflowEngine:
         # │  On n'exécute les ordres QUE si le risk est OK.                    │
         # └─────────────────────────────────────────────────────────────────────┘
 
-        risk = state.get("risk_report")
-
-        # Pas de violation critique de risque
-        risk_ok = risk is None or risk.statut != "FAIL"
-
-        if risk_ok:
+        # Un seul et même garde-fou pour les deux modes (cf. _execution_blocked).
+        # Note : un risk_report absent bloque désormais AUSSI la préparation
+        # d'ordres. Avant, un agent de risque en échec laissait passer les ordres.
+        if not self._execution_blocked(state):
             # ── CAS NORMAL : on prépare les ordres ───────────────────────────
             step("execution", self.execution_agent.run)
             # → LIT  : state["portfolio"], state["mandate"]
             # → ÉCRIT: state["execution_output"] = ExecutionOutput (liste d'ordres)
-
-        else:
-            # ── CAS BLOQUÉ : violation critique de risque → pas d'ordres ─────
-            console.print(
-                "  [red]⚠[/red]  Workflow bloqué "
-                "(Risk FAIL) — Execution ignorée."
-            )
 
         return state  # Retourne l'état complet
 
