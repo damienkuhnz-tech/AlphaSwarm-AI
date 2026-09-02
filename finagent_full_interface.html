@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="/static/css/forms-chat.css">
   <link rel="stylesheet" href="/static/css/theme-overrides.css">
   <link rel="stylesheet" href="/static/css/responsive.css">
+  <link rel="stylesheet" href="/static/css/utilities.css">
 </head>
 <body>
 
@@ -59,8 +60,8 @@
         <label class="login-label">Nom</label>
         <input type="text" id="loginUser" class="login-input" placeholder="Prénom Nom" autocomplete="username">
       </div>
-      <div id="loginError" class="login-error" style="display:none">Veuillez entrer votre nom</div>
-      <button type="button" class="login-btn" onclick="doLogin()">Accéder →</button>
+      <div id="loginError" class="login-error u-hidden-init">Veuillez entrer votre nom</div>
+      <button type="button" class="login-btn" id="btn-login">Accéder →</button>
     </div>
     <div class="login-footer">AlphaSwarm v2.1 · Session sécurisée · 2026</div>
   </div>
@@ -118,7 +119,7 @@
 
       <!-- Paramètres Généraux -->
       <div class="panel">
-        <div class="panel-title"><span style="display:inline-flex;align-items:center;vertical-align:middle;margin-right:8px;opacity:0.7;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="8" cy="6" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="10" cy="18" r="2" fill="currentColor" stroke="none"/></svg></span>Paramètres Généraux</div>
+        <div class="panel-title"><span class="u-title-ico-8"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="8" cy="6" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="10" cy="18" r="2" fill="currentColor" stroke="none"/></svg></span>Paramètres Généraux</div>
         <div class="form-group">
           <label class="form-label">Stratégie</label>
           <select id="m-strategie" class="form-select">
@@ -149,7 +150,7 @@
 
       <!-- Contraintes de Risque -->
       <div class="panel">
-        <div class="panel-title"><span style="display:inline-flex;align-items:center;vertical-align:middle;margin-right:8px;opacity:0.7;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span>Contraintes de Risque</div>
+        <div class="panel-title"><span class="u-title-ico-8"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span>Contraintes de Risque</div>
         <div class="form-row">
           <div class="form-group">
             <label class="form-label">Tracking Error Max (%)</label>
@@ -244,18 +245,18 @@
 
         <div class="form-group">
           <label class="form-label">Priorité principale</label>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px;">
-            <label class="esg-check-item" style="cursor:pointer;">
-              <input type="radio" name="m-priorite" value="Préservation du capital" style="accent-color:var(--accent-green);"> <span style="font-size:12px;display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-flex;align-items:center;opacity:0.65;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>Préservation du capital</span>
+          <div class="u-grid-2">
+            <label class="esg-check-item u-pointer">
+              <input class="u-accent-green" type="radio" name="m-priorite" value="Préservation du capital"> <span class="u-esg-label"><span class="u-ico-dim"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>Préservation du capital</span>
             </label>
-            <label class="esg-check-item" style="cursor:pointer;">
-              <input type="radio" name="m-priorite" value="Revenus réguliers" style="accent-color:var(--accent-green);"> <span style="font-size:12px;display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-flex;align-items:center;opacity:0.65;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><line x1="12" y1="8" x2="12" y2="12"/><path d="M12 16h.01"/><path d="M9.5 9.5c.5-1.5 3.5-1.5 4 0 .5 1.5-1 2-2 2.5v1"/></svg></span>Revenus réguliers</span>
+            <label class="esg-check-item u-pointer">
+              <input class="u-accent-green" type="radio" name="m-priorite" value="Revenus réguliers"> <span class="u-esg-label"><span class="u-ico-dim"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><line x1="12" y1="8" x2="12" y2="12"/><path d="M12 16h.01"/><path d="M9.5 9.5c.5-1.5 3.5-1.5 4 0 .5 1.5-1 2-2 2.5v1"/></svg></span>Revenus réguliers</span>
             </label>
-            <label class="esg-check-item" style="cursor:pointer;">
-              <input type="radio" name="m-priorite" value="Croissance long terme" checked style="accent-color:var(--accent-green);"> <span style="font-size:12px;display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-flex;align-items:center;opacity:0.65;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span>Croissance long terme</span>
+            <label class="esg-check-item u-pointer">
+              <input class="u-accent-green" type="radio" name="m-priorite" value="Croissance long terme" checked> <span class="u-esg-label"><span class="u-ico-dim"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span>Croissance long terme</span>
             </label>
-            <label class="esg-check-item" style="cursor:pointer;">
-              <input type="radio" name="m-priorite" value="Performance maximale" style="accent-color:var(--accent-green);"> <span style="font-size:12px;display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-flex;align-items:center;opacity:0.65;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>Performance maximale</span>
+            <label class="esg-check-item u-pointer">
+              <input class="u-accent-green" type="radio" name="m-priorite" value="Performance maximale"> <span class="u-esg-label"><span class="u-ico-dim"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>Performance maximale</span>
             </label>
           </div>
         </div>
@@ -273,31 +274,31 @@
 
       <!-- Exclusions ESG -->
       <div class="panel">
-        <div class="panel-title"><span style="display:inline-flex;align-items:center;vertical-align:middle;margin-right:8px;opacity:0.7;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.15a1 1 0 0 0 1.38 1.37C8.3 18.2 14.46 16 22 16c0-4-2-8-5-8z"/><path d="M2 21c0 0 3-2 6-5"/></svg></span>Exclusions ESG</div>
-        <div class="esg-check-grid" style="margin-bottom:12px;">
+        <div class="panel-title"><span class="u-title-ico-8"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 19.15a1 1 0 0 0 1.38 1.37C8.3 18.2 14.46 16 22 16c0-4-2-8-5-8z"/><path d="M2 21c0 0 3-2 6-5"/></svg></span>Exclusions ESG</div>
+        <div class="esg-check-grid u-mb-12">
           <div class="esg-check-item">
             <input type="checkbox" id="esg-tabac" checked>
-            <label for="esg-tabac"><span style="display:inline-flex;align-items:center;vertical-align:middle;margin-right:6px;opacity:0.7;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h14M19 14h3M2 18h14M19 18h3M17 10a3 3 0 0 0-3-3"/><path d="M2 14h14c.5 0 1 .5 1 1v2c0 .5-.5 1-1 1H2c-.5 0-1-.5-1-1v-2c0-.5.5-1 1-1z"/></svg></span>Tabac</label>
+            <label for="esg-tabac"><span class="u-title-ico-6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14h14M19 14h3M2 18h14M19 18h3M17 10a3 3 0 0 0-3-3"/><path d="M2 14h14c.5 0 1 .5 1 1v2c0 .5-.5 1-1 1H2c-.5 0-1-.5-1-1v-2c0-.5.5-1 1-1z"/></svg></span>Tabac</label>
           </div>
           <div class="esg-check-item">
             <input type="checkbox" id="esg-armes" checked>
-            <label for="esg-armes"><span style="display:inline-flex;align-items:center;vertical-align:middle;margin-right:6px;opacity:0.7;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg></span>Armement controversé</label>
+            <label for="esg-armes"><span class="u-title-ico-6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg></span>Armement controversé</label>
           </div>
           <div class="esg-check-item">
             <input type="checkbox" id="esg-charbon" checked>
-            <label for="esg-charbon"><span style="display:inline-flex;align-items:center;vertical-align:middle;margin-right:6px;opacity:0.7;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-4 6-6 9-6 12a6 6 0 0 0 12 0c0-3-2-6-6-12z"/></svg></span>Charbon thermique</label>
+            <label for="esg-charbon"><span class="u-title-ico-6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-4 6-6 9-6 12a6 6 0 0 0 12 0c0-3-2-6-6-12z"/></svg></span>Charbon thermique</label>
           </div>
           <div class="esg-check-item">
             <input type="checkbox" id="esg-jeux">
-            <label for="esg-jeux"><span style="display:inline-flex;align-items:center;vertical-align:middle;margin-right:6px;opacity:0.7;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41L13.7 2.71a2.41 2.41 0 0 0-3.41 0z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>Jeux d'argent</label>
+            <label for="esg-jeux"><span class="u-title-ico-6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41L13.7 2.71a2.41 2.41 0 0 0-3.41 0z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>Jeux d'argent</label>
           </div>
           <div class="esg-check-item">
             <input type="checkbox" id="esg-alcool">
-            <label for="esg-alcool"><span style="display:inline-flex;align-items:center;vertical-align:middle;margin-right:6px;opacity:0.7;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M12 6v6l4 2"/></svg></span>Alcool</label>
+            <label for="esg-alcool"><span class="u-title-ico-6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M12 6v6l4 2"/></svg></span>Alcool</label>
           </div>
           <div class="esg-check-item">
             <input type="checkbox" id="esg-nucleaire">
-            <label for="esg-nucleaire"><span style="display:inline-flex;align-items:center;vertical-align:middle;margin-right:6px;opacity:0.7;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8a4 4 0 1 0 4 4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg></span>Énergie nucléaire</label>
+            <label for="esg-nucleaire"><span class="u-title-ico-6"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 8a4 4 0 1 0 4 4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg></span>Énergie nucléaire</label>
           </div>
         </div>
         <div class="form-group">
@@ -316,22 +317,22 @@
     </div>
 
     <!-- RIGHT : ANALYSE IA -->
-    <div style="min-width:0; overflow:hidden;">
+    <div class="u-clip-cell">
 
       <!-- Phase 1 : placeholder avant analyse -->
-      <div id="mandate-phase1" class="panel" style="height:100%; min-height:400px;">
+      <div id="mandate-phase1" class="panel u-phase-panel">
         <div class="mandate-placeholder">
-          <div class="mandate-placeholder-icon" style="font-size:36px;opacity:0.25;font-family:'IBM Plex Mono',monospace;letter-spacing:-2px;">AI</div>
-          <div style="font-family:'IBM Plex Sans',sans-serif; font-size:16px; font-weight:700; color:var(--text-primary);">Analyse IA du Mandat</div>
+          <div class="mandate-placeholder-icon u-brand-ghost">AI</div>
+          <div class="u-overlay-title">Analyse IA du Mandat</div>
           <div class="mandate-placeholder-text">Renseignez les paramètres du mandat<br>puis lancez l'analyse pour obtenir<br>la critique et les recommandations de l'agent.</div>
-          <button type="button" class="btn-analyze" id="btnAnalyze" onclick="analyzeMandate()">Diagnostic de cohérence</button>
+          <button type="button" class="btn-analyze" id="btnAnalyze">Diagnostic de cohérence</button>
         </div>
       </div>
 
       <!-- Phase 2 : loading -->
-      <div id="mandate-loading" class="panel" style="display:none; min-height:400px;">
+      <div id="mandate-loading" class="panel u-minh-400" style="display:none">
         <div class="ai-loading">
-          <div style="font-family:'IBM Plex Sans',sans-serif; font-size:14px; color:var(--accent-blue);">Diagnostic de cohérence en cours...</div>
+          <div class="u-overlay-ref">Diagnostic de cohérence en cours...</div>
           <div class="ai-loading-bar"><div class="ai-loading-fill" id="aiLoadingFill"></div></div>
           <div class="ai-loading-text" id="aiLoadingText">Validation des paramètres...</div>
         </div>
@@ -344,7 +345,7 @@
           <div class="mandate-kpi-grid" id="mandate-kpi-summary"></div>
         </div>
         <div class="panel">
-          <div class="ai-critique-title"><span style="display:inline-flex;align-items:center;vertical-align:middle;margin-right:7px;opacity:0.8;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></span>Analyse de l'Agent Mandat</div>
+          <div class="ai-critique-title"><span class="u-title-ico-7"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></span>Analyse de l'Agent Mandat</div>
 
           <div class="ai-critique-section">
             <div class="ai-critique-label">Points forts</div>
@@ -360,10 +361,10 @@
           </div>
 
           <div class="mandate-action-bar">
-            <span style="font-size:12px; color:var(--text-secondary);">Vous pouvez ajuster les paramètres et relancer l'analyse.</span>
-            <div style="display:flex; gap:10px;">
-              <button type="button" class="btn-analyze" style="background:var(--bg-element); color:var(--text-secondary); border:1px solid var(--border);" onclick="resetAnalysis()">↺ Modifier</button>
-              <button type="button" class="btn-validate-step" id="btn-validate-1" onclick="completeStep(1)">Valider le mandat</button>
+            <span class="u-txt-sec-12">Vous pouvez ajuster les paramètres et relancer l'analyse.</span>
+            <div class="u-row-10">
+              <button type="button" class="btn-analyze u-btn-ghost" id="btn-reset-analysis">↺ Modifier</button>
+              <button type="button" class="btn-validate-step" id="btn-validate-1">Valider le mandat</button>
             </div>
           </div>
         </div>
@@ -380,40 +381,40 @@
   <div class="section-header">
     <span class="section-title">Equity Research Agent</span>
     <span id="step-badge-2" class="badge badge-locked">VERROUILLÉ</span>
-    <button type="button" id="launch-btn-2" class="btn-launch-agent" onclick="launchAgent(2)">Lancer l'agent</button>
+    <button type="button" id="launch-btn-2" class="btn-launch-agent">Lancer l'agent</button>
     <span class="section-duration"></span>
   </div>
 
   <div class="agent-sub-tabs">
-    <div class="agent-sub-tab active" onclick="switchAgentTab(this, 'analyse-2')">Analyse</div>
-    <div class="agent-sub-tab chat-sub-tab" onclick="switchAgentTab(this, 'chat-2')">Chat — Assistant Analyste</div>
+    <div class="agent-sub-tab active" data-panel="analyse-2">Analyse</div>
+    <div class="agent-sub-tab chat-sub-tab" data-panel="chat-2">Chat — Assistant Analyste</div>
   </div>
 
   <div id="analyse-2" class="agent-tab-content active">
 
   <div class="sub-tabs" id="researchTabs">
-    <div class="sub-tab active" onclick="switchSubTab('research', 'companies', this)">Analyse Entreprises</div>
-    <div class="sub-tab" onclick="switchSubTab('research', 'sectors', this)">Analyse Sectorielle</div>
+    <div class="sub-tab active" data-group="research" data-tab="companies">Analyse Entreprises</div>
+    <div class="sub-tab" data-group="research" data-tab="sectors">Analyse Sectorielle</div>
   </div>
 
   <div class="sub-tab-content active" id="research-companies">
     <!-- Filter Bar -->
     <div class="filter-bar" id="researchFilterBar">
-      <button type="button" class="filter-btn active" onclick="filterResearch('all', this)">Tous (0)</button>
-      <button type="button" class="filter-btn" onclick="filterResearch('strong-buy', this)">STRONG BUY (0)</button>
-      <button type="button" class="filter-btn" onclick="filterResearch('buy', this)">BUY (0)</button>
-      <button type="button" class="filter-btn" onclick="filterResearch('hold', this)">HOLD (0)</button>
+      <button type="button" class="filter-btn active" data-filter="all">Tous (0)</button>
+      <button type="button" class="filter-btn" data-filter="strong-buy">STRONG BUY (0)</button>
+      <button type="button" class="filter-btn" data-filter="buy">BUY (0)</button>
+      <button type="button" class="filter-btn" data-filter="hold">HOLD (0)</button>
     </div>
     <div class="research-grid" id="researchGrid">
-      <div class="empty-placeholder" style="padding:48px;text-align:center;color:var(--text-dim);">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
+      <div class="empty-placeholder u-empty-slot">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
     </div>
   </div>
 
   <div class="sub-tab-content" id="research-sectors">
-      <div class="empty-placeholder" style="padding:48px;text-align:center;color:var(--text-dim);">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
+      <div class="empty-placeholder u-empty-slot">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
     </div>
-  <div style="text-align:right; padding: 0 24px 20px;">
-    <button type="button" class="btn-validate-step" id="btn-validate-2" onclick="completeStep(2)">Approuver l'analyse</button>
+  <div class="u-actions-right">
+    <button type="button" class="btn-validate-step" id="btn-validate-2">Approuver l'analyse</button>
   </div>
 
   </div><!-- /analyse-2 -->
@@ -430,11 +431,11 @@
         </div>
       </div>
       <div class="chat-suggestions" id="chat-suggestions-2">
-        <div class="chat-suggestion" onclick="injectSuggestion(2, this)">Rapport complet ASML</div><div class="chat-suggestion" onclick="injectSuggestion(2, this)">Comparer NVDA vs TSM</div><div class="chat-suggestion" onclick="injectSuggestion(2, this)">Risques secteur semi</div><div class="chat-suggestion" onclick="injectSuggestion(2, this)">Top conviction du portefeuille</div>
+        <div class="chat-suggestion">Rapport complet ASML</div><div class="chat-suggestion">Comparer NVDA vs TSM</div><div class="chat-suggestion">Risques secteur semi</div><div class="chat-suggestion">Top conviction du portefeuille</div>
       </div>
       <div class="chat-input-area">
-        <textarea class="chat-input" id="chat-input-2" rows="1" placeholder="Ex: Génère un rapport complet sur ASML..." onkeydown="handleChatKey(event, 2)"></textarea>
-        <div class="chat-send-btn" id="chat-send-2" onclick="sendChatMessage(2)">
+        <textarea class="chat-input" id="chat-input-2" rows="1" placeholder="Ex: Génère un rapport complet sur ASML..."></textarea>
+        <div class="chat-send-btn" id="chat-send-2">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -452,13 +453,13 @@
   <div class="section-header">
     <span class="section-title">Portfolio Construction Agent</span>
     <span id="step-badge-3" class="badge badge-locked">VERROUILLÉ</span>
-    <button type="button" id="launch-btn-3" class="btn-launch-agent" onclick="launchAgent(3)">Lancer l'agent</button>
+    <button type="button" id="launch-btn-3" class="btn-launch-agent">Lancer l'agent</button>
     <span class="section-duration"></span>
   </div>
 
   <div class="agent-sub-tabs">
-    <div class="agent-sub-tab active" onclick="switchAgentTab(this, 'analyse-3')">Analyse</div>
-    <div class="agent-sub-tab chat-sub-tab" onclick="switchAgentTab(this, 'chat-3')">Chat — Portfolio Manager</div>
+    <div class="agent-sub-tab active" data-panel="analyse-3">Analyse</div>
+    <div class="agent-sub-tab chat-sub-tab" data-panel="chat-3">Chat — Portfolio Manager</div>
   </div>
 
   <div id="analyse-3" class="agent-tab-content active">
@@ -467,14 +468,14 @@
     <!-- LEFT -->
     <div>
       <div class="panel">
-        <div class="panel-title"><span style="display:inline-flex;align-items:center;vertical-align:middle;margin-right:8px;opacity:0.7;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></span>Portefeuille Construit</div>
-        <div class="table-wrap" style="overflow-x:auto;">
-          <table style="table-layout:auto; min-width:700px;">
+        <div class="panel-title"><span class="u-title-ico-8"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></span>Portefeuille Construit</div>
+        <div class="table-wrap u-scroll-x">
+          <table class="u-table-700">
             <thead>
               <tr><th>#</th><th>Ticker</th><th>Nom</th><th>Secteur</th><th>Géo</th><th>RATING</th><th>Poids</th><th>Valeur USD</th><th>Rôle</th></tr>
             </thead>
             <tbody>
-              <tr><td colspan="9" style="padding:48px;text-align:center;color:var(--text-dim);">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour construire le portefeuille.</td></tr>
+              <tr><td class="u-empty-slot" colspan="9">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour construire le portefeuille.</td></tr>
             </tbody>
             <tfoot></tfoot>
           </table>
@@ -484,11 +485,11 @@
 
     <!-- RIGHT -->
     <div id="portfolioRightPanels">
-      <div class="empty-placeholder" style="padding:48px;text-align:center;color:var(--text-dim);">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
+      <div class="empty-placeholder u-empty-slot">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
     </div>
   </div>
-  <div style="text-align:right; padding: 0 24px 20px;">
-    <button type="button" class="btn-validate-step" id="btn-validate-3" onclick="completeStep(3)">Valider la construction du portefeuille</button>
+  <div class="u-actions-right">
+    <button type="button" class="btn-validate-step" id="btn-validate-3">Valider la construction du portefeuille</button>
   </div>
 
   </div><!-- /analyse-3 -->
@@ -505,11 +506,11 @@
         </div>
       </div>
       <div class="chat-suggestions" id="chat-suggestions-3">
-        <div class="chat-suggestion" onclick="injectSuggestion(3, this)">Optimiser l'allocation NVDA</div><div class="chat-suggestion" onclick="injectSuggestion(3, this)">Simuler -20% marché</div><div class="chat-suggestion" onclick="injectSuggestion(3, this)">Réduire exposition Tech</div><div class="chat-suggestion" onclick="injectSuggestion(3, this)">Ajouter position défensive</div>
+        <div class="chat-suggestion">Optimiser l'allocation NVDA</div><div class="chat-suggestion">Simuler -20% marché</div><div class="chat-suggestion">Réduire exposition Tech</div><div class="chat-suggestion">Ajouter position défensive</div>
       </div>
       <div class="chat-input-area">
-        <textarea class="chat-input" id="chat-input-3" rows="1" placeholder="Ex: Que se passe-t-il si on réduit NVDA à 4% ?" onkeydown="handleChatKey(event, 3)"></textarea>
-        <div class="chat-send-btn" id="chat-send-3" onclick="sendChatMessage(3)">
+        <textarea class="chat-input" id="chat-input-3" rows="1" placeholder="Ex: Que se passe-t-il si on réduit NVDA à 4% ?"></textarea>
+        <div class="chat-send-btn" id="chat-send-3">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -527,13 +528,13 @@
   <div class="section-header">
     <span class="section-title">Risk Management Agent</span>
     <span id="step-badge-4" class="badge badge-locked">VERROUILLÉ</span>
-    <button type="button" id="launch-btn-4" class="btn-launch-agent" onclick="launchAgent(4)">Lancer l'agent</button>
+    <button type="button" id="launch-btn-4" class="btn-launch-agent">Lancer l'agent</button>
     <span class="section-duration"></span>
   </div>
 
   <div class="agent-sub-tabs">
-    <div class="agent-sub-tab active" onclick="switchAgentTab(this, 'analyse-4')">Analyse</div>
-    <div class="agent-sub-tab chat-sub-tab" onclick="switchAgentTab(this, 'chat-4')">Chat — Risk Analyst</div>
+    <div class="agent-sub-tab active" data-panel="analyse-4">Analyse</div>
+    <div class="agent-sub-tab chat-sub-tab" data-panel="chat-4">Chat — Risk Analyst</div>
   </div>
 
   <div id="analyse-4" class="agent-tab-content active">
@@ -541,7 +542,7 @@
   <div class="alert alert-orange" id="riskAlert">Analyse en cours...</div>
 
   <div class="risk-two-col" id="riskContent">
-      <div class="empty-placeholder" style="padding:48px;text-align:center;color:var(--text-dim);">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
+      <div class="empty-placeholder u-empty-slot">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
     </div>
 
   </div><!-- /analyse-4 -->
@@ -558,11 +559,11 @@
         </div>
       </div>
       <div class="chat-suggestions" id="chat-suggestions-4">
-        <div class="chat-suggestion" onclick="injectSuggestion(4, this)">Stress test -30% marchés</div><div class="chat-suggestion" onclick="injectSuggestion(4, this)">Risque géopolitique Taiwan</div><div class="chat-suggestion" onclick="injectSuggestion(4, this)">Réduire concentration IA</div><div class="chat-suggestion" onclick="injectSuggestion(4, this)">Hedging recommandations</div>
+        <div class="chat-suggestion">Stress test -30% marchés</div><div class="chat-suggestion">Risque géopolitique Taiwan</div><div class="chat-suggestion">Réduire concentration IA</div><div class="chat-suggestion">Hedging recommandations</div>
       </div>
       <div class="chat-input-area">
-        <textarea class="chat-input" id="chat-input-4" rows="1" placeholder="Ex: Quel est l'impact d'une crise de liquidité ?" onkeydown="handleChatKey(event, 4)"></textarea>
-        <div class="chat-send-btn" id="chat-send-4" onclick="sendChatMessage(4)">
+        <textarea class="chat-input" id="chat-input-4" rows="1" placeholder="Ex: Quel est l'impact d'une crise de liquidité ?"></textarea>
+        <div class="chat-send-btn" id="chat-send-4">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -580,13 +581,13 @@
   <div class="section-header">
     <span class="section-title">Execution Agent</span>
     <span id="step-badge-5" class="badge badge-locked">VERROUILLÉ</span>
-    <button type="button" id="launch-btn-5" class="btn-launch-agent" onclick="launchAgent(5)">Lancer l'agent</button>
+    <button type="button" id="launch-btn-5" class="btn-launch-agent">Lancer l'agent</button>
     <span class="section-duration"></span>
   </div>
 
   <div class="agent-sub-tabs">
-    <div class="agent-sub-tab active" onclick="switchAgentTab(this, 'analyse-5')">Analyse</div>
-    <div class="agent-sub-tab chat-sub-tab" onclick="switchAgentTab(this, 'chat-5')">Chat — Execution Trader</div>
+    <div class="agent-sub-tab active" data-panel="analyse-5">Analyse</div>
+    <div class="agent-sub-tab chat-sub-tab" data-panel="chat-5">Chat — Execution Trader</div>
   </div>
 
   <div id="analyse-5" class="agent-tab-content active">
@@ -594,7 +595,7 @@
   <div class="alert alert-yellow">Les ordres ci-dessous sont préparés pour transmission à l'OMS. Aucune exécution automatique. Validation PM obligatoire.</div>
 
   <div class="two-col-65" id="executionContent">
-      <div class="empty-placeholder" style="padding:48px;text-align:center;color:var(--text-dim);">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
+      <div class="empty-placeholder u-empty-slot">Cliquez sur &laquo;&nbsp;Lancer l'agent&nbsp;&raquo; pour générer cette section.</div>
     </div>
 
   </div><!-- /analyse-5 -->
@@ -611,11 +612,11 @@
         </div>
       </div>
       <div class="chat-suggestions" id="chat-suggestions-5">
-        <div class="chat-suggestion" onclick="injectSuggestion(5, this)">Optimiser VWAP NVDA</div><div class="chat-suggestion" onclick="injectSuggestion(5, this)">Réduire impact marché</div><div class="chat-suggestion" onclick="injectSuggestion(5, this)">Coûts pour ASML Euronext</div><div class="chat-suggestion" onclick="injectSuggestion(5, this)">Priorité d'exécution J+1</div>
+        <div class="chat-suggestion">Optimiser VWAP NVDA</div><div class="chat-suggestion">Réduire impact marché</div><div class="chat-suggestion">Coûts pour ASML Euronext</div><div class="chat-suggestion">Priorité d'exécution J+1</div>
       </div>
       <div class="chat-input-area">
-        <textarea class="chat-input" id="chat-input-5" rows="1" placeholder="Ex: Comment exécuter NESN sur SIX Swiss ?" onkeydown="handleChatKey(event, 5)"></textarea>
-        <div class="chat-send-btn" id="chat-send-5" onclick="sendChatMessage(5)">
+        <textarea class="chat-input" id="chat-input-5" rows="1" placeholder="Ex: Comment exécuter NESN sur SIX Swiss ?"></textarea>
+        <div class="chat-send-btn" id="chat-send-5">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -632,7 +633,7 @@
 <div class="screen" id="screen-market">
   <div class="section-header">
     <span class="section-title">Données de Marché</span>
-    <span class="badge badge-green" id="market-live-badge" style="display:inline-flex;align-items:center;gap:6px;"><span class="market-live-dot"></span>LIVE</span>
+    <span class="badge badge-green u-inline-gap-6" id="market-live-badge"><span class="market-live-dot"></span>LIVE</span>
     <span class="section-duration" id="market-timestamp">Connexion aux cours…</span>
   </div>
 
@@ -640,18 +641,18 @@
     <div class="panel-title">Watchlist — cours en direct</div>
 
     <!-- Barre d'ajout / recherche -->
-    <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; align-items:center;">
-      <input type="text" id="market-ticker-input" class="form-input" placeholder="Ajouter un ticker (ex: AAPL, GOOGL, TSLA)…" style="flex:1; min-width:220px; max-width:360px;" onkeydown="if(event.key==='Enter')addMarketTicker()">
-      <button type="button" class="btn-validate-step" style="margin-top:0;" onclick="addMarketTicker()">+ Ajouter</button>
-      <label style="display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--text-secondary);cursor:pointer;user-select:none;">
-        <input type="checkbox" id="market-auto" checked style="accent-color:var(--accent-green);width:15px;height:15px;cursor:pointer;" onchange="toggleAutoRefresh()">
+    <div class="u-toolbar">
+      <input type="text" id="market-ticker-input" class="form-input u-flex-input" placeholder="Ajouter un ticker (ex: AAPL, GOOGL, TSLA)…">
+      <button type="button" class="btn-validate-step u-mt-0" id="btn-market-add">+ Ajouter</button>
+      <label class="u-check-label">
+        <input class="u-accent-check" type="checkbox" id="market-auto" checked>
         Auto-refresh 8s
       </label>
-      <button type="button" class="btn-report" style="margin-top:0;" onclick="refreshMarket(true)"><span id="market-refresh-label">↻ Actualiser</span></button>
+      <button type="button" class="btn-report u-mt-0" id="btn-market-refresh"><span id="market-refresh-label">↻ Actualiser</span></button>
     </div>
 
     <div class="table-wrap">
-      <table id="market-table" style="min-width:820px;">
+      <table class="u-minw-820" id="market-table">
         <thead>
           <tr>
             <th>Ticker</th><th>Cours</th><th>Var. jour</th><th>%</th>
@@ -659,11 +660,11 @@
           </tr>
         </thead>
         <tbody id="market-tbody">
-          <tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text-dim);">Connexion aux cours en direct…</td></tr>
+          <tr><td class="u-empty-40" colspan="10">Connexion aux cours en direct…</td></tr>
         </tbody>
       </table>
     </div>
-    <div style="margin-top:10px; font-size:11px; color:var(--text-dim); font-style:italic;">
+    <div class="u-note-italic">
       Cours en direct via yfinance (fast_info). Rafraîchi automatiquement toutes les 8 s tant que cet onglet est ouvert. Les prix peuvent être différés de 15 min selon la place boursière.
     </div>
   </div>
@@ -673,9 +674,9 @@
 <!-- FIXED FOOTER NAV -->
 <!-- ============================================================ -->
 <div class="screen-footer">
-  <button type="button" class="btn-nav btn-nav-prev" id="btnPrev" onclick="prevStep()" disabled>← Précédent</button>
+  <button type="button" class="btn-nav btn-nav-prev" id="btnPrev" disabled>← Précédent</button>
   <span class="step-info" id="stepInfo">Étape 1 / 5</span>
-  <button type="button" class="btn-nav btn-nav-next" id="btnNext" onclick="nextStep()">Suivant →</button>
+  <button type="button" class="btn-nav btn-nav-next" id="btnNext">Suivant →</button>
 </div>
 
 <!-- ============================================================ -->
@@ -683,7 +684,7 @@
 <!-- ============================================================ -->
 <div class="overlay" id="successOverlay">
   <div class="overlay-card">
-    <div class="overlay-icon" style="width:64px;height:64px;border-radius:50%;background:rgba(61,220,151,0.15);border:2px solid var(--accent-green);display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:28px;color:var(--accent-green);">&#10003;</div>
+    <div class="overlay-icon u-success-ico">&#10003;</div>
     <div class="overlay-title">Ordres Exportés</div>
     <div class="overlay-ref">Référence : ORD-20260318-D54763C8</div>
     <div class="overlay-sub">13 ordres transmis — En attente exécution OMS</div>
@@ -697,11 +698,11 @@
 <div class="modal-overlay" id="rejectModal">
   <div class="modal-card">
     <div class="modal-title">Motif de rejet</div>
-    <div style="font-size:13px; color:#7FA396; margin-bottom:10px;">Veuillez indiquer le motif de rejet du workflow :</div>
-    <textarea class="form-textarea" id="rejectReason" placeholder="Ex : Concentration IA trop élevée, revoir allocation NVDA/MSFT..." style="width:100%;"></textarea>
-    <div style="display:flex; gap:10px; margin-top:12px;">
-      <button type="button" onclick="closeRejectModal()" style="flex:1; padding:9px; border:1px solid #1e2d45; background:#1a2035; color:#e8eaf0; border-radius:6px; cursor:pointer; font-size:13px;">Annuler</button>
-      <button type="button" class="btn-modal-confirm" style="flex:1;" onclick="confirmReject()">Confirmer le rejet</button>
+    <div class="u-sub-note">Veuillez indiquer le motif de rejet du workflow :</div>
+    <textarea class="form-textarea u-w-100" id="rejectReason" placeholder="Ex : Concentration IA trop élevée, revoir allocation NVDA/MSFT..."></textarea>
+    <div class="u-row-10-mt">
+      <button class="u-btn-cancel" type="button" id="btn-reject-cancel">Annuler</button>
+      <button type="button" class="btn-modal-confirm u-flex-1" id="btn-reject-confirm">Confirmer le rejet</button>
     </div>
   </div>
 </div>
@@ -730,5 +731,6 @@
   <script src="/static/js/app.js"></script>
   <script src="/static/js/chat.js"></script>
   <script src="/static/js/market.js"></script>
+  <script src="/static/js/events.js"></script>
 </body>
 </html>

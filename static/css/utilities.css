@@ -1,0 +1,42 @@
+/* === UTILITIES - styles inline extraits du HTML (refactor phase 3a) ===
+   Declarations copiees a l'identique ; fichier charge EN DERNIER de la
+   cascade pour conserver la priorite qu'avaient les styles inline. */
+
+.u-accent-check { accent-color:var(--accent-green);width:15px;height:15px;cursor:pointer; }
+.u-accent-green { accent-color:var(--accent-green); }
+.u-actions-right { text-align:right;padding:0 24px 20px; }
+.u-brand-ghost { font-size:36px;opacity:0.25;font-family:'IBM Plex Mono',monospace;letter-spacing:-2px; }
+.u-btn-cancel { flex:1;padding:9px;border:1px solid #1e2d45;background:#1a2035;color:#e8eaf0;border-radius:6px;cursor:pointer;font-size:13px; }
+.u-btn-ghost { background:var(--bg-element);color:var(--text-secondary);border:1px solid var(--border); }
+.u-check-label { display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--text-secondary);cursor:pointer;user-select:none; }
+.u-clip-cell { min-width:0;overflow:hidden; }
+.u-empty-40 { text-align:center;padding:40px;color:var(--text-dim); }
+.u-empty-slot { padding:48px;text-align:center;color:var(--text-dim); }
+.u-esg-label { font-size:12px;display:inline-flex;align-items:center;gap:5px; }
+.u-flex-1 { flex:1; }
+.u-flex-input { flex:1;min-width:220px;max-width:360px; }
+.u-grid-2 { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px; }
+.u-hidden-init { display:none; }
+.u-ico-dim { display:inline-flex;align-items:center;opacity:0.65; }
+.u-inline-gap-6 { display:inline-flex;align-items:center;gap:6px; }
+.u-mb-12 { margin-bottom:12px; }
+.u-minh-400 { min-height:400px; }
+.u-minw-820 { min-width:820px; }
+.u-mt-0 { margin-top:0; }
+.u-note-italic { margin-top:10px;font-size:11px;color:var(--text-dim);font-style:italic; }
+.u-overlay-ref { font-family:'IBM Plex Sans',sans-serif;font-size:14px;color:var(--accent-blue); }
+.u-overlay-title { font-family:'IBM Plex Sans',sans-serif;font-size:16px;font-weight:700;color:var(--text-primary); }
+.u-phase-panel { height:100%;min-height:400px; }
+.u-pointer { cursor:pointer; }
+.u-row-10 { display:flex;gap:10px; }
+.u-row-10-mt { display:flex;gap:10px;margin-top:12px; }
+.u-scroll-x { overflow-x:auto; }
+.u-sub-note { font-size:13px;color:#7FA396;margin-bottom:10px; }
+.u-success-ico { width:64px;height:64px;border-radius:50%;background:rgba(61,220,151,0.15);border:2px solid var(--accent-green);display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:28px;color:var(--accent-green); }
+.u-table-700 { table-layout:auto;min-width:700px; }
+.u-title-ico-6 { display:inline-flex;align-items:center;vertical-align:middle;margin-right:6px;opacity:0.7; }
+.u-title-ico-7 { display:inline-flex;align-items:center;vertical-align:middle;margin-right:7px;opacity:0.8; }
+.u-title-ico-8 { display:inline-flex;align-items:center;vertical-align:middle;margin-right:8px;opacity:0.7; }
+.u-toolbar { display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center; }
+.u-txt-sec-12 { font-size:12px;color:var(--text-secondary); }
+.u-w-100 { width:100%; }
