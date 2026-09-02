@@ -1,0 +1,97 @@
+  /* ==========================================================================
+     RESPONSIVE
+     Adaptation de la disposition existante — aucun nouveau design. Place en
+     DERNIER pour l'emporter sur les couches !important precedentes.
+     Points de rupture : 1024px (deux colonnes -> une) et 768px (mobile).
+     ========================================================================== */
+
+  /* Le corps de page ne doit JAMAIS defiler horizontalement : tout contenu
+     large defile dans son propre conteneur.
+     `clip` et non `hidden` : `hidden` fait de <body> un conteneur de
+     defilement, ce qui neutralise le `position: sticky` de .qd-nav (barre de
+     navigation du tableau de bord Risque). `clip` contient le debordement
+     sans cet effet de bord. Repli `hidden` pour les navigateurs sans `clip`. */
+  html, body { max-width: 100%; }
+  body { overflow-x: hidden; }
+  @supports (overflow-x: clip) { body { overflow-x: clip; } }
+
+  /* Enveloppe defilante des tableaux markdown du chat (generes par _mdToHtml).
+     Meme role que .table-wrap pour les tableaux de l'interface. */
+  .chat-bubble .md-table-wrap { overflow-x: auto; max-width: 100%; }
+  .chat-bubble .md-table-wrap .md-table { min-width: 420px; }
+
+  /* Les media/pre/images ne debordent pas de leur conteneur. */
+  .chat-bubble .md-pre { max-width: 100%; overflow-x: auto; }
+  img, svg, canvas { max-width: 100%; }
+
+  /* ---------- < 1024px : les grilles a deux colonnes passent en une ---------- */
+  @media (max-width: 1024px) {
+    .two-col,
+    .two-col-65,
+    .qd-grid-2,
+    .qd-grid-3 {
+      grid-template-columns: 1fr !important;
+    }
+    /* .risk-two-col est un flex : on force le retour a la ligne plutot que
+       de laisser min-width:300px comprimer les deux colonnes. */
+    .risk-two-col > div { flex: 1 1 100% !important; min-width: 0 !important; }
+
+    /* Les panneaux lateraux passent sous le contenu principal. */
+    #portfolioRightPanels { margin-top: 4px; }
+
+    .research-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+  }
+
+  /* ---------- < 768px : mobile ---------- */
+  @media (max-width: 768px) {
+    /* Taille de base du texte legerement reduite. */
+    body { font-size: 13px; }
+
+    /* Topbar : la barre d'etapes devient defilable horizontalement.
+       `justify-content: center` empechait le defilement une fois le contenu
+       plus large que le conteneur (le debut devenait inatteignable). */
+    .topbar { padding: 0 14px; gap: 12px; }
+    .tab-bar {
+      justify-content: flex-start;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x proximity;
+    }
+    .tab-item {
+      padding: 0 11px;
+      font-size: 11.5px;
+      scroll-snap-align: start;
+    }
+
+    /* Panneaux de chat en pleine largeur, hauteur adaptee au petit ecran. */
+    .chat-panel {
+      height: calc(100vh - 180px);
+      min-height: 340px;
+      width: 100%;
+      border-radius: 10px;
+    }
+    .chat-msg { max-width: 100%; }
+    .chat-bubble { max-width: 100%; font-size: 12.5px; }
+    .chat-suggestions { flex-wrap: wrap; }
+
+    /* Densite generale reduite. */
+    .panel { padding: 14px; border-radius: 10px; }
+    .section-header { flex-wrap: wrap; gap: 8px; }
+    .research-grid { grid-template-columns: 1fr; }
+
+    /* Les sous-onglets defilent au lieu de se comprimer. */
+    .sub-tabs, .agent-sub-tabs, .filter-bar, .qd-nav {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      scrollbar-width: none;
+    }
+    .sub-tabs::-webkit-scrollbar,
+    .agent-sub-tabs::-webkit-scrollbar,
+    .filter-bar::-webkit-scrollbar,
+    .qd-nav::-webkit-scrollbar { display: none; }
+    .sub-tab, .agent-sub-tab, .filter-btn, .qd-pill { flex-shrink: 0; white-space: nowrap; }
+
+    /* Tableaux : police plus compacte, le conteneur .table-wrap gere le
+       defilement horizontal. */
+    table { font-size: 11.5px; }
+    th, td { padding: 8px 9px; }
+  }

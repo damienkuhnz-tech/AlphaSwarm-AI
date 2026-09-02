@@ -1,0 +1,359 @@
+  /* ════ COUCHE PREMIUM — terminal financier (CSS only) ════ */
+  body {
+    background-attachment: fixed;
+    background-image:
+      radial-gradient(ellipse 90% 55% at 50% -25%, rgba(61,220,151,0.10) 0%, transparent 58%),
+      radial-gradient(ellipse 50% 40% at 85% 15%, rgba(61,220,151,0.05) 0%, transparent 55%),
+      radial-gradient(ellipse 60% 50% at 10% 90%, rgba(61,220,151,0.04) 0%, transparent 55%),
+      linear-gradient(180deg, #081310 0%, #050D0A 100%);
+  }
+  .panel, .research-card, .sector-card, .metric-card, .mandate-kpi-card,
+  .report-card, .pm-section, .chat-panel {
+    background: linear-gradient(160deg, rgba(15,32,24,0.78) 0%, rgba(10,23,18,0.72) 100%);
+    backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 18px 40px -22px rgba(0,0,0,0.9), 0 0 0 1px rgba(61,220,151,0.04);
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+  .panel:hover, .research-card:hover, .metric-card:hover, .mandate-kpi-card:hover, .report-card:hover {
+    border-color: rgba(61,220,151,0.30);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 24px 50px -24px rgba(0,0,0,0.95), 0 0 28px -6px rgba(61,220,151,0.20);
+  }
+  .topbar {
+    background: rgba(13,13,15,0.72);
+    backdrop-filter: blur(22px) saturate(160%); -webkit-backdrop-filter: blur(22px) saturate(160%);
+    border-bottom: 1px solid rgba(61,220,151,0.14);
+    box-shadow: 0 1px 0 rgba(61,220,151,0.10), 0 10px 40px -12px rgba(0,0,0,0.8);
+  }
+  .tab-item.active { color: var(--accent-green); text-shadow: 0 0 16px rgba(61,220,151,0.45); }
+  .tab-item.active::after { box-shadow: 0 0 12px rgba(61,220,151,0.8), 0 0 4px rgba(61,220,151,1); }
+  .logo-sq {
+    background: linear-gradient(135deg, #0D1D18 0%, #122820 100%);
+    border: 1px solid rgba(61,220,151,0.4); color: var(--accent-green);
+    box-shadow: 0 0 18px rgba(61,220,151,0.30), inset 0 1px 0 rgba(61,220,151,0.25);
+  }
+  .panel-title { color: var(--accent-green); text-shadow: 0 0 12px rgba(61,220,151,0.25); }
+  .conviction-bar, .confidence-fill, .weight-bar-fill, .bar-fill,
+  .progress-bar-fill, #agentProgressFill, .score-bar-fill {
+    background: linear-gradient(90deg, #3DDC97 0%, #7CEBB8 100%) !important;
+    box-shadow: 0 0 10px rgba(61,220,151,0.45);
+  }
+  .bar-fill.green { background: linear-gradient(90deg, #2bbd86, #3DDC97) !important; box-shadow: 0 0 10px rgba(61,220,151,0.4); }
+  .btn-cta, .btn-approve, .btn-download, .btn-nav-next {
+    background: linear-gradient(135deg, #3DDC97 0%, #7CEBB8 100%); color: #081310; font-weight: 700; border: none;
+    box-shadow: 0 6px 22px -6px rgba(61,220,151,0.55), inset 0 1px 0 rgba(255,255,255,0.25);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  }
+  .btn-cta:hover, .btn-approve:hover, .btn-download:hover, .btn-nav-next:hover {
+    transform: translateY(-1px); filter: brightness(1.06);
+    box-shadow: 0 10px 32px -6px rgba(61,220,151,0.7), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .btn-launch-agent, .btn-validate-step, .btn-report, .btn-workflow { transition: all 0.25s cubic-bezier(0.16,1,0.3,1); }
+  .btn-launch-agent:hover:not(:disabled), .btn-validate-step:hover, .btn-report:hover, .btn-workflow:hover {
+    box-shadow: 0 0 22px -4px rgba(61,220,151,0.4); transform: translateY(-1px);
+  }
+  .section-title, .report-title, .pm-title {
+    letter-spacing: -0.6px;
+    background: linear-gradient(180deg, #ffffff 0%, #B9E8D2 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .metric-value, .mandate-kpi-value, .score-display, .cal-amount, .report-kv-value, .ac-val, .exec-total {
+    font-variant-numeric: tabular-nums; letter-spacing: -0.2px;
+  }
+  .metric-value { text-shadow: 0 0 18px rgba(61,220,151,0.18); }
+  th { color: var(--accent-blue); letter-spacing: 1.2px; background: rgba(18,40,32,0.6); }
+  tbody tr { transition: background 0.18s ease; }
+  tbody tr:hover td { background: rgba(61,220,151,0.06); box-shadow: inset 2px 0 0 rgba(61,220,151,0.5); }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(61,220,151,0.5), rgba(61,220,151,0.25)); border-radius: 6px; border: 2px solid #081310; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(61,220,151,0.7); }
+  .form-input:focus, .form-select:focus, .form-textarea:focus, .chat-input:focus, .login-input:focus {
+    border-color: rgba(61,220,151,0.55) !important;
+    box-shadow: 0 0 0 3px rgba(61,220,151,0.12), 0 0 18px -4px rgba(61,220,151,0.35) !important;
+  }
+  .badge { box-shadow: inset 0 1px 0 rgba(255,255,255,0.06); }
+  .avatar-agent { box-shadow: 0 0 14px -2px rgba(61,220,151,0.4); }
+  .section-header::after { box-shadow: 0 0 14px rgba(61,220,151,0.7); height: 2px; }
+  ::selection { background: rgba(61,220,151,0.32); color: #fff; }
+  .chart-donut-wrap { display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .chart-donut { flex-shrink:0; filter: drop-shadow(0 4px 14px rgba(0,0,0,0.5)); }
+  .donut-seg { transition: opacity 0.2s ease; cursor:default; }
+  .chart-donut:hover .donut-seg { opacity:0.45; }
+  .chart-donut .donut-seg:hover { opacity:1; filter: drop-shadow(0 0 8px rgba(61,220,151,0.6)); }
+  .donut-center-val { fill:#EAF5F0; font-family:'JetBrains Mono',monospace; font-size:20px; font-weight:700; }
+  .donut-center-sub { fill:#7FA396; font-family:'IBM Plex Sans',sans-serif; font-size:9px; text-transform:uppercase; letter-spacing:1px; }
+  .donut-legend { flex:1; min-width:120px; display:flex; flex-direction:column; gap:7px; }
+  .donut-legend-row { display:flex; align-items:center; gap:8px; font-size:12px; }
+  .donut-dot { width:9px; height:9px; border-radius:2px; flex-shrink:0; box-shadow:0 0 6px rgba(61,220,151,0.3); }
+  .donut-legend-lbl { color:var(--text-secondary); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .donut-legend-val { color:var(--text-primary); font-family:'JetBrains Mono',monospace; font-weight:700; font-size:12px; }
+  .chart-gauge-wrap { display:flex; justify-content:center; padding:6px 0; }
+  .gauge-val { fill:var(--accent-green); font-family:'JetBrains Mono',monospace; font-size:26px; font-weight:800; }
+  .gauge-label { fill:var(--text-secondary); font-family:'IBM Plex Sans',sans-serif; font-size:10px; text-transform:uppercase; letter-spacing:1.5px; }
+  .chart-spark { vertical-align:middle; }
+  .chart-perf { display:block; border-radius:8px; background:rgba(0,0,0,0.25); }
+  .perf-legend { display:flex; gap:18px; margin-top:8px; font-size:11px; color:var(--text-secondary); }
+  .perf-legend i { display:inline-block; width:14px; height:3px; border-radius:2px; margin-right:5px; vertical-align:middle; }
+
+  /* ════════════════════════════════════════════════════════════════════════
+     AlphaSwarm — SKIN "Essaim" (override final — calé sur la charte graphique)
+     Repeint toute l'app : noir végétal + émeraude. L'émeraude est à la fois
+     la marque ET le sens "gain/PASS" ; ambre = en cours, rouge = perte/FAIL.
+     Placé en DERNIER pour écraser les couches précédentes via :root + !important.
+     ════════════════════════════════════════════════════════════════════════ */
+  :root{
+    /* Surfaces — charte : Humus #081310, Sous-bois #0D1D18 */
+    --bg-main:#081310;
+    --bg-card:#0D1D18;
+    --bg-element:#122820;
+    --bg-hover:#163026;
+    --bg-glass:rgba(13,29,24,.72);
+
+    /* Émeraude (accent UI principal) */
+    --accent-green:#3DDC97;     /* CTA / actif / accent primaire */
+    --accent-blue:#7FA396;      /* lichen (ex-acier) */
+    --accent-gold:#F5A524;      /* ambre — réservé aux états "en cours" */
+    --accent-purple:#7FA396;
+
+    /* Sémantique marché (réservé) */
+    --perf-green:#3DDC97;       /* hausse / PASS — fusionne avec la marque */
+    --accent-red:#FF6B6B;       /* baisse / FAIL */
+
+    /* Texte — charte : Écume / Lichen */
+    --text-primary:#EAF5F0;
+    --text-heading:#ffffff;
+    --text-secondary:#7FA396;
+    --text-dim:#4C6B5D;
+
+    /* Lignes & glows */
+    --border:rgba(234,245,240,.07);
+    --border-accent:rgba(61,220,151,.24);
+    --glow-green:rgba(61,220,151,.14);
+    --glow-blue:rgba(127,163,150,.12);
+
+    /* Legacy aliases */
+    --bg-dark:#081310; --body-bg:#081310; --card-bg:#0D1D18;
+    --card-border:rgba(234,245,240,.06); --th-bg:#122820;
+    --title-blue:#3DDC97; --text-gray:#7FA396;
+    --badge-green:#3DDC97; --badge-orange:#F5A524; --badge-red:#FF6B6B; --badge-blue:#7FA396;
+  }
+
+  /* ---------- Fond global plus profond + halo émeraude ---------- */
+  body{
+    background:#050D0A !important;
+    background-image:
+      radial-gradient(1100px 560px at 72% -12%, rgba(61,220,151,.07), transparent 60%),
+      radial-gradient(820px 480px at -8% 112%, rgba(127,163,150,.06), transparent 55%),
+      linear-gradient(180deg,#081310 0%,#050D0A 100%) !important;
+    background-attachment:fixed !important;
+  }
+
+  /* ---------- Topbar ---------- */
+  .topbar{
+    height:74px !important;
+    background:rgba(8,19,16,.82) !important;
+    backdrop-filter:blur(22px) saturate(150%);
+    -webkit-backdrop-filter:blur(22px) saturate(150%);
+    border-bottom:1px solid rgba(61,220,151,.12) !important;
+    box-shadow:0 1px 0 rgba(61,220,151,.08), 0 14px 40px -16px rgba(0,0,0,.8) !important;
+  }
+  body{ padding-top:74px !important; }
+  #agentProgressBar{ top:74px !important; }
+
+  /* Logo — monogramme officiel "A + chandeliers" (SVG inline, charte Monolithe) */
+  .logo-mark{
+    width:56px;height:36px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    color:#EAF5F0;
+    filter:drop-shadow(0 0 12px rgba(61,220,151,.28));
+  }
+  .logo-mark svg{ width:100%;height:100%;display:block; }
+  .login-logo .logo-mark{ width:68px;height:44px; }
+  .logo-name{ font-size:16px !important;font-weight:800 !important;letter-spacing:-.3px !important; }
+  .logo-name::first-letter{ color:#fff; }
+  .logo-sub{ font-size:9px !important;letter-spacing:2.4px !important;color:var(--text-dim) !important; }
+
+  /* ---------- Onglets ---------- */
+  .tab-item{ font-size:12.5px !important;font-weight:600 !important;padding:0 16px !important; }
+  .tab-item.active{ color:var(--accent-green) !important;text-shadow:0 0 14px rgba(61,220,151,.4); }
+  .tab-item.active::after,
+  .tab-item.active{ border-bottom-color:var(--accent-green) !important; }
+  .tab-item.active::after{ background:var(--accent-green) !important;box-shadow:0 0 10px var(--accent-green),0 0 4px var(--accent-green) !important; }
+
+  /* ---------- Panels / cartes : surface nette, moins "verre" ---------- */
+  .panel,.research-card,.sector-card,.metric-card,.mandate-kpi-card,
+  .report-card,.pm-section,.chat-panel,.compliance-decision,.violation-card,.violation-card-enhanced{
+    background:linear-gradient(165deg,#0F2018 0%,#0A1712 100%) !important;
+    border:1px solid var(--border) !important;
+    border-radius:14px !important;
+    box-shadow:0 1px 0 rgba(255,255,255,.03) inset, 0 20px 44px -26px rgba(0,0,0,.9) !important;
+    backdrop-filter:none !important;-webkit-backdrop-filter:none !important;
+  }
+  .panel:hover,.research-card:hover,.metric-card:hover,.mandate-kpi-card:hover,.report-card:hover{
+    border-color:rgba(61,220,151,.28) !important;
+    box-shadow:0 1px 0 rgba(255,255,255,.05) inset, 0 26px 54px -26px rgba(0,0,0,.95), 0 0 30px -8px rgba(61,220,151,.22) !important;
+  }
+  .panel-title{
+    color:var(--accent-green) !important;letter-spacing:1.6px !important;
+    text-shadow:0 0 12px rgba(61,220,151,.25);
+  }
+
+  /* Titres en dégradé argent comme la ref */
+  .section-title,.report-title,.pm-title{
+    background:linear-gradient(180deg,#ffffff 0%,#7CEBB8 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    letter-spacing:-.4px !important;
+  }
+  .section-header::after{ background:var(--accent-green) !important;box-shadow:0 0 14px rgba(61,220,151,.7) !important;height:2px !important; }
+
+  /* ---------- KPI / metric : chiffres tabulaires + halo ---------- */
+  .metric-value,.mandate-kpi-value,.score-display,.cal-amount,.report-kv-value,.ac-val,.exec-total,
+  .metric-card .metric-value{ font-variant-numeric:tabular-nums;letter-spacing:-.2px; }
+  .metric-value{ text-shadow:0 0 18px rgba(61,220,151,.16); }
+  .mandate-kpi-value{ color:var(--text-primary) !important; }
+  .mandate-kpi-value.blue{ color:var(--accent-blue) !important; }
+
+  /* ---------- Barres / jauges / progressions : dégradé ambre ---------- */
+  .conviction-bar,.confidence-fill,.weight-bar-fill,.bar-fill,
+  .progress-bar-fill,#agentProgressFill,.score-bar-fill,.ai-loading-fill{
+    background:linear-gradient(90deg,#3DDC97 0%,#7CEBB8 100%) !important;
+    box-shadow:0 0 10px rgba(61,220,151,.45) !important;
+  }
+  .bar-fill.green{ background:linear-gradient(90deg,#2bbd86,#3DDC97) !important;box-shadow:0 0 10px rgba(61,220,151,.4) !important; }
+  .bar-fill.gray{ background:var(--text-dim) !important;box-shadow:none !important; }
+
+  /* ---------- Boutons CTA : ambre plein ---------- */
+  .btn-cta,.btn-approve,.btn-download,.btn-nav-next,.login-btn,.btn-analyze{
+    background:linear-gradient(135deg,#3DDC97 0%,#7CEBB8 100%) !important;
+    color:#081310 !important;font-weight:700 !important;border:none !important;
+    box-shadow:0 8px 24px -8px rgba(61,220,151,.6), inset 0 1px 0 rgba(255,255,255,.25) !important;
+  }
+  .btn-cta:hover,.btn-approve:hover,.btn-download:hover,.btn-nav-next:hover,.login-btn:hover,.btn-analyze:hover{
+    filter:brightness(1.06);transform:translateY(-1px);
+    box-shadow:0 12px 34px -8px rgba(61,220,151,.75), inset 0 1px 0 rgba(255,255,255,.3) !important;
+  }
+  .btn-launch-agent,.btn-validate-step,.btn-report,.btn-workflow{ transition:all .25s cubic-bezier(.16,1,.3,1) !important; }
+  .btn-launch-agent:hover:not(:disabled),.btn-validate-step:hover,.btn-report:hover,.btn-workflow:hover{
+    box-shadow:0 0 22px -4px rgba(61,220,151,.4) !important;transform:translateY(-1px);
+  }
+
+  /* ---------- Tables ---------- */
+  th{
+    background:rgba(18,40,32,.7) !important;color:var(--accent-blue) !important;
+    letter-spacing:1.2px !important;border-bottom:1px solid var(--border) !important;
+  }
+  td{ border-bottom:1px solid var(--border) !important; }
+  tbody tr{ transition:background .16s ease; }
+  tbody tr:hover td{ background:rgba(61,220,151,.06) !important;box-shadow:inset 2px 0 0 rgba(61,220,151,.55); }
+  .tr-total-enhanced td{ background:#122820 !important;border-top:2px solid rgba(61,220,151,.28) !important; }
+
+  /* ---------- Badges sémantiques (ratings) ---------- */
+  .badge-strong-buy{ background:rgba(61,220,151,.14) !important;border-color:rgba(61,220,151,.32) !important;color:var(--accent-green) !important; }
+  .badge-buy{ background:rgba(127,163,150,.14) !important;border-color:rgba(127,163,150,.3) !important;color:var(--accent-blue) !important; }
+  .badge-hold{ background:rgba(245,165,36,.14) !important;border-color:rgba(245,165,36,.3) !important;color:var(--accent-gold) !important; }
+  .badge-sell{ background:rgba(255,107,107,.14) !important;border-color:rgba(255,107,107,.3) !important;color:var(--accent-red) !important; }
+  .research-card.card-strong-buy{ border-left:3px solid var(--accent-green) !important; }
+  .research-card.card-buy{ border-left:3px solid var(--accent-blue) !important; }
+  .research-card.card-hold{ border-left:3px solid var(--accent-gold) !important; }
+
+  /* statuts marché : vrai vert/rouge */
+  .status-pass,.correction-ok,.status-badge-pass{ color:var(--perf-green) !important; }
+  .status-fail,.status-badge-fail{ color:var(--accent-red) !important; }
+
+  /* ---------- Champs de formulaire focus ---------- */
+  .form-input:focus,.form-select:focus,.form-textarea:focus,.chat-input:focus,.login-input:focus{
+    border-color:rgba(61,220,151,.55) !important;
+    box-shadow:0 0 0 3px rgba(61,220,151,.12), 0 0 18px -4px rgba(61,220,151,.35) !important;
+  }
+
+  /* ---------- Chat ---------- */
+  .avatar-agent{ background:rgba(61,220,151,.12) !important;color:var(--accent-green) !important;border-color:rgba(61,220,151,.22) !important;box-shadow:0 0 14px -2px rgba(61,220,151,.4); }
+  .chat-msg.user .chat-bubble{ background:rgba(61,220,151,.08) !important;border-color:rgba(61,220,151,.18) !important; }
+  .chat-suggestion:hover{ border-color:var(--accent-green) !important;color:var(--accent-green) !important; }
+  .chat-send-btn{ background:rgba(61,220,151,.12) !important;border-color:rgba(61,220,151,.25) !important;color:var(--accent-green) !important; }
+
+  /* ---------- Charts (donut / gauge / sparkline) ---------- */
+  .donut-center-val,.gauge-val{ fill:var(--text-primary) !important; }
+  .weight-bar-fill,.donut-dot{ box-shadow:0 0 6px rgba(61,220,151,.4); }
+
+  /* ---------- Scrollbar ambre ---------- */
+  ::-webkit-scrollbar{ width:10px;height:10px; }
+  ::-webkit-scrollbar-track{ background:rgba(255,255,255,.02); }
+  ::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,rgba(61,220,151,.5),rgba(61,220,151,.25));border-radius:6px;border:2px solid #081310; }
+  ::-webkit-scrollbar-thumb:hover{ background:rgba(61,220,151,.7); }
+  ::selection{ background:rgba(61,220,151,.32);color:#fff; }
+
+  /* ---------- Login overlay ---------- */
+  .login-overlay{
+    background-image:
+      radial-gradient(ellipse 60% 40% at 50% 28%, rgba(61,220,151,.14) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 20% 82%, rgba(61,220,151,.06) 0%, transparent 50%) !important;
+  }
+  .login-box{ border:1px solid var(--border-accent) !important;box-shadow:0 0 60px rgba(61,220,151,.1),0 32px 64px rgba(0,0,0,.6) !important; }
+
+  /* ---------- Bouton "Marché" dans la topbar ---------- */
+  .btn-market{
+    display:inline-flex; align-items:center; gap:7px; flex-shrink:0;
+    margin-left:12px; padding:8px 16px; border-radius:8px;
+    background:rgba(61,220,151,.1); color:var(--accent-green);
+    border:1px solid rgba(61,220,151,.28);
+    font-family:'IBM Plex Sans',sans-serif; font-weight:700; font-size:12px;
+    letter-spacing:.4px; cursor:pointer; transition:all .2s;
+  }
+  .btn-market:hover{ background:rgba(61,220,151,.2); box-shadow:0 0 18px -4px rgba(61,220,151,.45); transform:translateY(-1px); }
+  .btn-market.active{ background:linear-gradient(135deg,#7CEBB8 0%,#EAF5F0 100%); color:#081310; border-color:transparent; box-shadow:0 6px 20px -6px rgba(61,220,151,.45); }
+
+  /* Point LIVE pulsant (vert performance, pas ambre) */
+  .market-live-dot{ width:8px; height:8px; border-radius:50%; background:var(--perf-green); box-shadow:0 0 8px var(--perf-green); animation:marketPulse 1.8s ease-in-out infinite; }
+  @keyframes marketPulse{ 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.35;transform:scale(.78)} }
+  #market-live-badge{ background:rgba(52,199,89,.12); color:var(--perf-green); border:1px solid rgba(52,199,89,.3); }
+
+  /* Cellules cours : couleurs perf */
+  .market-up{ color:var(--perf-green) !important; }
+  .market-down{ color:var(--accent-red) !important; }
+  .mkt-52-track{ height:5px; border-radius:3px; background:rgba(255,255,255,.07); overflow:hidden; min-width:70px; margin-top:4px; }
+  .mkt-52-fill{ height:100%; border-radius:3px; background:linear-gradient(90deg,#3DDC97,#7CEBB8); }
+  .btn-mkt-remove{ background:none; border:none; color:var(--text-dim); cursor:pointer; font-size:15px; line-height:1; padding:2px 6px; border-radius:4px; transition:all .15s; }
+  .btn-mkt-remove:hover{ color:var(--accent-red); background:rgba(255,107,107,.12); }
+  /* Flash quand un cours bouge en live */
+  .mkt-price.flash-up   { animation:flashUp .9s ease-out; }
+  .mkt-price.flash-down { animation:flashDown .9s ease-out; }
+  @keyframes flashUp   { 0%{background:rgba(52,199,89,.35);color:var(--perf-green);} 100%{background:transparent;} }
+  @keyframes flashDown { 0%{background:rgba(255,107,107,.35);color:var(--accent-red);} 100%{background:transparent;} }
+
+  /* ---------- Listes déroulantes <select> : fin de l'ancien fond bleu ---------- */
+  .form-select{ color-scheme:dark; }
+  .form-select option,
+  .form-input option,
+  select option{
+    background:#122820 !important;   /* Encre — charte Monolithe */
+    color:#EAF5F0 !important;
+  }
+  .form-select option:checked,
+  .form-select option:hover,
+  select option:checked,
+  select option:hover{
+    background:#163026 !important;
+    color:#7CEBB8 !important;
+  }
+
+  /* ---------- Charte Essaim : wordmark & identité ---------- */
+  .logo-name{ text-transform:uppercase; letter-spacing:4px !important; font-weight:700 !important; font-size:14px !important; }
+  .logo-sub{ letter-spacing:2.6px; }
+  .login-title{ text-transform:uppercase; letter-spacing:3px; }
+  .login-footer{ letter-spacing:.4px; }
+
+  /* ---------- Essaim miniature : orbite discrète autour du badge EN COURS ---------- */
+  .badge.pulsing{ position:relative; }
+  .badge.pulsing::before{
+    content:""; position:absolute; inset:-7px; border-radius:inherit;
+    border:1px dashed rgba(61,220,151,.55);
+    animation: swarmOrbit 3.2s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes swarmOrbit{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){
+    .badge.pulsing::before{ animation:none; border-style:solid; opacity:.4; }
+  }
+

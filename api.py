@@ -930,6 +930,12 @@ def vendor_assets(filepath):
     return send_from_directory("vendor", filepath)
 
 
+@app.route("/static/<path:filepath>")
+def static_assets(filepath):
+    """Sert les assets de l'interface refactorisée : static/css/, static/js/."""
+    return send_from_directory("static", filepath)
+
+
 # ┌─────────────────────────────────────────────────────────────────────────────┐
 # │  HELPERS CHAT — synthèse du mandat et de la recherche pour les agents       │
 # │  Partagés par /api/chat et /api/portfolio/briefing pour que TOUS les chats  │
