@@ -215,7 +215,25 @@
       <!-- Phase 1 : placeholder avant analyse -->
       <div id="mandate-phase1" class="panel u-phase-panel">
         <div class="mandate-placeholder">
-          <div class="mandate-placeholder-icon u-brand-ghost">AI</div>
+          <div class="mandate-placeholder-icon u-brand-ghost" aria-label="AlphaSwarm">
+            <svg viewBox="0 0 156 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="currentColor" stroke-linecap="square">
+                <path d="M14 88 L52 10 L90 88" stroke-width="12"/>
+                <path d="M32 62 H72" stroke-width="10"/>
+              </g>
+              <path d="M16 78 L100 26" stroke="#FFFFFF" stroke-width="7"/>
+              <g stroke="#3DDC97" stroke-width="2.4">
+                <line x1="107" y1="28" x2="107" y2="88"/>
+                <line x1="125" y1="14" x2="125" y2="78"/>
+                <line x1="143" y1="36" x2="143" y2="90"/>
+              </g>
+              <g fill="#3DDC97">
+                <rect x="102" y="42" width="10" height="28" rx="1"/>
+                <rect x="120" y="24" width="10" height="34" rx="1"/>
+                <rect x="138" y="50" width="10" height="24" rx="1"/>
+              </g>
+            </svg>
+          </div>
           <div class="u-overlay-title">Analyse IA du Mandat</div>
           <div class="mandate-placeholder-text">Renseignez les paramètres du mandat<br>puis lancez l'analyse pour obtenir<br>la critique et les recommandations de l'agent.</div>
           <button type="button" class="btn-analyze" id="btnAnalyze">Diagnostic de cohérence</button>

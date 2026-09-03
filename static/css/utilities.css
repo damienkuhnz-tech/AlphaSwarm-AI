@@ -5,7 +5,8 @@
 .u-accent-check { accent-color:var(--accent-green);width:15px;height:15px;cursor:pointer; }
 .u-accent-green { accent-color:var(--accent-green); }
 .u-actions-right { text-align:right;padding:0 24px 20px; }
-.u-brand-ghost { font-size:36px;opacity:0.25;font-family:'IBM Plex Mono',monospace;letter-spacing:-2px; }
+.u-brand-ghost { width:96px;height:60px;margin:0 auto;opacity:0.35;color:#1A2420; }
+.u-brand-ghost svg { width:100%;height:100%;display:block; }
 .u-btn-cancel { flex:1;padding:9px;border:1px solid #D3DAD5;background:#FFFFFF;color:#1A2420;border-radius:6px;cursor:pointer;font-size:13px; }
 .u-btn-ghost { background:var(--bg-element);color:var(--text-secondary);border:1px solid var(--border); }
 .u-check-label { display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--text-secondary);cursor:pointer;user-select:none; }
