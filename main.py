@@ -1,9 +1,9 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  ALPHASWARM — POINT D'ENTRÉE (ÉTAPE 0 / PREMIER FICHIER EXÉCUTÉ)              ║
+║  ALPHASWARM - POINT D'ENTRÉE (ÉTAPE 0 / PREMIER FICHIER EXÉCUTÉ)              ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : parser les arguments CLI et lancer le workflow.                      ║
-║  Ce fichier ne contient aucune logique métier — il délègue tout au runner.  ║
+║  Ce fichier ne contient aucune logique métier - il délègue tout au runner.  ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Flux de démarrage :                                                         ║
 ║    python main.py                                                            ║
@@ -40,7 +40,7 @@ from orchestrator.runner import run_workflow
 
 
 # ── Point d'entrée ────────────────────────────────────────────────────────────
-# Conception : main() ne fait que deux choses — parser et déléguer.
+# Conception : main() ne fait que deux choses - parser et déléguer.
 # Aucun agent, aucun LLM, aucun affichage n'est instancié ici.
 
 def main():

@@ -1,10 +1,10 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  TOOLS / BACKTEST — PERFORMANCE RÉTROSPECTIVE DU PORTEFEUILLE                ║
+║  TOOLS / BACKTEST - PERFORMANCE RÉTROSPECTIVE DU PORTEFEUILLE                ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : mesurer comment le portefeuille CONSTRUIT aurait performé sur la     ║
 ║  période écoulée (poids figés appliqués au passé), vs son benchmark.         ║
-║  100% calcul (yfinance + numpy) — aucun LLM, déterministe.                   ║
+║  100% calcul (yfinance + numpy) - aucun LLM, déterministe.                   ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  ⚠️ LIMITE MÉTHODOLOGIQUE (à assumer dans le rapport) :                      ║
 ║  C'est un backtest de l'ALLOCATION ACTUELLE rejouée sur le passé, à poids    ║

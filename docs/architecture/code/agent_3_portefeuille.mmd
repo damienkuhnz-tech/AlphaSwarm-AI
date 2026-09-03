@@ -17,7 +17,7 @@ config:
     wrappingWidth: 200
 ---
 flowchart LR
-  IN("<b>ENTRÉE</b> — state[…]<br/>research · mandate · risk_report<br/>portfolio_briefing · portfolio_iteration")
+  IN("<b>ENTRÉE</b> - state[…]<br/>research · mandate · risk_report<br/>portfolio_briefing · portfolio_iteration")
   PY("<b>préparation</b><br/>sorted(research, key=score_conviction, reverse=True)<br/>poids_max_effectif = max(mandate.poids_max_par_position,<br/>(1 − cash_min) / nb_cible)<br/>briefing_block + corrections_block si iteration &gt; 1")
   L("<b>appel</b><br/>_call_llm_with_retry(user_msg)<br/>MAX_TOKENS_OVERRIDE = 8000<br/>data = _parse_json(raw)")
   FX("<b>corrections</b><br/>data.pop('portfolio' | 'portefeuille') → data.update(inner)<br/>data['capital_total'] = mandate.capital<br/>facteur = (1 − cash) / Σ poids ; p['poids'] *= facteur<br/>cash = 1 − Σ poids ; p['valeur_usd'] = capital × p['poids']")

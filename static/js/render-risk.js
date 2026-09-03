@@ -1,7 +1,7 @@
   var _QD_MONO = 'font-family:\'JetBrains Mono\',monospace;';
-  function _qdPct(x, dec) { return (x == null || isNaN(x)) ? '—' : (x * 100).toFixed(dec == null ? 1 : dec) + '%'; }
-  function _qdPctS(x, dec) { return (x == null || isNaN(x)) ? '—' : ((x >= 0 ? '+' : '') + (x * 100).toFixed(dec == null ? 1 : dec) + '%'); }
-  function _qdNum(x, dec) { return (x == null || isNaN(x)) ? '—' : Number(x).toFixed(dec == null ? 2 : dec); }
+  function _qdPct(x, dec) { return (x == null || isNaN(x)) ? '' : (x * 100).toFixed(dec == null ? 1 : dec) + '%'; }
+  function _qdPctS(x, dec) { return (x == null || isNaN(x)) ? '' : ((x >= 0 ? '+' : '') + (x * 100).toFixed(dec == null ? 1 : dec) + '%'); }
+  function _qdNum(x, dec) { return (x == null || isNaN(x)) ? '' : Number(x).toFixed(dec == null ? 2 : dec); }
   function _qdKpi(lbl, val, sub, tone) {
     return '<div class="qd-kpi' + (tone ? ' ' + tone : '') + '"><div class="lbl">' + lbl + '</div><div class="val">' + val + '</div>' + (sub ? '<div class="sub">' + sub + '</div>' : '') + '</div>';
   }
@@ -41,7 +41,7 @@
       '<div style="font-size:11px;color:#5F6E66;margin-top:4px;">' + comp.n_pass + ' tests PASS · ' + comp.n_fail + ' FAIL</div></div>' +
       '<div style="min-width:180px;">' + CHART.gauge(rScore, 0, 100, { size: 180, display: rScore, label: rScore < 40 ? 'Risque faible' : rScore < 70 ? 'Risque modéré' : 'Risque élevé' }) + '</div>' +
       '<div style="flex:1;min-width:240px;font-size:12.5px;color:#1A2420;line-height:1.6;">' + _escapeHtml(risk.commentaire || '') +
-      '<div style="font-size:10.5px;color:#5F6E66;margin-top:8px;">Validation sur ' + (meta.jours || '—') + ' jours (' + (meta.debut || '') + ' → ' + (meta.fin || '') + ') · benchmark ' + _escapeHtml(meta.benchmark || '') + ' · rebalancement ' + (meta.rebalancement || 'mensuel') + ' · calcul ' + (meta.duree_calcul_s != null ? meta.duree_calcul_s + 's' : '—') + '</div></div></div>';
+      '<div style="font-size:10.5px;color:#5F6E66;margin-top:8px;">Validation sur ' + (meta.jours || '') + ' jours (' + (meta.debut || '') + ' → ' + (meta.fin || '') + ') · benchmark ' + _escapeHtml(meta.benchmark || '') + ' · rebalancement ' + (meta.rebalancement || 'mensuel') + ' · calcul ' + (meta.duree_calcul_s != null ? meta.duree_calcul_s + 's' : '') + '</div></div></div>';
     var kpis = '<div class="qd-kpis" style="margin-top:14px;">' +
       _qdKpi('CAGR', _qdPct(perf.cagr), 'bench ' + _qdPct(perf.cagr_benchmark), (perf.cagr || 0) >= (perf.cagr_benchmark || 0) ? 'good' : 'bad') +
       _qdKpi('Sharpe', _qdNum(perf.sharpe), 'Sortino ' + _qdNum(perf.sortino), 'accent') +
@@ -62,7 +62,7 @@
         vb += '<div class="table-wrap"><table><thead><tr><th>Sévérité</th><th>Violation</th><th>Action</th></tr></thead><tbody>';
         risk.violations.forEach(function (v) {
           var bc = v.severite === 'CRITIQUE' ? 'badge-red' : v.severite === 'MAJEURE' ? 'badge-orange' : 'badge-yellow';
-          vb += '<tr><td><span class="badge ' + bc + '" style="font-size:10px;">' + (v.severite || '—') + '</span></td><td style="font-size:12px;">' + _escapeHtml(v.detail || '') + '</td><td style="font-size:11.5px;color:#5F6E66;">' + _escapeHtml(v.action || '') + '</td></tr>';
+          vb += '<tr><td><span class="badge ' + bc + '" style="font-size:10px;">' + (v.severite || '') + '</span></td><td style="font-size:12px;">' + _escapeHtml(v.detail || '') + '</td><td style="font-size:11.5px;color:#5F6E66;">' + _escapeHtml(v.action || '') + '</td></tr>';
         });
         vb += '</tbody></table></div>';
       } else { vb += '<div class="qd-note">Aucune violation détectée.</div>'; }
@@ -77,11 +77,11 @@
     // ── 2. MANDATE COMPLIANCE ────────────────────────────────────────────────
     var ct = '<div style="margin-bottom:10px;">' +
       '<span class="badge ' + (comp.statut_global === 'PASS' ? 'badge-green' : 'badge-red') + '" style="font-size:12px;padding:5px 16px;">MANDAT : ' + comp.statut_global + '</span>' +
-      '<span style="font-size:11px;color:#5F6E66;margin-left:12px;">' + comp.n_pass + ' PASS · ' + comp.n_fail + ' FAIL · ' + comp.n_na + ' N/A — tests calculés en Python, indépendants du LLM</span></div>';
+      '<span style="font-size:11px;color:#5F6E66;margin-left:12px;">' + comp.n_pass + ' PASS · ' + comp.n_fail + ' FAIL · ' + comp.n_na + ' N/A - tests calculés en Python, indépendants du LLM</span></div>';
     ct += '<div class="table-wrap"><table><thead><tr><th>Contrainte</th><th>Catégorie</th><th>Limite</th><th>Mesuré</th><th style="text-align:center;">Statut</th></tr></thead><tbody>';
     (comp.tests || []).forEach(function (t) {
       var cls = t.statut === 'PASS' ? 'qd-pass' : t.statut === 'FAIL' ? 'qd-fail' : 'qd-na';
-      var icon = t.statut === 'PASS' ? '✓' : t.statut === 'FAIL' ? '✗' : '—';
+      var icon = t.statut === 'PASS' ? '✓' : t.statut === 'FAIL' ? '✗' : '';
       ct += '<tr class="qd-compliance-row"><td>' + _escapeHtml(t.nom) + (t.detail ? '<div style="font-size:10px;color:#5F6E66;">' + _escapeHtml(t.detail) + '</div>' : '') + '</td>' +
         '<td style="color:#5F6E66;font-size:11px;">' + _escapeHtml(t.categorie) + '</td>' +
         '<td style="' + _QD_MONO + 'font-size:11.5px;">' + _escapeHtml(t.limite) + '</td>' +
@@ -114,14 +114,14 @@
       '</table></div></div>';
     var st = vq.structure || {};
     pb += '<div class="qd-kpis" style="margin-top:14px;">' +
-      _qdKpi('Positions', st.nombre_positions != null ? st.nombre_positions : '—', 'effectives : ' + (st.positions_effectives != null ? st.positions_effectives : '—')) +
+      _qdKpi('Positions', st.nombre_positions != null ? st.nombre_positions : '', 'effectives : ' + (st.positions_effectives != null ? st.positions_effectives : '')) +
       _qdKpi('HHI', _qdNum(st.herfindahl, 3), 'concentration') +
       _qdKpi('Ratio diversification', _qdNum(st.ratio_diversification), '&gt; 1 = bénéfice réel') +
       _qdKpi('Turnover', _qdPct(st.turnover_annuel_rebalancement, 0), 'rebalancement mensuel') +
-      _qdKpi('Top 10', m.concentration_top10 || '—', 'top 1 : ' + (m.concentration_top1 || '—')) +
+      _qdKpi('Top 10', m.concentration_top10 || '', 'top 1 : ' + (m.concentration_top1 || '')) +
       '</div>';
-    html += _qdPanel('perf', 'Performance — ' + (meta.periode || '') + ' vs ' + _escapeHtml(meta.benchmark || ''), pb,
-      (st.tickers_exclus && st.tickers_exclus.length) ? 'Titres exclus (historique insuffisant) : ' + st.tickers_exclus.join(', ') + ' — poids renormalisés.' : '');
+    html += _qdPanel('perf', 'Performance - ' + (meta.periode || '') + ' vs ' + _escapeHtml(meta.benchmark || ''), pb,
+      (st.tickers_exclus && st.tickers_exclus.length) ? 'Titres exclus (historique insuffisant) : ' + st.tickers_exclus.join(', ') + ' - poids renormalisés.' : '');
 
     // ── 4. TRAIN / TEST ──────────────────────────────────────────────────────
     var tt = vq.train_test || {};
@@ -139,10 +139,10 @@
           '</table></div></div>';
       }
       var degrad = (isM.sharpe != null && oosM.sharpe != null) ? (oosM.sharpe - isM.sharpe) : null;
-      var tb = '<div class="qd-grid-2">' + ttCard('In-Sample (80% — ' + (tt.date_coupure ? 'jusqu\'au ' + tt.date_coupure : '') + ')', isM, '#5F6E66') +
+      var tb = '<div class="qd-grid-2">' + ttCard('In-Sample (80% - ' + (tt.date_coupure ? 'jusqu\'au ' + tt.date_coupure : '') + ')', isM, '#5F6E66') +
         ttCard('Out-of-Sample (20% récents)', oosM, '#117B54') + '</div>' +
         '<div class="qd-kpis" style="margin-top:14px;">' +
-        _qdKpi('Δ Sharpe OOS', degrad == null ? '—' : (degrad >= 0 ? '+' : '') + degrad.toFixed(2), degrad != null && degrad >= -0.3 ? 'généralisation correcte' : 'dégradation hors échantillon', degrad != null ? (degrad >= -0.3 ? 'good' : 'bad') : '') +
+        _qdKpi('Δ Sharpe OOS', degrad == null ? '' : (degrad >= 0 ? '+' : '') + degrad.toFixed(2), degrad != null && degrad >= -0.3 ? 'généralisation correcte' : 'dégradation hors échantillon', degrad != null ? (degrad >= -0.3 ? 'good' : 'bad') : '') +
         '</div>';
       html += _qdPanel('traintest', 'Validation Train / Test (split chronologique 80/20)', tb,
         'Split temporel sans mélange : les 20 % les plus récents jouent le rôle de données jamais vues. Limite : la sélection des titres reste postérieure au début de l\'historique (biais de sélection documenté).');
@@ -168,7 +168,7 @@
           '<td style="' + _QD_MONO + '">' + _qdPctS(f.surperformance) + '</td></tr>';
       });
       wb += '</tbody></table></div>';
-      html += _qdPanel('walkforward', 'Walk-Forward — stabilité temporelle', wb,
+      html += _qdPanel('walkforward', 'Walk-Forward - stabilité temporelle', wb,
         'Chaque fenêtre de test est disjointe : une performance stable entre fenêtres est un signe de robustesse, un bon résultat isolé peut être de la chance.');
     }
 
@@ -180,7 +180,7 @@
         '<div><div style="font-size:11px;color:#5F6E66;margin-bottom:6px;">Rolling Beta (6 mois)</div>' + CHART.dlines([{ label: 'Beta', color: '#117B54', points: roll.beta }], { height: 130, refLine: 1 }) + '</div>' +
         '<div><div style="font-size:11px;color:#5F6E66;margin-bottom:6px;">Rolling Volatilité (6 mois)</div>' + CHART.dlines([{ label: 'Volatilité', color: '#117B54', points: roll.volatilite }], { height: 130 }) + '</div>' +
         '</div>';
-      html += _qdPanel('rolling', 'Rolling Metrics — fenêtre glissante 126 jours', rb);
+      html += _qdPanel('rolling', 'Rolling Metrics - fenêtre glissante 126 jours', rb);
     }
 
     // ── 7. DRAWDOWN ──────────────────────────────────────────────────────────
@@ -188,7 +188,7 @@
     if ((ddq.courbe || []).length > 3) {
       var db = '<div class="qd-kpis" style="margin-bottom:12px;">' +
         _qdKpi('Max Drawdown', _qdPct(ddq.max), '', 'bad') +
-        _qdKpi('Durée de chute', (ddq.duree_jours != null ? ddq.duree_jours + ' j' : '—'), 'pic → creux') +
+        _qdKpi('Durée de chute', (ddq.duree_jours != null ? ddq.duree_jours + ' j' : ''), 'pic → creux') +
         _qdKpi('Récupération', (ddq.recovery_jours != null ? ddq.recovery_jours + ' j' : 'en cours'), 'creux → nouveau pic', ddq.recovery_jours != null ? 'good' : 'bad') +
         '</div>';
       db += CHART.dlines([{ label: 'Drawdown (%)', color: '#B3261E', points: (ddq.courbe || []).map(function (p) { return { date: p.date, valeur: p.drawdown }; }) }], { height: 160, refLine: 0 });
@@ -215,7 +215,7 @@
         bsBlock('Distribution du Sharpe', bs.sharpe, fmtN, perf.sharpe) +
         bsBlock('Distribution du Max Drawdown', bs.max_drawdown, fmtP, perf.max_drawdown) +
         '</div>';
-      html += _qdPanel('bootstrap', 'Bootstrap — significativité statistique (' + bs.n_simulations + ' ré-échantillonnages)', bb,
+      html += _qdPanel('bootstrap', 'Bootstrap - significativité statistique (' + bs.n_simulations + ' ré-échantillonnages)', bb,
         'Ré-échantillonnage par blocs conjoint portefeuille/benchmark : préserve l\'autocorrélation et la corrélation croisée. Si l\'IC95 du Sharpe exclut 0, la performance est statistiquement significative.');
     }
 
@@ -233,7 +233,7 @@
         CHART.fanChart(mc.fan_chart, { height: 190 }) + '</div>' +
         '<div><div style="font-size:11px;color:#5F6E66;margin-bottom:6px;">Distribution du rendement à 1 an</div>' +
         CHART.histogram(mc.histogramme, { height: 170, format: function (x) { return _qdPct(x, 0); }, marker: 0, markerLabel: '0%' }) + '</div></div>';
-      html += _qdPanel('montecarlo', 'Monte Carlo — distribution des scénarios futurs', mb,
+      html += _qdPanel('montecarlo', 'Monte Carlo - distribution des scénarios futurs', mb,
         'Trajectoires simulées par bootstrap de blocs des rendements historiques (aucune hypothèse de normalité). ' + (mc.methode || ''));
     }
 
@@ -250,11 +250,11 @@
           '<td style="' + _QD_MONO + 'color:' + ((s.rendement || 0) >= 0 ? '#117B54' : '#B3261E') + ';">' + _qdPctS(s.rendement) + '</td>' +
           '<td style="' + _QD_MONO + '">' + _qdPctS(s.rendement_benchmark) + '</td>' +
           '<td style="' + _QD_MONO + 'color:#B3261E;">' + _qdPct(s.max_drawdown) + '</td>' +
-          '<td style="' + _QD_MONO + '">' + (s.recovery_jours != null ? s.recovery_jours + ' j' : '—') + '</td>' +
+          '<td style="' + _QD_MONO + '">' + (s.recovery_jours != null ? s.recovery_jours + ' j' : '') + '</td>' +
           '<td style="' + _QD_MONO + '">' + _qdPct(s.couverture_poids, 0) + '</td></tr>';
       });
       sb += '</tbody></table></div>';
-      html += _qdPanel('stress', 'Stress Tests — scénarios historiques', sb,
+      html += _qdPanel('stress', 'Stress Tests - scénarios historiques', sb,
         'Allocation actuelle rejouée sur des crises réelles : capture les corrélations effectives en période de stress. Couverture = part du portefeuille disposant d\'un historique sur la fenêtre.');
     }
 
@@ -280,13 +280,13 @@
           _qdKpi('Seuil p95 aléatoire', _qdNum(ta.sharpe_aleatoire_p95), 'même univers, poids Dirichlet') +
           '</div>';
       }
-      html += _qdPanel('benchmarks', 'Benchmark — comparaison multi-références', kb,
+      html += _qdPanel('benchmarks', 'Benchmark - comparaison multi-références', kb,
         'Le test placebo situe l\'allocation dans la distribution de portefeuilles aléatoires sur le MÊME univers de titres : il mesure la valeur de l\'allocation au-delà de la sélection.');
     }
 
     // ── Commentaire méthodologique de l'agent ────────────────────────────────
     if (risk.commentaire_backtest) {
-      html += _qdPanel('methodo', 'Lecture du Risk Agent — validation & limites',
+      html += _qdPanel('methodo', 'Lecture du Risk Agent - validation & limites',
         '<div style="font-size:12.5px;color:#1A2420;line-height:1.6;">' + _escapeHtml(risk.commentaire_backtest) + '</div>',
         'Backtest rétrospectif : l\'allocation actuelle est rejouée sur le passé (biais de sélection possible sur le choix des titres). Les protocoles ci-dessus (OOS, walk-forward, bootstrap, placebo) encadrent ce biais.');
     }
@@ -328,7 +328,7 @@
       html += '<div class="panel"><div class="panel-title">Violations Détectées</div><div class="table-wrap"><table><thead><tr><th>Sévérité</th><th>Détail</th></tr></thead><tbody>';
       risk.violations.forEach(function(v) {
         var bc = v.severite === 'CRITIQUE' ? 'badge-red' : v.severite === 'MAJEURE' ? 'badge-orange' : 'badge-yellow';
-        html += '<tr><td><span class="badge ' + bc + '" style="font-size:10px;">' + (v.severite||'—') + '</span></td><td style="font-size:12px;">' + (v.detail||'') + '</td></tr>';
+        html += '<tr><td><span class="badge ' + bc + '" style="font-size:10px;">' + (v.severite||'') + '</span></td><td style="font-size:12px;">' + (v.detail||'') + '</td></tr>';
       });
       html += '</tbody></table></div></div>';
     }
@@ -358,15 +358,15 @@
       if (m.concentration_top10)    html += '<tr><td>Concentration top 10</td><td style="' + mono + '">' + _escapeHtml(m.concentration_top10) + '</td></tr>';
       html += '</table></div></div>';
       if (risk.backtest && risk.backtest.statut === 'OK') {
-        var b = risk.backtest, pctB = function(x){ return (x==null) ? '—' : (x*100).toFixed(2) + '%'; };
+        var b = risk.backtest, pctB = function(x){ return (x==null) ? '' : (x*100).toFixed(2) + '%'; };
         var surColor = (b.surperformance||0) >= 0 ? 'var(--perf-green)' : '#B3261E';
-        html += '<div class="panel"><div class="panel-title">Backtest — ' + _escapeHtml(b.periode||'') + (b.benchmark_utilise ? ' <span style="color:#5F6E66;font-size:10px;">vs ' + _escapeHtml(b.benchmark_utilise) + '</span>' : '') + '</div>';
+        html += '<div class="panel"><div class="panel-title">Backtest - ' + _escapeHtml(b.periode||'') + (b.benchmark_utilise ? ' <span style="color:#5F6E66;font-size:10px;">vs ' + _escapeHtml(b.benchmark_utilise) + '</span>' : '') + '</div>';
         if (b.courbe_valeur && b.courbe_valeur.length > 1) html += '<div style="margin-bottom:14px;">' + CHART.perfCurve(b.courbe_valeur, { height: 180 }) + '</div>';
         html += '<div class="table-wrap"><table class="kv-table">';
         html += '<tr><td>Rendement portefeuille</td><td style="' + mono + '">' + pctB(b.rendement_total) + '</td></tr>';
         html += '<tr><td>Rendement benchmark</td><td style="' + mono + '">' + pctB(b.rendement_benchmark) + '</td></tr>';
         html += '<tr><td>Surperformance</td><td style="' + mono + 'color:' + surColor + ';">' + ((b.surperformance||0)>=0?'+':'') + pctB(b.surperformance) + '</td></tr>';
-        html += '<tr><td>Sharpe</td><td style="' + mono + '">' + (b.sharpe==null?'—':b.sharpe) + '</td></tr>';
+        html += '<tr><td>Sharpe</td><td style="' + mono + '">' + (b.sharpe==null?'':b.sharpe) + '</td></tr>';
         html += '<tr><td>Max drawdown</td><td style="' + mono + 'color:#B3261E;">' + pctB(b.max_drawdown) + '</td></tr>';
         html += '</table></div>';
         if (risk.commentaire_backtest) html += '<div style="font-size:12px;color:#1A2420;padding:8px 4px 2px;line-height:1.5;">' + _escapeHtml(risk.commentaire_backtest) + '</div>';
@@ -378,7 +378,7 @@
     _qdUpdateAlert(risk);
   }
 
-  // ── Rendu dynamique — Étape 5 : Execution ──
+  // ── Rendu dynamique - Étape 5 : Execution ──
   function renderExecution(execution) {
     var el = document.getElementById('executionContent');
     if (!el || !execution) return;
@@ -389,11 +389,11 @@
       var ac = o.action === 'BUY' ? 'badge-green' : 'badge-red';
       var pc = o.priorite === 'HIGH' ? 'badge-red' : o.priorite === 'NORMAL' ? 'badge-blue' : 'badge-orange';
       html += '<tr><td>' + (i+1) + '</td><td><strong>' + (o.ticker||'') + '</strong></td>';
-      html += '<td><span class="badge ' + ac + '" style="font-size:10px;">' + (o.action||'—') + '</span></td>';
+      html += '<td><span class="badge ' + ac + '" style="font-size:10px;">' + (o.action||'') + '</span></td>';
       html += '<td style="font-family:\'JetBrains Mono\',monospace;">$' + Math.round(o.valeur_usd||0).toLocaleString() + '</td>';
       html += '<td>' + ((o.poids_cible||0)*100).toFixed(1) + '%</td>';
-      html += '<td style="font-size:11px;">' + (o.algo_suggere||'—') + '</td>';
-      html += '<td><span class="badge ' + pc + '" style="font-size:10px;">' + (o.priorite||'—') + '</span></td></tr>';
+      html += '<td style="font-size:11px;">' + (o.algo_suggere||'') + '</td>';
+      html += '<td><span class="badge ' + pc + '" style="font-size:10px;">' + (o.priorite||'') + '</span></td></tr>';
     });
     html += '</tbody></table></div>';
     if (execution.couts_transaction) {

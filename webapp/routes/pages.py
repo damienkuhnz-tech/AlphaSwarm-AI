@@ -1,5 +1,5 @@
 """
-WEBAPP / ROUTES / PAGES — pages et assets statiques de l'interface.
+WEBAPP / ROUTES / PAGES - pages et assets statiques de l'interface.
 
 GET /                  : landing page scroll-driven
 GET /app               : interface principale (templates/app.html + partials)

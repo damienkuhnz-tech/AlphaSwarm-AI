@@ -1,5 +1,5 @@
 """
-WEBAPP / ROUTES / REPORTS — rapports HTML/PDF de la recherche.
+WEBAPP / ROUTES / REPORTS - rapports HTML/PDF de la recherche.
 
 GET  /api/report/<ticker>          : dernier rapport HTML d'un titre
 GET  /api/sector-report/<secteur>  : dernier rapport HTML sectoriel
@@ -17,7 +17,7 @@ from config.settings import settings
 bp = Blueprint("reports", __name__)
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  GET /api/report/<ticker> — RAPPORT HTML PAR TICKER                        │
+# │  GET /api/report/<ticker> - RAPPORT HTML PAR TICKER                        │
 # │  Sert le dernier rapport HTML généré pour un ticker par EquityResearch.   │
 # └─────────────────────────────────────────────────────────────────────────────┘
 
@@ -64,7 +64,7 @@ def get_report(ticker: str):
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  GET /api/sector-report/<sector> — RAPPORT HTML SECTORIEL                  │
+# │  GET /api/sector-report/<sector> - RAPPORT HTML SECTORIEL                  │
 # │  Sert le dernier rapport sectoriel généré par EquityResearchAgent.        │
 # └─────────────────────────────────────────────────────────────────────────────┘
 
@@ -113,7 +113,7 @@ def get_sector_report(sector: str):
     )
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  POST /api/chat-report — GÉNÉRATION RAPPORT À LA DEMANDE (depuis le chat)  │
+# │  POST /api/chat-report - GÉNÉRATION RAPPORT À LA DEMANDE (depuis le chat)  │
 # └─────────────────────────────────────────────────────────────────────────────┘
 
 @bp.route("/api/chat-report", methods=["POST"])

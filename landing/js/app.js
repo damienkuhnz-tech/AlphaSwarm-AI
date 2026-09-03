@@ -1,7 +1,7 @@
 /* ================================================================
-   AlphaSwarm Landing — JS Engine
+   AlphaSwarm Landing - JS Engine
    Lenis + GSAP/ScrollTrigger
-   (l'animation 3D du héro — canvas + 150 frames — a été retirée)
+   (l'animation 3D du héro canvas + 150 frames a été retirée)
    ================================================================ */
 
 const heroSection   = document.querySelector(".hero-standalone");

@@ -1,5 +1,5 @@
 """
-WEBAPP / ROUTES / SECTOR — segmentation sectorielle temps réel du formulaire.
+WEBAPP / ROUTES / SECTOR - segmentation sectorielle temps réel du formulaire.
 
 POST /api/sector-segmentation : primary/secondary/excluded selon le profil.
 """
@@ -9,7 +9,7 @@ from flask import Blueprint, request, jsonify
 bp = Blueprint("sector", __name__)
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  POST /api/sector-segmentation — SEGMENTATION SECTORIELLE EN TEMPS RÉEL   │
+# │  POST /api/sector-segmentation - SEGMENTATION SECTORIELLE EN TEMPS RÉEL   │
 # │  Retourne la segmentation sectorielle selon le profil de risque.           │
 # │  Appelé pendant que le PM remplit le formulaire (pas besoin de run).      │
 # └─────────────────────────────────────────────────────────────────────────────┘
@@ -23,7 +23,7 @@ def sector_segmentation():
     Body JSON : {profil_risque: "conservateur"|...}
     """
     # ── Import retardé (lazy) ─────────────────────────────────────────────────
-    # tools/sector_beta.py est lourd à importer — on ne le charge que si la route est appelée
+    # tools/sector_beta.py est lourd à importer - on ne le charge que si la route est appelée
     from tools.sector_beta import (
         get_sector_classification,  # Retourne primary/secondary/excluded pour un profil
         build_sector_weights,       # Retourne les poids min/max par secteur

@@ -20,9 +20,9 @@ config:
 ---
 flowchart TB
 
-  MANDAT("<b>ENTRÉE</b> — mandat, brief de recherche,<br/>tickers éventuellement fournis")
+  MANDAT("<b>ENTRÉE</b> - mandat, brief de recherche,<br/>tickers éventuellement fournis")
 
-  subgraph UNIV["&nbsp;&nbsp;PHASE 1 — CONSTRUIRE L'UNIVERS : quatre chemins essayés dans l'ordre a, b, c, d — chacun en repli du précédent&nbsp;&nbsp;"]
+  subgraph UNIV["&nbsp;&nbsp;PHASE 1 - CONSTRUIRE L'UNIVERS : quatre chemins essayés dans l'ordre a, b, c, d - chacun en repli du précédent&nbsp;&nbsp;"]
     direction TB
     U1("<b>a</b> · tickers fournis explicitement par le gérant")
     U2("<b>b</b> · génération depuis le brief conversationnel")
@@ -35,16 +35,16 @@ flowchart TB
     U4 --> TRI
   end
 
-  subgraph ANA["&nbsp;&nbsp;PHASE 2 — ANALYSER CHAQUE TITRE : 5 titres en parallèle&nbsp;&nbsp;"]
+  subgraph ANA["&nbsp;&nbsp;PHASE 2 - ANALYSER CHAQUE TITRE : 5 titres en parallèle&nbsp;&nbsp;"]
     direction TB
-    F("<b>Collecte parallèle</b> — 6 requêtes simultanées par titre<br/>yfinance · Financial Modeling Prep · SEC EDGAR · Tavily<br/><i>chaque source renvoie un statut d'erreur plutôt que de lever :<br/>un titre s'analyse même avec la moitié des sources en panne</i>")
+    F("<b>Collecte parallèle</b> - 6 requêtes simultanées par titre<br/>yfinance · Financial Modeling Prep · SEC EDGAR · Tavily<br/><i>chaque source renvoie un statut d'erreur plutôt que de lever :<br/>un titre s'analyse même avec la moitié des sources en panne</i>")
     E("<b>Complément déterministe</b><br/>nom, secteur et pays repris des données de marché")
-    L("<b>APPEL AU MODÈLE</b> — un par titre<br/>thèse, valorisation, risques, catalyseurs,<br/>score de conviction, poids suggéré")
+    L("<b>APPEL AU MODÈLE</b> - un par titre<br/>thèse, valorisation, risques, catalyseurs,<br/>score de conviction, poids suggéré")
     F --> E --> L --> C
     C("<b>Casts tolérants et bornage</b><br/>« 75/100 » devient 75, le poids est ramené dans [0 ; 0,10]<br/><i>sans cela, le titre entier basculait en analyse dégradée</i>")
   end
 
-  OUT("<b>SORTIE</b><br/>research[] — une fiche par titre<br/>un rapport HTML autonome par titre")
+  OUT("<b>SORTIE</b><br/>research[] - une fiche par titre<br/>un rapport HTML autonome par titre")
 
   MANDAT --> UNIV
   UNIV -->|"univers ordonné"| ANA

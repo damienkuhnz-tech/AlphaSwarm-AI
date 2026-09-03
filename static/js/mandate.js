@@ -69,38 +69,38 @@
         if (te <= 6) forts.push(['ok','','Tracking Error de '+te+'% bien calibré pour une gestion active disciplinée.']);
         if (capital >= 50e6) forts.push(['ok','','Taille du fonds ('+capStr+') suffisante pour une diversification optimale.']);
         if (horizon.includes('3-5') || horizon.includes('5-10')) forts.push(['ok','','Horizon '+horizon+' cohérent avec une stratégie actions long-only.']);
-        if (esgScore === 'AA' || esgScore === 'A') forts.push(['ok','','Score ESG exigeant ('+esgScore+') — positionnement différenciant sur le marché.']);
+        if (esgScore === 'AA' || esgScore === 'A') forts.push(['ok','','Score ESG exigeant ('+esgScore+') - positionnement différenciant sur le marché.']);
         // Cohérence profil vs contraintes
-        if (profil === 'Conservateur' && vol <= 15) forts.push(['ok','','Profil '+profil+' cohérent avec une volatilité max de '+vol+'% — bonne adéquation risque/mandat.']);
-        if (profil === 'Équilibré' && vol >= 12 && vol <= 20) forts.push(['ok','','Profil '+profil+' aligné avec une volatilité max de '+vol+'% — équilibre rendement/risque respecté.']);
+        if (profil === 'Conservateur' && vol <= 15) forts.push(['ok','','Profil '+profil+' cohérent avec une volatilité max de '+vol+'% - bonne adéquation risque/mandat.']);
+        if (profil === 'Équilibré' && vol >= 12 && vol <= 20) forts.push(['ok','','Profil '+profil+' aligné avec une volatilité max de '+vol+'% - équilibre rendement/risque respecté.']);
         if (profil === 'Agressif' && vol >= 18) forts.push(['ok','','Profil '+profil+' aligné avec la tolérance volatilité déclarée ('+vol+'%).']);
         if (perteMax >= dd) forts.push(['ok','','Perte max tolérée ('+perteMax+'%) compatible avec le drawdown max fixé ('+dd+'%).']);
-        if (liquidite === 'Faible' && posMax <= 8) forts.push(['ok','','Besoin de liquidité faible — cohérent avec des positions concentrées jusqu\'à '+posMax+'%.']);
+        if (liquidite === 'Faible' && posMax <= 8) forts.push(['ok','','Besoin de liquidité faible - cohérent avec des positions concentrées jusqu\'à '+posMax+'%.']);
         if (forts.length === 0) forts.push(['ok','','Paramètres enregistrés. Analyse de cohérence effectuée.']);
-        if (te > 8) alertes.push(['warn','','Tracking Error de '+te+'% est élevé — risque de déviation significative du benchmark '+bench+'.']);
+        if (te > 8) alertes.push(['warn','','Tracking Error de '+te+'% est élevé - risque de déviation significative du benchmark '+bench+'.']);
         if (vol > 22) alertes.push(['warn','','Volatilité max de '+vol+'% dépasse les standards institutionnels (≤20% recommandé).']);
         if (dd > 25) alertes.push(['warn','','Drawdown de '+dd+'% peut déclencher des clauses de rachat. Limite recommandée : 20%.']);
-        if (betaMax - betaMin > 0.6) alertes.push(['warn','','Plage Beta étendue ('+betaMin+'-'+betaMax+') — exposition directionnelle potentiellement forte.']);
+        if (betaMax - betaMin > 0.6) alertes.push(['warn','','Plage Beta étendue ('+betaMin+'-'+betaMax+') - exposition directionnelle potentiellement forte.']);
         if (posMax > 8) alertes.push(['warn','','Position max de '+posMax+'% est concentrée. Risque idiosyncratique non négligeable.']);
         if (turnover > 60) alertes.push(['warn','','Turnover de '+turnover+'% génère des coûts de transaction significatifs (+15-20 bps estimés).']);
         // Incohérences profil / contraintes
-        if (profil === 'Conservateur' && vol > 15) alertes.push(['warn','','Incohérence : profil Conservateur mais volatilité max de '+vol+'% — recommandé ≤ 12%.']);
-        if (profil === 'Agressif' && dd < 20) alertes.push(['warn','','Profil Agressif avec drawdown max de '+dd+'% semble restrictif — envisager 25-35%.']);
-        if (perteMax < dd) alertes.push(['warn','','Perte max tolérée ('+perteMax+'%) inférieure au drawdown max autorisé ('+dd+'%) — risque de clause de rachat.']);
-        if (sensibilite === 'Élevée' && vol > 18) alertes.push(['warn','','Forte sensibilité aux marchés + volatilité max de '+vol+'% — risque comportemental élevé en période de correction.']);
-        if (liquidite === 'Élevé' && posMax > 6) alertes.push(['warn','','Besoin de liquidité élevé mais positions jusqu\'à '+posMax+'% — réduire à 5% max pour garantir la liquidité.']);
+        if (profil === 'Conservateur' && vol > 15) alertes.push(['warn','','Incohérence : profil Conservateur mais volatilité max de '+vol+'% - recommandé ≤ 12%.']);
+        if (profil === 'Agressif' && dd < 20) alertes.push(['warn','','Profil Agressif avec drawdown max de '+dd+'% semble restrictif - envisager 25-35%.']);
+        if (perteMax < dd) alertes.push(['warn','','Perte max tolérée ('+perteMax+'%) inférieure au drawdown max autorisé ('+dd+'%) - risque de clause de rachat.']);
+        if (sensibilite === 'Élevée' && vol > 18) alertes.push(['warn','','Forte sensibilité aux marchés + volatilité max de '+vol+'% - risque comportemental élevé en période de correction.']);
+        if (liquidite === 'Élevé' && posMax > 6) alertes.push(['warn','','Besoin de liquidité élevé mais positions jusqu\'à '+posMax+'% - réduire à 5% max pour garantir la liquidité.']);
 
         // Incohérences priorité principale / contraintes de risque
         if (priorite === 'Préservation du capital') {
-          if (vol > 12)    alertes.push(['warn','','Incohérence stratégique : priorité "Préservation du capital" mais volatilité max de '+vol+'% — recommandé ≤ 10-12%.']);
-          if (dd  > 10)    alertes.push(['warn','','Incohérence stratégique : priorité "Préservation du capital" mais drawdown max de '+dd+'% — recommandé ≤ 8-10%.']);
-          if (betaMax > 0.90) alertes.push(['warn','','Incohérence stratégique : priorité "Préservation du capital" mais beta max de '+betaMax+' — défensif requiert beta ≤ 0.85.']);
+          if (vol > 12)    alertes.push(['warn','','Incohérence stratégique : priorité "Préservation du capital" mais volatilité max de '+vol+'% - recommandé ≤ 10-12%.']);
+          if (dd  > 10)    alertes.push(['warn','','Incohérence stratégique : priorité "Préservation du capital" mais drawdown max de '+dd+'% - recommandé ≤ 8-10%.']);
+          if (betaMax > 0.90) alertes.push(['warn','','Incohérence stratégique : priorité "Préservation du capital" mais beta max de '+betaMax+' - défensif requiert beta ≤ 0.85.']);
           if (profil === 'Agressif') alertes.push(['warn','','Contradiction majeure : priorité "Préservation du capital" incompatible avec profil '+profil+'.']);
           if (perteMax > 10) alertes.push(['warn','','Incohérence : "Préservation du capital" tolère au maximum une perte de 8-10%, pas '+perteMax+'%.']);
         }
         if (priorite === 'Croissance long terme') {
           if (vol < 15)     alertes.push(['warn','','Incohérence stratégique : priorité "Croissance long terme" nécessite une volatilité max ≥ 15-22% (actuel : '+vol+'%).']);
-          if (betaMax < 0.95) alertes.push(['warn','','Incohérence stratégique : priorité "Croissance long terme" incompatible avec beta max '+betaMax+' — croissance requiert beta 1.0-1.4.']);
+          if (betaMax < 0.95) alertes.push(['warn','','Incohérence stratégique : priorité "Croissance long terme" incompatible avec beta max '+betaMax+' - croissance requiert beta 1.0-1.4.']);
           if (profil === 'Conservateur') alertes.push(['warn','','Contradiction majeure : priorité "Croissance long terme" incompatible avec profil Conservateur.']);
         }
         if (priorite === 'Revenus réguliers' && betaMax > 1.10) alertes.push(['warn','','Incohérence : priorité "Revenus réguliers" privilégie défensif/dividendes, beta max '+betaMax+' trop élevé (≤ 1.10 recommandé).']);

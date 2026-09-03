@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  AGENTS / EQUITY RESEARCH AGENT — ÉTAPE 2/5                                 ║
+║  AGENTS / EQUITY RESEARCH AGENT - ÉTAPE 2/5                                 ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : analyser chaque idée candidate et produire un rapport complet.     ║
 ║  Input  : ideas (List[IdeaOutput]), mandate (contraintes)                   ║
@@ -106,7 +106,7 @@ import re
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  PROMPT NARRATIF — TEMPLATE POUR CHAQUE TICKER                             ║
+# ║  PROMPT NARRATIF - TEMPLATE POUR CHAQUE TICKER                             ║
 # ║  Défini ici (pas dans config/prompts.py) car il est spécifique à cet agent ║
 # ║  et contient des variables de formatage {ticker}, {market_data_text}, etc. ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
@@ -119,7 +119,7 @@ REPORT_NARRATIVE_PROMPT = """Tu es un analyste en equity research travaillant en
 
 Ton objectif n'est PAS de résumer tout le document, mais d'extraire UNIQUEMENT les éléments les plus pertinents pour une décision d'investissement.
 
-TITRE : {ticker} — {nom}
+TITRE : {ticker} - {nom}
 SECTEUR : {secteur} | GEOGRAPHIE : {geographie}
 DATE DU RAPPORT : {report_date}
 
@@ -183,7 +183,7 @@ executive_summary (5 lignes max) :
   → Raisonne comme un portfolio manager qui lit en 30 secondes
 
 income_summary (200-300 mots) :
-  → Ne décris PAS les chiffres — interprète-les
+  → Ne décris PAS les chiffres - interprète-les
   → Qu'est-ce que la trajectoire des marges dit sur le business model ?
   → La croissance du revenue est-elle de qualité (mix, pricing power) ou de volume ?
   → Quel est le signal le plus important pour les 12 prochains mois ?
@@ -203,7 +203,7 @@ company_situation (200-300 mots) :
 risk_assessment (150-200 mots) :
   → Scénarios baissiers concrets (pas de risques génériques)
   → Ce qui invaliderait définitivement la thèse
-  → Risques macro, concurrence, régulation, exécution — par ordre de probabilité
+  → Risques macro, concurrence, régulation, exécution - par ordre de probabilité
   → Pour chaque risque : impact potentiel sur le titre (fort / modéré / faible)
 
 commentaire_valorisation (100-150 mots) :
@@ -230,7 +230,7 @@ Retourne UNIQUEMENT ce JSON valide (pas de texte avant/apres, pas de markdown) :
   "score_conviction": 75,
   "recommandation": "BUY",
   "poids_suggere_initial": 0.05,
-  "risques_cles": ["risque1 — impact fort/modere/faible", "risque2 — impact", "risque3 — impact"],
+  "risques_cles": ["risque1 impact fort/modere/faible", "risque2 impact", "risque3 - impact"],
   "catalyseurs": ["catalyseur1 avec horizon temporel", "catalyseur2", "catalyseur3"],
   "valorisation": {{
     "methode_principale": "DCF / PE relatif / EV/EBITDA",
@@ -239,7 +239,7 @@ Retourne UNIQUEMENT ce JSON valide (pas de texte avant/apres, pas de markdown) :
     "upside_potentiel": "N/D",
     "commentaire_valorisation": "100-150 mots : sous/sur-valorise, multiples vs peers, hypothese de croissance pricee, catalyseur de re-rating"
   }},
-  "sources": ["yfinance — données marché temps réel", "SEC EDGAR — filings 10-K/10-Q", "Analyse basée sur les données fournies"]
+  "sources": ["yfinance données marché temps réel", "SEC EDGAR filings 10-K/10-Q", "Analyse basée sur les données fournies"]
 }}
 
 Champs rating valides : strongBuy, Buy, Hold, Sell
@@ -341,7 +341,7 @@ class EquityResearchAgent(BaseAgent):
 
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  run() — MÉTHODE PRINCIPALE                                             │
+    # │  run() - MÉTHODE PRINCIPALE                                             │
     # │  Boucle sur chaque idée et enchaîne les 7 sous-étapes.                │
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -466,7 +466,7 @@ class EquityResearchAgent(BaseAgent):
         # Utilisé dans les logs "Recherche 3/15 : ASML.AS..."
 
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  PARALLÉLISATION — ThreadPoolExecutor (5 tickers simultanés)       │
+        # │  PARALLÉLISATION - ThreadPoolExecutor (5 tickers simultanés)       │
         # │  Chaque ticker est analysé dans _analyze_ticker() indépendamment.  │
         # │  Gain : ~5× vs boucle séquentielle (I/O bound → threads efficaces) │
         # └─────────────────────────────────────────────────────────────────────┘
@@ -534,7 +534,7 @@ class EquityResearchAgent(BaseAgent):
     # ╚═════════════════════════════════════════════════════════════════════════╝
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _analyze_ticker() — ANALYSE COMPLÈTE D'UN SEUL TICKER                │
+    # │  _analyze_ticker() - ANALYSE COMPLÈTE D'UN SEUL TICKER                │
     # │  Extraite de run() pour être appelable en parallèle via ThreadPool.   │
     # │  Thread-safe : chaque appel a ses propres variables locales.          │
     # └─────────────────────────────────────────────────────────────────────────┘
@@ -722,7 +722,7 @@ class EquityResearchAgent(BaseAgent):
         return [t for t in tickers if t in valides]
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _apply_beta_bias() — BIAIS DE SÉLECTION SELON LE PROFIL DE RISQUE     │
+    # │  _apply_beta_bias() - BIAIS DE SÉLECTION SELON LE PROFIL DE RISQUE     │
     # │  Oriente l'univers ANALYSÉ vers le low beta (mandats conservateurs) ou  │
     # │  le high beta (mandats dynamiques). Biais SOUPLE : on ne rejette jamais  │
     # │  un titre, on réordonne le pool puis on garde les univers_taille premiers│
@@ -1129,7 +1129,7 @@ class EquityResearchAgent(BaseAgent):
                 console.print(f"  [yellow]![/yellow]  Secteur {sector_name} : erreur ({e})")
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _fetch_all_market_data() — PRE-FETCH DES DONNÉES YFINANCE             │
+    # │  _fetch_all_market_data() - PRE-FETCH DES DONNÉES YFINANCE             │
     # │  Appelle les 5 fonctions de market_data.py pour un ticker donné.       │
     # │  Chaque appel est dans son propre try/except pour isolation d'erreurs. │
     # └─────────────────────────────────────────────────────────────────────────┘
@@ -1154,7 +1154,7 @@ class EquityResearchAgent(BaseAgent):
                 return {"statut": "ERREUR", "message": str(e)}
 
         # ── Appel 1 (SÉRIE) : Infos générales ─────────────────────────────────
-        # Fait en premier — séparément — pour deux raisons :
+        # Fait en premier séparément pour deux raisons :
         #   1. get_web_research a besoin du "nom" (seule dépendance interne).
         #   2. réchauffe le cache beta (réutilisé par _apply_beta_bias).
         # Retourne : prix actuel, market cap, secteur, volume 30j, beta.
@@ -1197,7 +1197,7 @@ class EquityResearchAgent(BaseAgent):
         # Toujours retourné même si toutes les sources ont échoué.
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _format_market_data() — FORMATAGE TEXTE POUR LE PROMPT LLM           │
+    # │  _format_market_data() - FORMATAGE TEXTE POUR LE PROMPT LLM           │
     # │  Convertit le dict de données marché en texte lisible par Claude.     │
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -1314,7 +1314,7 @@ class EquityResearchAgent(BaseAgent):
         # Fallback : si TOUTES les sources ont échoué → texte minimal.
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _build_research_output() — CONSTRUCTION DU RESEARCHOUTPUT PYDANTIC    │
+    # │  _build_research_output() - CONSTRUCTION DU RESEARCHOUTPUT PYDANTIC    │
     # │  Extrait les champs utiles au workflow depuis la réponse Claude.       │
     # │  N'inclut PAS les sections narratives (trop volumineuses).             │
     # └─────────────────────────────────────────────────────────────────────────┘
@@ -1400,12 +1400,12 @@ class EquityResearchAgent(BaseAgent):
             # Ex: ["Lancement GB200", "Expansion data centers", "Résultats Q2"]
 
             score_conviction = max(0, min(100, self._as_int(claude_data.get("score_conviction"), 50))),
-            # _as_int : tolère "75/100", "75 pts", 75.0 — et borne à [0, 100] pour
+            # _as_int : tolère "75/100", "75 pts", 75.0 - et borne à [0, 100] pour
             # ne pas déclencher de ValidationError Pydantic (défaut C5).
             # Utilisé par PortfolioAgent pour pondérer les positions.
 
             recommandation = recommandation,
-            # BUY / HOLD / SELL — aligné sur rating si incohérence détectée.
+            # BUY / HOLD / SELL - aligné sur rating si incohérence détectée.
             # C'est LE champ critique : PortfolioAgent ne garde que les BUY.
 
             poids_suggere_initial = self._as_float(
@@ -1421,7 +1421,7 @@ class EquityResearchAgent(BaseAgent):
         )
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _build_report_data() — ASSEMBLAGE DU DICT POUR LE RAPPORT HTML        │
+    # │  _build_report_data() - ASSEMBLAGE DU DICT POUR LE RAPPORT HTML        │
     # │  Combine claude_data + market_pkg en un dict plat pour le template HTML.│
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -1533,7 +1533,7 @@ class EquityResearchAgent(BaseAgent):
         }
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _build_financial_metrics() — TABLEAU FINANCIER HISTORIQUE             │
+    # │  _build_financial_metrics() - TABLEAU FINANCIER HISTORIQUE             │
     # │  Construit une ligne par année pour le tableau HTML du rapport.        │
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -1602,7 +1602,7 @@ class EquityResearchAgent(BaseAgent):
         return metrics
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _build_pe_eps_series() — SÉRIE PE/EPS POUR GRAPHIQUE SIDEBAR          │
+    # │  _build_pe_eps_series() - SÉRIE PE/EPS POUR GRAPHIQUE SIDEBAR          │
     # │  Construit une liste de points {year, pe, eps} pour la sidebar HTML.  │
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -1655,7 +1655,7 @@ class EquityResearchAgent(BaseAgent):
         return series
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _fallback_research() — ANALYSE MINIMALE EN CAS D'ÉCHEC               │
+    # │  _fallback_research() - ANALYSE MINIMALE EN CAS D'ÉCHEC               │
     # │  Appelée si le parsing JSON ou la construction Pydantic échoue.        │
     # │  Garantit qu'un titre est toujours dans la liste, même dégradé.       │
     # └─────────────────────────────────────────────────────────────────────────┘

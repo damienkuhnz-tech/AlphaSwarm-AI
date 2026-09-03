@@ -1,5 +1,5 @@
 
-  // ── Chat — per-agent conversation histories ──
+  // ── Chat - per-agent conversation histories ──
   var _chatHistories = { 2: [], 3: [], 4: [], 5: [] };
   var _agentNames = { 2: 'research', 3: 'portfolio', 4: 'risk', 5: 'execution' };
 
@@ -27,7 +27,7 @@
     // 1. Échapper HTML
     // Le guillemet DOIT etre echappe : l'etape 7 construit href="$2" a partir
     // d'un lien markdown, et une URL contenant un guillemet sortait de
-    // l'attribut — injection possible via une reponse du modele (defaut A5).
+    // l'attribut - injection possible via une reponse du modele (defaut A5).
     s = s
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -73,7 +73,7 @@
     // 5. Citations > ...
     s = s.replace(/^&gt; (.+)$/gm, '<blockquote class="md-quote">$1</blockquote>');
 
-    // 6. Listes — on regroupe les lignes consécutives qui commencent par - * + ou 1.
+    // 6. Listes - on regroupe les lignes consécutives qui commencent par - * + ou 1.
     s = s.replace(/((?:^[ \t]*[-*+] .+(?:\n|$))+)/gm, function(block) {
       var items = block.trim().split(/\n/).map(function(l) {
         return '<li>' + l.replace(/^[ \t]*[-*+] /, '') + '</li>';
@@ -154,7 +154,7 @@
     msgs.scrollTop = msgs.scrollHeight;
   }
 
-  // Contexte de chat — RESUME, pas l'etat complet.
+  // Contexte de chat - RESUME, pas l'etat complet.
   // Auparavant portfolio/risk/execution etaient serialises entiers et joints a
   // CHAQUE message : volume reseau et tokens payes a chaque question, alors que
   // le serveur tronque de toute facon ce bloc a 2500 caracteres (api.py,

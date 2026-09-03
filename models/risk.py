@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  MODELS / RISK — SCHÉMA DE SORTIE DU RISK MANAGEMENT AGENT (ÉTAPE 5/8)     ║
+║  MODELS / RISK - SCHÉMA DE SORTIE DU RISK MANAGEMENT AGENT (ÉTAPE 5/8)     ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : formaliser le rapport de risque du portefeuille.                    ║
 ║  Le statut (PASS / AJUSTER / FAIL) pilote la boucle dans workflow.py :      ║
@@ -19,7 +19,7 @@ from typing import List, Literal, Optional
 
 class MetriquesRisque(BaseModel):
     # Métriques CALCULÉES en Python (compute_portfolio_metrics) puis FORCÉES dans
-    # le rapport par le Risk Agent — ce ne sont PAS des estimations du LLM.
+    # le rapport par le Risk Agent - ce ne sont PAS des estimations du LLM.
     # En string pour uniformité d'affichage (ex: "14.2%", "0.95").
     concentration_top1: str         # Part du titre le plus lourd
     concentration_top5: str         # Part des 5 premières positions

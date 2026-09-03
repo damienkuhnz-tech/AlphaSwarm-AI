@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  MODELS / RESEARCH — SCHÉMA DE SORTIE DE L'EQUITY RESEARCH AGENT (ÉT. 3/8) ║
+║  MODELS / RESEARCH - SCHÉMA DE SORTIE DE L'EQUITY RESEARCH AGENT (ÉT. 3/8) ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : représenter l'analyse complète d'un titre.                          ║
 ║  Produit par EquityResearchAgent, consommé par PortfolioConstructionAgent.  ║

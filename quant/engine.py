@@ -1,5 +1,5 @@
 """
-QUANT / ENGINE — Construction des séries de rendements du portefeuille.
+QUANT / ENGINE - Construction des séries de rendements du portefeuille.
 
 Deux modes de simulation, méthodologiquement distincts :
 
@@ -8,7 +8,7 @@ Deux modes de simulation, méthodologiquement distincts :
     d'une politique d'allocation : entre deux rebalancements les poids
     dérivent avec les prix, puis on réaligne. Le turnover induit est mesuré.
 
-  - "fixed" : poids constants chaque jour (hypothèse de l'ancien code) —
+  - "fixed" : poids constants chaque jour (hypothèse de l'ancien code) -
     équivaut à un rebalancement quotidien sans coûts, irréaliste mais utile
     comme borne de comparaison.
 

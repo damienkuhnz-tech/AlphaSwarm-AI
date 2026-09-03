@@ -1,5 +1,5 @@
 
-  // ── AlphaSwarm — FX 3D "essaim" (lancement / complétion d'agent) ──────────
+  // ── AlphaSwarm - FX 3D "essaim" (lancement / complétion d'agent) ──────────
   // Un SEUL canvas WebGL global, lazy-loadé au premier lancement (three.js
   // chargé dynamiquement depuis /vendor/three/). Purement décoratif : toute
   // erreur est avalée, le verrou agentRunning / refreshLaunchButtons reste

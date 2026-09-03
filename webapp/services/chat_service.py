@@ -1,5 +1,5 @@
 """
-WEBAPP / SERVICES / CHAT SERVICE — synthèses partagées mandat / recherche.
+WEBAPP / SERVICES / CHAT SERVICE - synthèses partagées mandat / recherche.
 
 Helpers utilisés par /api/chat et /api/portfolio/briefing pour que tous les
 chats d'agents connaissent le mandat et la liste BUY sans dupliquer la logique.

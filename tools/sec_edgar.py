@@ -1,11 +1,11 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  TOOLS / SEC EDGAR — RAPPORTS ANNUELS OFFICIELS (10-K)                      ║
+║  TOOLS / SEC EDGAR - RAPPORTS ANNUELS OFFICIELS (10-K)                      ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : extraire les sections clés du dernier rapport annuel 10-K           ║
 ║  déposé auprès de la SEC par les sociétés cotées aux USA.                   ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Source  : SEC EDGAR — API publique gratuite, aucune clé requise            ║
+║  Source  : SEC EDGAR - API publique gratuite, aucune clé requise            ║
 ║  Limite  : titres US uniquement (NVDA, MSFT, AAPL...).                      ║
 ║            Les tickers européens (ASML.AS, SIE.DE) retournent SKIP.        ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
@@ -280,7 +280,7 @@ def format_sec_for_prompt(sec_data: Dict[str, Any]) -> str:
     lines = []
     date = sec_data.get("filing_date", "")
 
-    lines.append(f"RAPPORT ANNUEL 10-K (SEC EDGAR — {date}) :")
+    lines.append(f"RAPPORT ANNUEL 10-K (SEC EDGAR - {date}) :")
 
     risk = sec_data.get("risk_factors", "")
     if risk:

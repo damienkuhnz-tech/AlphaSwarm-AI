@@ -1,5 +1,5 @@
 """
-WEBAPP / RUN STORE — état partagé des runs en mémoire.
+WEBAPP / RUN STORE - état partagé des runs en mémoire.
 
 Module UNIQUE importé à la fois par les routes (webapp.routes.runs) et par le
 service d'exécution (webapp.services.run_service) : le dict _runs et son verrou

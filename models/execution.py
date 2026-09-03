@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  MODELS / EXECUTION — SCHÉMA DE SORTIE DE L'EXECUTION AGENT (ÉTAPE 7/8)    ║
+║  MODELS / EXECUTION - SCHÉMA DE SORTIE DE L'EXECUTION AGENT (ÉTAPE 7/8)    ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : formaliser le plan d'exécution des ordres (AUCUNE exécution réelle).║
 ║  Produit par ExecutionAgent, affiché dans runner.py et exporté en JSON.     ║
@@ -45,7 +45,7 @@ class Order(BaseModel):
 
 class CoutsTransaction(BaseModel):
     # Estimation des coûts de transaction totaux.
-    # Pas de frais réels — estimation par l'agent (~10bps commissions + impact).
+    # Pas de frais réels - estimation par l'agent (~10bps commissions + impact).
     commissions_estimees_usd: float
     market_impact_estime_usd: float  # Impact de marché = prix décalé par l'ordre
     total_estime_usd: float          # commissions + market impact

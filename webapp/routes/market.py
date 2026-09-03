@@ -1,5 +1,5 @@
 """
-WEBAPP / ROUTES / MARKET — cotations de l'onglet Marché.
+WEBAPP / ROUTES / MARKET - cotations de l'onglet Marché.
 
 GET /api/quotes      : quotes enrichies (cache 30 min, yfinance → FMP)
 GET /api/quotes/live : prix live fast_info pour l'auto-refresh (~8 s)
@@ -12,7 +12,7 @@ from flask import Blueprint, request, jsonify
 bp = Blueprint("market", __name__)
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  GET /api/quotes?tickers=NVDA,MSFT,... — COURS DE BOURSE (onglet Marché)   │
+# │  GET /api/quotes?tickers=NVDA,MSFT,... - COURS DE BOURSE (onglet Marché)   │
 # │  Utilise tools.market_data.get_stock_info (cache 30 min, fallback FMP).    │
 # │  Renvoie une liste de quotes : prix, capitalisation, beta, 52w range, etc. │
 # └─────────────────────────────────────────────────────────────────────────────┘
@@ -102,7 +102,7 @@ def get_quotes():
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  GET /api/quotes/live?tickers=NVDA,MSFT — COURS LIVE (polling rapide)      │
+# │  GET /api/quotes/live?tickers=NVDA,MSFT - COURS LIVE (polling rapide)      │
 # │  Contourne le cache 30 min. Utilise yf.Ticker.fast_info (endpoint léger    │
 # │  Yahoo, conçu pour le prix). Appelé par l'auto-refresh frontend (~8s).     │
 # │  Renvoie last_price + previous_close → la variation du jour est calculable.│

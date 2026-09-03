@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  MODELS / PORTFOLIO — SCHÉMA DE SORTIE DU PORTFOLIO CONSTRUCTION (ÉT. 4/8) ║
+║  MODELS / PORTFOLIO - SCHÉMA DE SORTIE DU PORTFOLIO CONSTRUCTION (ÉT. 4/8) ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : représenter le portefeuille construit (positions + cash).           ║
 ║  Produit par PortfolioConstructionAgent, consommé par :                     ║

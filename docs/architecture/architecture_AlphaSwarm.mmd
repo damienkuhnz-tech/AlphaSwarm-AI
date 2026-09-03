@@ -23,9 +23,9 @@ config:
 flowchart TB
 
   GERANT("<b>GÉRANT DE PORTEFEUILLE</b><br/>stratégie · capital · benchmark<br/>horizon · profil de risque")
-  WEB("<b>INTERFACE ET API</b><br/>formulaire de mandat<br/>suivi du run en direct<br/><i>api.py — port 5001</i>")
+  WEB("<b>INTERFACE ET API</b><br/>formulaire de mandat<br/>suivi du run en direct<br/><i>api.py - port 5001</i>")
 
-  subgraph PIPE["&nbsp;&nbsp;LES CINQ AGENTS — pipeline séquentiel&nbsp;&nbsp;"]
+  subgraph PIPE["&nbsp;&nbsp;LES CINQ AGENTS - pipeline séquentiel&nbsp;&nbsp;"]
     direction TB
     A1("<b>1 · MANDAT</b><br/>contraintes chiffrées")
     A2("<b>2 · RECHERCHE</b><br/>univers analysé et noté")
@@ -36,12 +36,12 @@ flowchart TB
     A2 -->|research| A3
     A3 -->|portfolio| A4
     A4 ==>|"risk_report = PASS"| A5
-    A4 -.->|"AJUSTER — corriger<br/>3 itérations au maximum"| A3
+    A4 -.->|"AJUSTER - corriger<br/>3 itérations au maximum"| A3
   end
 
   SRC("<b>SOURCES DE MARCHÉ</b><br/>yfinance · FMP<br/>SEC EDGAR · Tavily")
   STOP("<b>FAIL</b><br/>aucun ordre n'est préparé")
-  QUANT("<b>MOTEUR QUANTITATIF</b> — quant/<br/>backtest 10 ans · validation hors échantillon<br/>walk-forward · bootstrap 1000× · Monte Carlo 2000×<br/>stress tests · conformité au mandat<br/><i>100 % Python — seedé, reproductible</i>")
+  QUANT("<b>MOTEUR QUANTITATIF</b> - quant/<br/>backtest 10 ans · validation hors échantillon<br/>walk-forward · bootstrap 1000× · Monte Carlo 2000×<br/>stress tests · conformité au mandat<br/><i>100 % Python - seedé, reproductible</i>")
   OK("<b>VALIDATION HUMAINE</b><br/>le fichier d'ordres n'est écrit<br/>qu'après l'approbation du gérant")
 
   GERANT -->|définit le mandat| WEB

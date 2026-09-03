@@ -1,18 +1,18 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  TOOLS / WEB SEARCH — RECHERCHE WEB VIA TAVILY                              ║
+║  TOOLS / WEB SEARCH - RECHERCHE WEB VIA TAVILY                              ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : enrichir l'analyse avec des actualités récentes et les vues         ║
 ║  d'analystes sell-side non disponibles dans les données historiques.        ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║  Source  : Tavily AI Search — conçu pour les agents IA                      ║
+║  Source  : Tavily AI Search - conçu pour les agents IA                      ║
 ║  Free tier : 1 000 recherches/mois                                          ║
 ║  Clé API : settings.TAVILY_API_KEY (depuis .env)                            ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Conception : 2 recherches par ticker                                        ║
 ║    1. Actualités récentes (résultats, stratégie, produits, régulation)       ║
 ║    2. Vues analystes (prix cibles, révisions, recommandations)               ║
-║  Total : ~20 recherches pour 10 tickers — bien dans le free tier             ║
+║  Total : ~20 recherches pour 10 tickers - bien dans le free tier             ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 """
 
@@ -21,7 +21,7 @@ from config.settings import settings
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  GARDE-FOU GLOBAL — clé absente                                             ║
+# ║  GARDE-FOU GLOBAL - clé absente                                             ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 def _key_missing() -> bool:
@@ -36,7 +36,7 @@ def _get_client():
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  FONCTION PRINCIPALE — RECHERCHE WEB COMPLÈTE POUR UN TICKER               ║
+# ║  FONCTION PRINCIPALE - RECHERCHE WEB COMPLÈTE POUR UN TICKER               ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 def get_web_research(ticker: str, company_name: str) -> Dict[str, Any]:
@@ -81,9 +81,9 @@ def get_web_research(ticker: str, company_name: str) -> Dict[str, Any]:
         return {
             "statut":        "OK",
             "recent_news":   news_items,
-            # Liste de dicts {title, content, url} — actualités récentes
+            # Liste de dicts {title, content, url} - actualités récentes
             "analyst_views": analyst_items,
-            # Liste de dicts {title, content, url} — vues analystes sell-side
+            # Liste de dicts {title, content, url} - vues analystes sell-side
         }
 
     except Exception as e:
@@ -91,7 +91,7 @@ def get_web_research(ticker: str, company_name: str) -> Dict[str, Any]:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  COMPOSITION D'UN BENCHMARK — RECHERCHE WEB DES PRINCIPALES PONDÉRATIONS   ║
+# ║  COMPOSITION D'UN BENCHMARK - RECHERCHE WEB DES PRINCIPALES PONDÉRATIONS   ║
 # ╠═══════════════════════════════════════════════════════════════════════════╣
 # ║  Rôle : retrouver via le web les plus grosses composantes d'un indice      ║
 # ║  (ex: MSCI World → top holdings). Aucune source gratuite ne donne les       ║
@@ -145,7 +145,7 @@ def get_benchmark_constituents(benchmark_name: str, max_results: int = 5) -> Dic
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  HELPER — EXTRACTION ET NETTOYAGE DES RÉSULTATS TAVILY                     ║
+# ║  HELPER - EXTRACTION ET NETTOYAGE DES RÉSULTATS TAVILY                     ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 def _extract_results(response: Dict) -> List[Dict[str, str]]:

@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  CONFIG / RESEARCH SKILLS — CATALOGUE DES SKILLS DE RECHERCHE                ║
+║  CONFIG / RESEARCH SKILLS - CATALOGUE DES SKILLS DE RECHERCHE                ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Inspiré du plugin Claude `equity-research`. Chaque skill a :                 ║
 ║    - une clé courte (id technique)                                            ║
@@ -32,7 +32,7 @@ from typing import Any, Dict, List
 RESEARCH_SKILLS: Dict[str, Dict[str, Any]] = {
 
     # ─────────────────────────────────────────────────────────────────────────
-    # 1. EARNINGS ANALYSIS — Note post-publication
+    # 1. EARNINGS ANALYSIS - Note post-publication
     # ─────────────────────────────────────────────────────────────────────────
     "earnings": {
         "label": "Earnings Analysis",
@@ -98,7 +98,7 @@ RESEARCH_SKILLS: Dict[str, Dict[str, Any]] = {
     },
 
     # ─────────────────────────────────────────────────────────────────────────
-    # 2. MORNING NOTE — Note matinale courte
+    # 2. MORNING NOTE - Note matinale courte
     # ─────────────────────────────────────────────────────────────────────────
     "morning_note": {
         "label": "Morning Note",
@@ -147,7 +147,7 @@ RESEARCH_SKILLS: Dict[str, Dict[str, Any]] = {
     },
 
     # ─────────────────────────────────────────────────────────────────────────
-    # 3. SCREEN — Génération d'idées
+    # 3. SCREEN - Génération d'idées
     # ─────────────────────────────────────────────────────────────────────────
     "screen": {
         "label": "Idea Screen",
@@ -223,7 +223,7 @@ RESEARCH_SKILLS: Dict[str, Dict[str, Any]] = {
     },
 
     # ─────────────────────────────────────────────────────────────────────────
-    # 4. SECTOR OVERVIEW — Primer sectoriel
+    # 4. SECTOR OVERVIEW - Primer sectoriel
     # ─────────────────────────────────────────────────────────────────────────
     "sector": {
         "label": "Sector Overview",
@@ -281,7 +281,7 @@ RESEARCH_SKILLS: Dict[str, Dict[str, Any]] = {
     },
 
     # ─────────────────────────────────────────────────────────────────────────
-    # 5. THESIS TRACKER — Création/MAJ d'une thèse
+    # 5. THESIS TRACKER - Création/MAJ d'une thèse
     # ─────────────────────────────────────────────────────────────────────────
     "thesis": {
         "label": "Thesis Tracker",
@@ -338,7 +338,7 @@ RESEARCH_SKILLS: Dict[str, Dict[str, Any]] = {
     },
 
     # ─────────────────────────────────────────────────────────────────────────
-    # 6. CATALYST CALENDAR — Calendrier des catalyseurs
+    # 6. CATALYST CALENDAR - Calendrier des catalyseurs
     # ─────────────────────────────────────────────────────────────────────────
     "catalysts": {
         "label": "Catalyst Calendar",
@@ -381,7 +381,7 @@ RESEARCH_SKILLS: Dict[str, Dict[str, Any]] = {
     },
 
     # ─────────────────────────────────────────────────────────────────────────
-    # 7. INITIATING COVERAGE — Rapport d'initiation (version simplifiée 10p)
+    # 7. INITIATING COVERAGE - Rapport d'initiation (version simplifiée 10p)
     # ─────────────────────────────────────────────────────────────────────────
     "initiation": {
         "label": "Initiating Coverage",

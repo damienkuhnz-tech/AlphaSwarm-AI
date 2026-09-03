@@ -1,5 +1,5 @@
 """
-QUANT — Moteur de validation quantitative de FinAgent.
+QUANT - Moteur de validation quantitative de FinAgent.
 
 Package 100 % déterministe (numpy/pandas, aucun LLM) qui produit le rapport
 de validation complet d'un portefeuille :

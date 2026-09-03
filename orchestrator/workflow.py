@@ -1,9 +1,9 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  ORCHESTRATOR / WORKFLOW — MOTEUR DE SÉQUENCEMENT DES AGENTS                ║
+║  ORCHESTRATOR / WORKFLOW - MOTEUR DE SÉQUENCEMENT DES AGENTS                ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : instancier les 5 agents et définir leur ordre d'exécution.         ║
-║  Ce fichier est le "chef d'orchestre" — il ne contient aucune logique LLM. ║
+║  Ce fichier est le "chef d'orchestre" - il ne contient aucune logique LLM. ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Ordre d'exécution :                                                        ║
 ║    1. MandateAgent               → formalise les règles d'investissement    ║
@@ -67,7 +67,7 @@ class WorkflowEngine:
     """
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  __init__ — INSTANCIATION DES 5 AGENTS                                 │
+    # │  __init__ - INSTANCIATION DES 5 AGENTS                                 │
     # └─────────────────────────────────────────────────────────────────────────┘
 
     def __init__(self) -> None:
@@ -79,7 +79,7 @@ class WorkflowEngine:
 
         # ── Instanciation des 5 agents ────────────────────────────────────────
         # Tous héritent de BaseAgent et reçoivent le même client.
-        # À ce stade, aucun LLM n'est appelé — on prépare juste les instances.
+        # À ce stade, aucun LLM n'est appelé - on prépare juste les instances.
         self.mandate_agent   = MandateAgent(client=shared_client)
         self.research_agent  = EquityResearchAgent(client=shared_client)
         self.portfolio_agent = PortfolioConstructionAgent(client=shared_client)
@@ -111,10 +111,10 @@ class WorkflowEngine:
     }
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _execution_blocked() — GARDE-FOU UNIQUE AVANT PRÉPARATION D'ORDRES     │
+    # │  _execution_blocked() - GARDE-FOU UNIQUE AVANT PRÉPARATION D'ORDRES     │
     # │  Appliqué À L'IDENTIQUE au mode complet et au mode ciblé.               │
     # │  AVANT : la branche target_step == "execution" n'exécutait jamais       │
-    # │  l'agent de risque et ne consultait jamais risk_report.statut — la      │
+    # │  l'agent de risque et ne consultait jamais risk_report.statut - la      │
     # │  seule contrainte dure du workflow était contournable (défaut A1).      │
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -123,10 +123,10 @@ class WorkflowEngine:
         risk = state.get("risk_report")
 
         if risk is None:
-            msg = ("execution bloquée — aucun rapport de risque disponible : "
+            msg = ("execution bloquée - aucun rapport de risque disponible : "
                    "aucun ordre ne peut être préparé sans verdict de risque.")
         elif risk.statut == "FAIL":
-            msg = (f"execution bloquée — verdict de risque FAIL "
+            msg = (f"execution bloquée - verdict de risque FAIL "
                    f"({len(risk.violations)} violation(s) relevée(s)).")
         else:
             return False
@@ -136,7 +136,7 @@ class WorkflowEngine:
         return True
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _run_step() — EXÉCUTION D'UNE ÉTAPE + MERGE DU STATE                  │
+    # │  _run_step() - EXÉCUTION D'UNE ÉTAPE + MERGE DU STATE                  │
     # └─────────────────────────────────────────────────────────────────────────┘
 
     def _run_step(
@@ -152,7 +152,7 @@ class WorkflowEngine:
         # Un agent peut lever : ValueError (JSON LLM vide/invalide via _parse_json),
         # ValidationError Pydantic (champ manquant), ou une erreur réseau épuisée.
         # AVANT, ces exceptions remontaient et faisaient passer TOUT le run en
-        # "error" (api.py) — un seul agent en échec effondrait le workflow entier.
+        # "error" (api.py) - un seul agent en échec effondrait le workflow entier.
         # Désormais on les capture, on les transforme en erreur accumulée et on
         # laisse le workflow continuer (les agents suivants ont leurs propres
         # gardes de préconditions et le routing gère les outputs manquants).
@@ -160,7 +160,7 @@ class WorkflowEngine:
             updates = agent_fn(state)
         except Exception as agent_err:
             msg = f"{label}: {type(agent_err).__name__}: {agent_err}"
-            console.print(f"  [red]✗[/red]  Agent '{label}' a échoué — {msg}")
+            console.print(f"  [red]✗[/red]  Agent '{label}' a échoué - {msg}")
             updates = {"errors": [msg]}
 
         # ── Guard : l'agent doit retourner un dict ────────────────────────────
@@ -168,7 +168,7 @@ class WorkflowEngine:
             updates = {
                 "errors": [
                     f"{label}: a retourné {type(updates).__name__!r} au lieu d'un dict "
-                    f"— vérifier la méthode run() de l'agent."
+                    f"- vérifier la méthode run() de l'agent."
                 ]
             }
 
@@ -188,14 +188,14 @@ class WorkflowEngine:
             except Exception as cb_err:
                 print(
                     f"[workflow] Callback on_done pour '{label}' a echoue "
-                    f"({type(cb_err).__name__}: {cb_err}) — workflow continue.",
+                    f"({type(cb_err).__name__}: {cb_err}) - workflow continue.",
                     flush=True,
                 )
 
         return state
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  run() — POINT D'ENTRÉE PRINCIPAL DU WORKFLOW                           │
+    # │  run() - POINT D'ENTRÉE PRINCIPAL DU WORKFLOW                           │
     # │  Exécute les 5 agents dans l'ordre avec routing conditionnel.           │
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -219,7 +219,7 @@ class WorkflowEngine:
             state = self._run_step(label, fn, state, on_step_done)
 
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  MODE INDIVIDUEL — un seul agent                                    │
+        # │  MODE INDIVIDUEL - un seul agent                                    │
         # └─────────────────────────────────────────────────────────────────────┘
         if target_step:
             agents = {
@@ -264,7 +264,7 @@ class WorkflowEngine:
             return state
 
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  BLOC 1 — ÉTAPES 1-2 : MANDATE → RESEARCH                         │
+        # │  BLOC 1 - ÉTAPES 1-2 : MANDATE → RESEARCH                         │
         # └─────────────────────────────────────────────────────────────────────┘
 
         step("mandate",  self.mandate_agent.run)
@@ -277,7 +277,7 @@ class WorkflowEngine:
         # déjà accumulée dans state["errors"] par _run_step.
         if state.get("mandate") is None:
             console.print(
-                "  [red]⚠[/red]  Mandat non généré — workflow interrompu "
+                "  [red]⚠[/red]  Mandat non généré - workflow interrompu "
                 "(étapes suivantes ignorées)."
             )
             return state
@@ -288,7 +288,7 @@ class WorkflowEngine:
         #          state["research_reports"] = dict des chemins vers les HTML
 
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  BLOC 2 — ÉTAPES 3-4 : BOUCLE PORTFOLIO ↔ RISK                    │
+        # │  BLOC 2 - ÉTAPES 3-4 : BOUCLE PORTFOLIO ↔ RISK                    │
         # └─────────────────────────────────────────────────────────────────────┘
 
         for iteration in range(1, settings.MAX_PORTFOLIO_ITERATIONS + 1):
@@ -319,7 +319,7 @@ class WorkflowEngine:
             # Sinon : la boucle for continue à l'itération suivante
 
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  BLOC 3 — ROUTING CONDITIONNEL : EXECUTION ou BLOCAGE              │
+        # │  BLOC 3 - ROUTING CONDITIONNEL : EXECUTION ou BLOCAGE              │
         # │  On n'exécute les ordres QUE si le risk est OK.                    │
         # └─────────────────────────────────────────────────────────────────────┘
 
@@ -340,5 +340,5 @@ class WorkflowEngine:
 # └─────────────────────────────────────────────────────────────────────────────┘
 
 def build_workflow() -> WorkflowEngine:
-    """Factory — retourne un WorkflowEngine prêt à l'emploi."""
+    """Factory - retourne un WorkflowEngine prêt à l'emploi."""
     return WorkflowEngine()

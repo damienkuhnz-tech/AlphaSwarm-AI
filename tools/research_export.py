@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  TOOLS / RESEARCH EXPORT — GÉNÉRATION DE LIVRABLES MULTI-FORMATS            ║
+║  TOOLS / RESEARCH EXPORT - GÉNÉRATION DE LIVRABLES MULTI-FORMATS            ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Génère Excel (.xlsx), Word (.docx), PowerPoint (.pptx) à partir des        ║
 ║  analyses Research et du brief de cadrage. Stocké dans                      ║
@@ -216,7 +216,7 @@ def export_research_to_excel(
     row = 1
     for r in research:
         ticker = _safe_get(r, "ticker") or "?"
-        ws.cell(row=row, column=1, value=f"{ticker} — {_safe_get(r, 'nom') or ''}").font = Font(bold=True, size=14, color="0E4A2C")
+        ws.cell(row=row, column=1, value=f"{ticker} - {_safe_get(r, 'nom') or ''}").font = Font(bold=True, size=14, color="0E4A2C")
         row += 1
         ws.cell(row=row, column=1, value=f"Recommandation : {_safe_get(r, 'recommandation') or 'N/D'}    "
                 f"| Score : {_safe_get(r, 'score_conviction') or 'N/D'}/100").font = Font(italic=True)
@@ -342,7 +342,7 @@ def export_research_to_word(
             p.add_run(f"{k.replace('_', ' ').title()} : ").bold = True
             p.add_run(str(v))
     else:
-        doc.add_paragraph("Aucun brief structuré — recherche standard.")
+        doc.add_paragraph("Aucun brief structuré - recherche standard.")
 
     doc.add_paragraph()
 
@@ -385,7 +385,7 @@ def export_research_to_word(
     for r in research:
         ticker = _safe_get(r, "ticker") or "?"
         nom    = _safe_get(r, "nom") or ""
-        doc.add_heading(f"{ticker} — {nom}", level=1)
+        doc.add_heading(f"{ticker} - {nom}", level=1)
 
         meta = doc.add_paragraph()
         meta.add_run(f"Recommandation : {_safe_get(r, 'recommandation') or 'N/D'}    ").bold = True
@@ -495,7 +495,7 @@ def export_research_to_pptx(
     # ── Slide 3 : Synthèse (tableau récap) ────────────────────────────────────
     s = prs.slides.add_slide(blank)
     _set_bg(s)
-    _add_text_box(s, 0.5, 0.4, 12.3, 0.7, f"Synthèse — {len(research)} idées",
+    _add_text_box(s, 0.5, 0.4, 12.3, 0.7, f"Synthèse - {len(research)} idées",
                   size=28, bold=True, color=ACCENT)
     rows = len(research) + 1
     table_shape = s.shapes.add_table(rows, 5, Inches(0.5), Inches(1.4), Inches(12.3), Inches(0.4 * rows))
@@ -537,7 +537,7 @@ def export_research_to_pptx(
         _set_bg(s)
         ticker = _safe_get(r, "ticker") or "?"
         nom    = _safe_get(r, "nom") or ""
-        _add_text_box(s, 0.5, 0.4, 12.3, 0.7, f"{ticker} — {nom}",
+        _add_text_box(s, 0.5, 0.4, 12.3, 0.7, f"{ticker} - {nom}",
                       size=28, bold=True, color=ACCENT)
 
         reco = _safe_get(r, "recommandation") or "N/D"
@@ -557,13 +557,13 @@ def export_research_to_pptx(
         cats = _safe_get(r, "catalyseurs", default=[]) or []
         _add_text_box(s, 0.5, 4.1, 6.0, 0.4, "Catalyseurs", size=16, bold=True, color=ACCENT)
         cats_text = "\n".join(f"• {c}" for c in cats[:4])
-        _add_text_box(s, 0.5, 4.6, 6.0, 2.3, cats_text or "—", size=12, color=WHITE)
+        _add_text_box(s, 0.5, 4.6, 6.0, 2.3, cats_text or "", size=12, color=WHITE)
 
         # Risques
         risks = _safe_get(r, "risques_principaux", default=[]) or []
         _add_text_box(s, 6.7, 4.1, 6.1, 0.4, "Risques", size=16, bold=True, color=ACCENT)
         risks_text = "\n".join(f"• {r_}" for r_ in risks[:4])
-        _add_text_box(s, 6.7, 4.6, 6.1, 2.3, risks_text or "—", size=12, color=WHITE)
+        _add_text_box(s, 6.7, 4.6, 6.1, 2.3, risks_text or "", size=12, color=WHITE)
 
     # ── Slide finale : Recommandations ────────────────────────────────────────
     s = prs.slides.add_slide(blank)
@@ -582,7 +582,7 @@ def export_research_to_pptx(
     _add_text_box(s, 0.5, 1.4, 12.3, 1.5, summary, size=14, color=WHITE)
     top_buys = sorted(buys, key=lambda x: _safe_get(x, "score_conviction", default=0) or 0, reverse=True)[:5]
     bullets = "\n".join(
-        f"• {_safe_get(b, 'ticker')} — {_safe_get(b, 'nom')} — Score {_safe_get(b, 'score_conviction')}/100"
+        f"• {_safe_get(b, 'ticker')} {_safe_get(b, 'nom')} Score {_safe_get(b, 'score_conviction')}/100"
         for b in top_buys
     )
     _add_text_box(s, 0.7, 3.5, 12.0, 3.0, bullets or "Aucune idée BUY", size=14, color=ACCENT)
@@ -644,7 +644,7 @@ def export_skill_to_excel(markdown: str, skill_meta: Dict[str, Any], out_dir: st
     ws = wb.create_sheet("Synthèse")
     ws.column_dimensions["A"].width = 110
     row = 1
-    title = skill_meta.get("label", "Research") + " — " + date.today().strftime("%d %B %Y")
+    title = skill_meta.get("label", "Research") + " - " + date.today().strftime("%d %B %Y")
     ws.cell(row=row, column=1, value=title).font = Font(bold=True, size=18, color="0E4A2C")
     row += 2
 
@@ -762,7 +762,7 @@ def export_skill_to_word(markdown: str, skill_meta: Dict[str, Any], out_dir: str
     if sub_parts:
         sub = doc.add_paragraph()
         sub.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        run = sub.add_run(" — ".join(sub_parts[:5]))
+        run = sub.add_run(" - ".join(sub_parts[:5]))
         run.font.size = Pt(14)
         run.font.color.rgb = RGBColor(0x55, 0x55, 0x55)
 
@@ -881,7 +881,7 @@ def export_skill_to_pptx(markdown: str, skill_meta: Dict[str, Any], out_dir: str
                 v = ", ".join(str(x) for x in v)
             sub_parts.append(str(v))
     if sub_parts:
-        _add_text(s, 0.5, 3.9, 12.3, 0.8, " — ".join(sub_parts[:5]),
+        _add_text(s, 0.5, 3.9, 12.3, 0.8, " - ".join(sub_parts[:5]),
                   size=22, color=WHITE, align=PP_ALIGN.CENTER)
     _add_text(s, 0.5, 6.5, 12.3, 0.5, date.today().strftime("%d %B %Y"),
               size=14, color=GREY, align=PP_ALIGN.CENTER)
@@ -930,7 +930,7 @@ def export_skill_to_pptx(markdown: str, skill_meta: Dict[str, Any], out_dir: str
                     body_lines.append("• " + _strip_markdown_inline(item))
             elif btype == "table" and content:
                 # Petit récap : nb lignes/cols
-                body_lines.append(f"[Tableau {len(content)} lignes × {len(content[0]) if content else 0} colonnes — voir Excel]")
+                body_lines.append(f"[Tableau {len(content)} lignes × {len(content[0]) if content else 0} colonnes - voir Excel]")
 
         body_text = "\n".join(body_lines[:25])  # Cap à 25 lignes par slide
         _add_text(s, 0.5, 1.4, 12.3, 5.5, body_text, size=13, color=WHITE)

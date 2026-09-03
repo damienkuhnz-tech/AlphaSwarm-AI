@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  LLM / GROQ CLIENT — Wrapper Groq compatible avec l'interface Anthropic      ║
+║  LLM / GROQ CLIENT - Wrapper Groq compatible avec l'interface Anthropic      ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Groq expose un endpoint compatible OpenAI. Ce module utilise donc le SDK   ║
 ║  OpenAI (`openai` package) avec base_url=https://api.groq.com/openai/v1.    ║
@@ -36,14 +36,14 @@ from typing import Any, Dict, List, Optional
 # ─────────────────────────────────────────────────────────────────────────────
 
 class _TextBlock:
-    """Mime anthropic.types.TextBlock — bloc de texte dans une réponse."""
+    """Mime anthropic.types.TextBlock - bloc de texte dans une réponse."""
     type = "text"
     def __init__(self, text: str):
         self.text = text
 
 
 class _ToolUseBlock:
-    """Mime anthropic.types.ToolUseBlock — appel d'outil par le LLM."""
+    """Mime anthropic.types.ToolUseBlock - appel d'outil par le LLM."""
     type = "tool_use"
     def __init__(self, id: str, name: str, input: Dict):
         self.id = id
@@ -52,7 +52,7 @@ class _ToolUseBlock:
 
 
 class _Response:
-    """Mime anthropic.types.Message — réponse complète du LLM."""
+    """Mime anthropic.types.Message - réponse complète du LLM."""
     def __init__(self, content: List, stop_reason: str):
         self.content = content
         self.stop_reason = stop_reason
@@ -235,7 +235,7 @@ def _response_openai_to_anthropic(completion) -> _Response:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-#  CLASSE PUBLIQUE — INTERFACE PUBLIC IDENTIQUE À anthropic.Anthropic
+#  CLASSE PUBLIQUE - INTERFACE PUBLIC IDENTIQUE À anthropic.Anthropic
 # ─────────────────────────────────────────────────────────────────────────────
 
 class _MessagesNamespace:
@@ -306,7 +306,7 @@ class GroqAnthropicCompatClient:
         from openai import OpenAI
         # timeout / max_retries portés par le client OpenAI → s'appliquent à TOUS
         # les appels chat.completions.create() sans toucher aux call-sites.
-        # Si timeout=None, on laisse le défaut SDK (600s) — mais llm/client.py
+        # Si timeout=None, on laisse le défaut SDK (600s) - mais llm/client.py
         # passe toujours settings.LLM_TIMEOUT.
         client_kwargs: Dict[str, Any] = {
             "api_key":     api_key,

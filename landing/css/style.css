@@ -1,7 +1,7 @@
 /* ================================================================
-   AlphaSwarm Landing — Charte "Essaim"
-   Noir végétal + émeraude — identique à la plateforme (/app).
-   Typo : Chakra Petch (display technique) + Inter (texte) — vendorées.
+   AlphaSwarm Landing - Charte "Essaim"
+   Noir végétal + émeraude - identique à la plateforme (/app).
+   Typo : Chakra Petch (display technique) + Inter (texte) - vendorées.
    ================================================================ */
 
 @font-face { font-family:'Chakra Petch'; font-weight:500; font-style:normal; font-display:swap; src:url('/landing/fonts/ChakraPetch-500.woff2') format('woff2'); }
@@ -22,9 +22,9 @@
   --text-muted:   #7FA396;   /* Lichen */
   --text-faint:   #4C6B5D;
   --text-on-light:#EAF5F0;
-  --accent:       #3DDC97;   /* Émeraude — marque + bullish */
+  --accent:       #3DDC97;   /* Émeraude - marque + bullish */
   --accent-dim:   #1E7A57;
-  --danger:       #FF6B6B;   /* rouge — bearish */
+  --danger:       #FF6B6B;   /* rouge - bearish */
   --neon-glow:    0 0 24px rgba(61, 220, 151, 0.45);
 
   --font-display: 'Chakra Petch', 'Bahnschrift', system-ui, sans-serif;
@@ -318,7 +318,7 @@ a { color: inherit; text-decoration: none; }
   opacity: 0;
 }
 .hero-italic {
-  /* Chakra Petch : pas d'italique — l'accent porte l'emphase */
+  /* Chakra Petch : pas d'italique - l'accent porte l'emphase */
   font-weight: 700;
   background: linear-gradient(120deg, var(--accent), #7CEBB8);
   -webkit-background-clip: text;

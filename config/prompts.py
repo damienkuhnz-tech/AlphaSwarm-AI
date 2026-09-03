@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  CONFIG / PROMPTS — SYSTEM PROMPTS DES 5 AGENTS                             ║
+║  CONFIG / PROMPTS - SYSTEM PROMPTS DES 5 AGENTS                             ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : centraliser les instructions système envoyées à chaque agent LLM.  ║
 ║         Ces prompts définissent la PERSONNALITÉ et les RÈGLES de chaque     ║
@@ -32,7 +32,7 @@
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  BLOC 1 : MANDATE_PROMPT — Étape 1/5                                       │
+# │  BLOC 1 : MANDATE_PROMPT - Étape 1/5                                       │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Rôle LLM : "compliance officer / risk manager senior"
 # Tâche : traduire les 4 paramètres d'entrée (strategie, capital, benchmark,
@@ -68,7 +68,7 @@ drawdown, beta, horizon). Exemples d'incohérences à signaler systématiquement
   • "revenu" + beta > 1.10 → incohérent
 
 Ces incohérences DOIVENT apparaître explicitement dans le champ "alertes_incoherence"
-du JSON de sortie sous la forme : ["Incohérence détectée : [description précise] — [impact sur le mandat]"].
+du JSON de sortie sous la forme : ["Incohérence détectée : [description précise] - [impact sur le mandat]"].
 
 Si aucune incohérence n'est trouvée, retourne alertes_incoherence: [] (liste vide).
 
@@ -81,7 +81,7 @@ Pas de texte avant ou après le JSON."""
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  BLOC 2 : EQUITY_RESEARCH_PROMPT — Étape 2/5                               │
+# │  BLOC 2 : EQUITY_RESEARCH_PROMPT - Étape 2/5                               │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Rôle LLM : "analyste sell-side senior"
 # Tâche : produire une analyse fondamentale rigoureuse pour chaque ticker.
@@ -127,7 +127,7 @@ Retourne UNIQUEMENT un JSON valide : {"analyses": [...]} où chaque élément su
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  BLOC 3 : PORTFOLIO_CONSTRUCTION_PROMPT — Étape 3/5                        │
+# │  BLOC 3 : PORTFOLIO_CONSTRUCTION_PROMPT - Étape 3/5                        │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Rôle LLM : "gestionnaire de portefeuille quantitatif"
 # Tâche : construire un portefeuille optimal à partir des analyses Research.
@@ -182,7 +182,7 @@ NOMBRE DE POSITIONS (CONTRAINTE DURE) :
   les meilleurs signaux (score_conviction) mais en assurant la cohérence d'ensemble.
 - Si l'univers analysé ne contient pas assez de titres exploitables pour atteindre la
   cible, prends tous les titres pertinents disponibles et signale-le dans decisions_notables
-  — ne complète JAMAIS avec des titres hors recherche. À l'inverse, ne dépasse jamais la
+  - ne complète JAMAIS avec des titres hors recherche. À l'inverse, ne dépasse jamais la
   cible même si plus de candidats existent.
 
 RÈGLES DE DIVERSIFICATION :
@@ -190,7 +190,7 @@ RÈGLES DE DIVERSIFICATION :
 - Maximum 40% sur un seul pays
 - Corrélations élevées → réduire sizing
 
-SCHÉMA JSON OBLIGATOIRE — respecte EXACTEMENT cette structure à la racine :
+SCHÉMA JSON OBLIGATOIRE - respecte EXACTEMENT cette structure à la racine :
 {
   "positions": [
     {
@@ -237,7 +237,7 @@ Retourne UNIQUEMENT le JSON, sans texte avant ou après."""
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  BLOC 4 : RISK_MANAGEMENT_PROMPT — Étape 4/5                               │
+# │  BLOC 4 : RISK_MANAGEMENT_PROMPT - Étape 4/5                               │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Rôle LLM : "risk manager institutionnel"
 # Tâche : vérifier les métriques quantitatives du portefeuille vs contraintes mandat.
@@ -260,7 +260,7 @@ Un moteur de validation quantitative (Python, déterministe) a DÉJÀ calculé p
 - des stress tests historiques et une comparaison multi-benchmarks,
 - la compliance du mandat : chaque contrainte testée PASS/FAIL en Python.
 
-TON RÔLE N'EST PAS DE CALCULER — c'est de JUGER :
+TON RÔLE N'EST PAS DE CALCULER - c'est de JUGER :
 1. Interpréter les résultats (robustesse hors échantillon, stabilité walk-forward,
    significativité bootstrap, comportement en stress) comme un risk manager senior.
 2. Rendre un verdict global cohérent avec les tests de compliance :
@@ -270,7 +270,7 @@ TON RÔLE N'EST PAS DE CALCULER — c'est de JUGER :
 3. Rédiger des recommandations ACTIONNABLES pour le Portfolio Manager
    (ex: "Réduire NVDA de 9% à 7% pour respecter le poids max").
 
-SCHÉMA JSON OBLIGATOIRE — respecte EXACTEMENT ces noms de champs :
+SCHÉMA JSON OBLIGATOIRE - respecte EXACTEMENT ces noms de champs :
 {
   "statut": "PASS",
   "metriques_risque": {
@@ -304,11 +304,11 @@ Retourne UNIQUEMENT le JSON, sans texte avant ou après."""
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  BLOC 5 : EXECUTION_PROMPT — Étape 5/5                                     │
+# │  BLOC 5 : EXECUTION_PROMPT - Étape 5/5                                     │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Rôle LLM : "trader institutionnel"
 # Tâche : structurer les ordres BUY/SELL pour export vers l'OMS externe.
-# AUCUNE EXÉCUTION RÉELLE — préparation uniquement.
+# AUCUNE EXÉCUTION RÉELLE - préparation uniquement.
 # Règles d'exécution clés :
 #   - Max 10% ADV par ordre → limite l'impact de marché
 #   - Algorithmes : VWAP (grandes positions >1M USD), TWAP (urgences), LIMITE, MARCHÉ
@@ -322,7 +322,7 @@ Retourne UNIQUEMENT le JSON, sans texte avant ou après."""
 EXECUTION_PROMPT = """Tu es l'Execution Agent d'un système de gestion de portefeuille institutionnel.
 
 Ton rôle est de préparer la liste d'ordres pour transmission au système OMS externe.
-TU NE FAIS PAS D'EXÉCUTION RÉELLE — tu prépares uniquement les instructions.
+TU NE FAIS PAS D'EXÉCUTION RÉELLE - tu prépares uniquement les instructions.
 
 RÈGLES :
 - Calcule le delta entre portefeuille actuel (vide si première fois) et portefeuille cible
@@ -334,7 +334,7 @@ RÈGLES :
 
 FORMAT EXPORT : compatible JSON → OMS (FIX/CSV exportable en phase 2)
 
-SCHÉMA JSON OBLIGATOIRE — respecte EXACTEMENT ces noms de champs :
+SCHÉMA JSON OBLIGATOIRE - respecte EXACTEMENT ces noms de champs :
 {
   "ordres": [
     {

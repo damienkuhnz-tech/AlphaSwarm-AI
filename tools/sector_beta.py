@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  TOOLS / SECTOR BETA — SEGMENTATION QUANTITATIVE GICS PAR PROFIL DE RISQUE ║
+║  TOOLS / SECTOR BETA - SEGMENTATION QUANTITATIVE GICS PAR PROFIL DE RISQUE ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : fournir une classification empirique des 11 secteurs GICS           ║
 ║         basée sur leurs betas historiques, et mapper chaque profil de       ║
@@ -23,7 +23,7 @@ from typing import Dict, List, Tuple
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  TABLE 1 — BETAS EMPIRIQUES PAR SECTEUR GICS                               ║
+# ║  TABLE 1 - BETAS EMPIRIQUES PAR SECTEUR GICS                               ║
 # ║  Source : moyennes historiques sur marchés développés (MSCI World base).   ║
 # ║  Beta mesuré vs MSCI World, rolling 5 ans, médiane sur 2015-2025.          ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
@@ -35,7 +35,7 @@ GICS_SECTOR_BETA: Dict[str, dict] = {
         "beta_max": 0.60,
         "beta_med": 0.45,
         "type": "defensif",
-        "description": "Très défensif — revenus réglementés, dividendes stables, peu sensible au cycle",
+        "description": "Très défensif - revenus réglementés, dividendes stables, peu sensible au cycle",
         "exemples_tickers": ["NEE", "DUK", "ENEL.MI", "IBE.MC", "RWE.DE"],
     },
 
@@ -44,7 +44,7 @@ GICS_SECTOR_BETA: Dict[str, dict] = {
         "beta_max": 0.70,
         "beta_med": 0.55,
         "type": "defensif",
-        "description": "Défensif — demande non cyclique, pricing power fort, FCF très stable",
+        "description": "Défensif - demande non cyclique, pricing power fort, FCF très stable",
         "exemples_tickers": ["NESN.SW", "PG", "KO", "UL", "WMT"],
     },
 
@@ -53,7 +53,7 @@ GICS_SECTOR_BETA: Dict[str, dict] = {
         "beta_max": 0.85,
         "beta_med": 0.68,
         "type": "defensif",
-        "description": "Défensif — innovation structurelle, barrières réglementaires, récurrent",
+        "description": "Défensif - innovation structurelle, barrières réglementaires, récurrent",
         "exemples_tickers": ["JNJ", "NVO", "ROG.SW", "AZN.L", "LLY"],
     },
 
@@ -62,7 +62,7 @@ GICS_SECTOR_BETA: Dict[str, dict] = {
         "beta_max": 1.00,
         "beta_med": 0.80,
         "type": "intermediaire",
-        "description": "Semi-défensif — sensible aux taux d'intérêt, revenus locatifs prévisibles",
+        "description": "Semi-défensif - sensible aux taux d'intérêt, revenus locatifs prévisibles",
         "exemples_tickers": ["SPG", "PLD", "UNIBAIL.PA", "PSA", "DLR"],
     },
 
@@ -71,7 +71,7 @@ GICS_SECTOR_BETA: Dict[str, dict] = {
         "beta_max": 1.10,
         "beta_med": 0.85,
         "type": "intermediaire",
-        "description": "Mixte — télécoms défensifs (β<0.8) vs media/tech offensifs (β>1.0)",
+        "description": "Mixte - télécoms défensifs (β<0.8) vs media/tech offensifs (β>1.0)",
         "exemples_tickers": ["DTE.DE", "VOD.L", "GOOGL", "META", "T"],
     },
 
@@ -80,7 +80,7 @@ GICS_SECTOR_BETA: Dict[str, dict] = {
         "beta_max": 1.20,
         "beta_med": 1.00,
         "type": "intermediaire",
-        "description": "Intermédiaire — cyclique modéré, sensible aux taux, levier bancaire",
+        "description": "Intermédiaire - cyclique modéré, sensible aux taux, levier bancaire",
         "exemples_tickers": ["JPM", "BNP.PA", "HSBA.L", "V", "AXA.PA"],
     },
 
@@ -89,7 +89,7 @@ GICS_SECTOR_BETA: Dict[str, dict] = {
         "beta_max": 1.20,
         "beta_med": 1.02,
         "type": "intermediaire",
-        "description": "Intermédiaire — cyclique mais leaders mondiaux avec visibilité long terme",
+        "description": "Intermédiaire - cyclique mais leaders mondiaux avec visibilité long terme",
         "exemples_tickers": ["SIE.DE", "HON", "CAT", "GE", "ABB.SW"],
     },
 
@@ -98,7 +98,7 @@ GICS_SECTOR_BETA: Dict[str, dict] = {
         "beta_max": 1.25,
         "beta_med": 1.05,
         "type": "cyclique",
-        "description": "Cyclique — lié aux matières premières et au cycle industriel mondial",
+        "description": "Cyclique - lié aux matières premières et au cycle industriel mondial",
         "exemples_tickers": ["LIN", "APD", "BHP", "RIO", "NEM"],
     },
 
@@ -107,7 +107,7 @@ GICS_SECTOR_BETA: Dict[str, dict] = {
         "beta_max": 1.35,
         "beta_med": 1.10,
         "type": "cyclique",
-        "description": "Cyclique — corrélé au prix du pétrole/gaz, risque géopolitique élevé",
+        "description": "Cyclique - corrélé au prix du pétrole/gaz, risque géopolitique élevé",
         "exemples_tickers": ["XOM", "TTE.PA", "SHEL.L", "CVX", "BP.L"],
     },
 
@@ -116,7 +116,7 @@ GICS_SECTOR_BETA: Dict[str, dict] = {
         "beta_max": 1.45,
         "beta_med": 1.22,
         "type": "offensif",
-        "description": "Offensif — très cyclique, dépend du cycle consommateur et de la confiance",
+        "description": "Offensif - très cyclique, dépend du cycle consommateur et de la confiance",
         "exemples_tickers": ["AMZN", "TSLA", "MC.PA", "NKE", "HD"],
     },
 
@@ -125,14 +125,14 @@ GICS_SECTOR_BETA: Dict[str, dict] = {
         "beta_max": 1.80,
         "beta_med": 1.45,
         "type": "offensif",
-        "description": "Très offensif — forte croissance, valorisations élevées, haute volatilité",
+        "description": "Très offensif - forte croissance, valorisations élevées, haute volatilité",
         "exemples_tickers": ["NVDA", "AAPL", "MSFT", "ASML.AS", "TSM"],
     },
 }
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  TABLE 2 — FOURCHETTES DE BETA CIBLE PAR PROFIL DE RISQUE                  ║
+# ║  TABLE 2 - FOURCHETTES DE BETA CIBLE PAR PROFIL DE RISQUE                  ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 RISK_PROFILE_BETA: Dict[str, dict] = {
@@ -140,67 +140,67 @@ RISK_PROFILE_BETA: Dict[str, dict] = {
     "conservateur": {
         "beta_min": 0.40,
         "beta_max": 0.85,
-        "beta_cible_portefeuille": "0.50 — 0.75",
+        "beta_cible_portefeuille": "0.50 - 0.75",
         "overlap_tolerance": 0.10,     # Secteurs secondaires : jusqu'à 0.10 hors fourchette
         "min_secteurs": 4,             # Diversification minimale imposée
         "max_pct_secteur_primaire": 30, # Max 30% dans un seul secteur primaire
         "max_pct_secteur_secondaire": 12,
         "max_pct_total_secondaire": 20, # Max 20% total en secteurs secondaires
-        "description": "Préservation du capital — secteurs défensifs, dividendes, bilan solide",
+        "description": "Préservation du capital - secteurs défensifs, dividendes, bilan solide",
     },
 
     "modere": {
         "beta_min": 0.65,
         "beta_max": 1.05,
-        "beta_cible_portefeuille": "0.75 — 0.95",
+        "beta_cible_portefeuille": "0.75 - 0.95",
         "overlap_tolerance": 0.12,
         "min_secteurs": 5,
         "max_pct_secteur_primaire": 25,
         "max_pct_secteur_secondaire": 15,
         "max_pct_total_secondaire": 25,
-        "description": "Équilibre rendement/risque — mix défensif/intermédiaire",
+        "description": "Équilibre rendement/risque - mix défensif/intermédiaire",
     },
 
     "equilibre": {
         "beta_min": 0.85,
         "beta_max": 1.20,
-        "beta_cible_portefeuille": "0.95 — 1.10",
+        "beta_cible_portefeuille": "0.95 - 1.10",
         "overlap_tolerance": 0.15,
         "min_secteurs": 6,
         "max_pct_secteur_primaire": 22,
         "max_pct_secteur_secondaire": 18,
         "max_pct_total_secondaire": 35,
-        "description": "Croissance diversifiée — tous secteurs intermédiaires, beta proche 1",
+        "description": "Croissance diversifiée - tous secteurs intermédiaires, beta proche 1",
     },
 
     "dynamique": {
         "beta_min": 1.05,
         "beta_max": 1.40,
-        "beta_cible_portefeuille": "1.10 — 1.30",
+        "beta_cible_portefeuille": "1.10 - 1.30",
         "overlap_tolerance": 0.12,
         "min_secteurs": 4,
         "max_pct_secteur_primaire": 35,
         "max_pct_secteur_secondaire": 20,
         "max_pct_total_secondaire": 30,
-        "description": "Performance prioritaire — secteurs offensifs/cycliques dominants",
+        "description": "Performance prioritaire - secteurs offensifs/cycliques dominants",
     },
 
     "agressif": {
         "beta_min": 1.25,
         "beta_max": 1.70,
-        "beta_cible_portefeuille": "1.30 — 1.55",
+        "beta_cible_portefeuille": "1.30 - 1.55",
         "overlap_tolerance": 0.10,
         "min_secteurs": 3,
         "max_pct_secteur_primaire": 40,
         "max_pct_secteur_secondaire": 25,
         "max_pct_total_secondaire": 35,
-        "description": "Rendement maximal — concentration sur secteurs à fort beta",
+        "description": "Rendement maximal - concentration sur secteurs à fort beta",
     },
 }
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  FONCTION 1 — CLASSIFICATION PRIMARY / SECONDARY / EXCLUDED               ║
+# ║  FONCTION 1 - CLASSIFICATION PRIMARY / SECONDARY / EXCLUDED               ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 def get_sector_classification(profil_risque: str) -> dict:
@@ -250,7 +250,7 @@ def get_sector_classification(profil_risque: str) -> dict:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  FONCTION 2 — POIDS MAX PAR SECTEUR POUR LE TEMPLATE MANDAT               ║
+# ║  FONCTION 2 - POIDS MAX PAR SECTEUR POUR LE TEMPLATE MANDAT               ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 def build_sector_weights(profil_risque: str) -> Dict[str, dict]:
@@ -324,7 +324,7 @@ def build_sector_weights(profil_risque: str) -> Dict[str, dict]:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  FONCTION 3 — TEXTE FORMATÉ POUR L'INJECTION DANS LES PROMPTS LLM         ║
+# ║  FONCTION 3 - TEXTE FORMATÉ POUR L'INJECTION DANS LES PROMPTS LLM         ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 def format_sector_directive_for_prompt(profil_risque: str) -> str:
@@ -334,13 +334,13 @@ def format_sector_directive_for_prompt(profil_risque: str) -> str:
 
     Format :
       SECTEURS PRIMAIRES (beta compatible) :
-        • Utilities          β 0.30-0.60 [médian 0.45] → max 30% — Très défensif
+        • Utilities          β 0.30-0.60 [médian 0.45] → max 30% - Très défensif
         ...
       SECTEURS SECONDAIRES (overlap partiel) :
-        • Communication      β 0.60-1.10 [médian 0.85] → max 12% — Mixte
+        • Communication      β 0.60-1.10 [médian 0.85] → max 12% - Mixte
         ...
       SECTEURS EXCLUS (beta incompatible) :
-        • Technologie        β 1.10-1.80 [médian 1.45] → 0%     — Très offensif
+        • Technologie        β 1.10-1.80 [médian 1.45] → 0%     - Très offensif
         ...
     """
     classif = get_sector_classification(profil_risque)
@@ -348,12 +348,12 @@ def format_sector_directive_for_prompt(profil_risque: str) -> str:
     profile = classif["profile"]
 
     lines = [
-        f"SEGMENTATION SECTORIELLE QUANTITATIVE — PROFIL {profil_risque.upper()}",
+        f"SEGMENTATION SECTORIELLE QUANTITATIVE - PROFIL {profil_risque.upper()}",
         f"Beta portefeuille cible : {profile['beta_cible_portefeuille']}",
         f"Diversification minimale : {profile['min_secteurs']} secteurs distincts obligatoires",
         f"Total secteurs secondaires : max {profile['max_pct_total_secondaire']}% du portefeuille",
         "",
-        "SECTEURS PRIMAIRES — beta compatible, surpondération autorisée :",
+        "SECTEURS PRIMAIRES - beta compatible, surpondération autorisée :",
     ]
     for s, data in classif["primary"].items():
         w = weights[s]
@@ -362,7 +362,7 @@ def format_sector_directive_for_prompt(profil_risque: str) -> str:
         )
 
     lines.append("")
-    lines.append("SECTEURS SECONDAIRES — overlap partiel, poids limité :")
+    lines.append("SECTEURS SECONDAIRES - overlap partiel, poids limité :")
     for s, data in classif["secondary"].items():
         w = weights[s]
         lines.append(
@@ -370,7 +370,7 @@ def format_sector_directive_for_prompt(profil_risque: str) -> str:
         )
 
     lines.append("")
-    lines.append("SECTEURS EXCLUS — poids = 0% :")
+    lines.append("SECTEURS EXCLUS - poids = 0% :")
     for s in classif["excluded"]:
         lines.append(f"  • {s}")
 
@@ -378,7 +378,7 @@ def format_sector_directive_for_prompt(profil_risque: str) -> str:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  FONCTION 4 — NORMALISATION DES NOMS DE SECTEURS                          ║
+# ║  FONCTION 4 - NORMALISATION DES NOMS DE SECTEURS                          ║
 # ║  Le LLM retourne parfois "Technology", "tech", "Santé", "Healthcare"...   ║
 # ║  Cette fonction ramène tout aux 11 clés canoniques de GICS_SECTOR_BETA.   ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
@@ -520,9 +520,9 @@ def normalize_sector(secteur_raw: str) -> str:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  FONCTION 5 — FILTRE DUR POST-LLM                                          ║
+# ║  FONCTION 5 - FILTRE DUR POST-LLM                                          ║
 # ║  Élimine toute idée dont le secteur est EXCLU pour le profil donné.        ║
-# ║  C'est un filtre DÉTERMINISTE Python — indépendant du LLM.                 ║
+# ║  C'est un filtre DÉTERMINISTE Python - indépendant du LLM.                 ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 def filter_ideas_by_profile(ideas: List, profil_risque: str) -> tuple:

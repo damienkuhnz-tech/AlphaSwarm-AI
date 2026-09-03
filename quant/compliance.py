@@ -1,10 +1,10 @@
 """
-QUANT / COMPLIANCE — Validation automatique du mandat (PASS / FAIL).
+QUANT / COMPLIANCE - Validation automatique du mandat (PASS / FAIL).
 
 Chaque contrainte du mandat devient un test unitaire objectif :
   { nom, categorie, limite, valeur, statut PASS/FAIL/N-A, detail }
 
-Le verdict est calculé en Python à partir des métriques mesurées — le LLM
+Le verdict est calculé en Python à partir des métriques mesurées - le LLM
 ne participe PAS à cette section (auditabilité totale pour le jury).
 """
 
@@ -138,7 +138,7 @@ def check_mandate_compliance(mandate, portfolio,
     if mandate.criteres_ESG:
         tests.append(_test("Critères ESG", "ESG & exclusions",
                            str(mandate.criteres_ESG), "déclaratif",
-                           None, "non vérifiable sans fournisseur de données ESG — limite documentée"))
+                           None, "non vérifiable sans fournisseur de données ESG - limite documentée"))
 
     # ── Verdict global ────────────────────────────────────────────────────────
     n_fail = sum(1 for t in tests if t["statut"] == "FAIL")

@@ -1,5 +1,5 @@
 """
-QUANT / REPORT — Orchestration de la validation quantitative complète.
+QUANT / REPORT - Orchestration de la validation quantitative complète.
 
 Point d'entrée unique appelé par le RiskManagementAgent :
 

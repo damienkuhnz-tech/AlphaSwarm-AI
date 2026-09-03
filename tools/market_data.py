@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  TOOLS / MARKET DATA — COUCHE D'ACCÈS HYBRIDE YAHOO + FMP                   ║
+║  TOOLS / MARKET DATA - COUCHE D'ACCÈS HYBRIDE YAHOO + FMP                   ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : récupérer les données boursières avec résilience.                    ║
 ║                                                                              ║
@@ -71,7 +71,7 @@ def _cached(key: tuple, fn, *args, **kwargs):
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 def _yf_stock_info(ticker: str) -> Dict[str, Any]:
-    """Tente yfinance.Ticker.info — peut planter sur 401 Yahoo."""
+    """Tente yfinance.Ticker.info - peut planter sur 401 Yahoo."""
     try:
         info = yf.Ticker(ticker).info
         if not info or not info.get("longName"):
@@ -157,7 +157,7 @@ def _yf_price_history(ticker: str, period: str = "1y", interval: str = "1d") -> 
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  FONCTIONS PUBLIQUES — FALLBACK YFINANCE → FMP                              ║
+# ║  FONCTIONS PUBLIQUES - FALLBACK YFINANCE → FMP                              ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 def get_stock_info(ticker: str) -> Dict[str, Any]:
@@ -219,7 +219,7 @@ def get_batch_info(tickers: list) -> Dict[str, Dict]:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  FONCTION 5 — FINANCIALS ANNUELS (4 ans d'historique)                      ║
+# ║  FONCTION 5 - FINANCIALS ANNUELS (4 ans d'historique)                      ║
 # ║  Yahoo (financials DataFrame) → FMP fallback (income-statement)             ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
@@ -295,7 +295,7 @@ def _get_annual_financials_uncached(ticker: str) -> Dict[str, Any]:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  FONCTION 6 — SÉRIES DE PRIX NORMALISÉES (graphique Share Performance)     ║
+# ║  FONCTION 6 - SÉRIES DE PRIX NORMALISÉES (graphique Share Performance)     ║
 # ║  Yahoo only pour l'instant (FMP n'a pas la même structure de séries)        ║
 # ║  Si Yahoo plante → retourne VIDE, le rapport HTML s'adapte (placeholder).   ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
@@ -303,7 +303,7 @@ def _get_annual_financials_uncached(ticker: str) -> Dict[str, Any]:
 def get_price_series(
     ticker: str, benchmark: str = "^GSPC", period: str = "1y"
 ) -> Dict[str, Any]:
-    """Séries de prix normalisées pour le graphique. Yahoo only — fallback graphique simple."""
+    """Séries de prix normalisées pour le graphique. Yahoo only - fallback graphique simple."""
     try:
         t_data = yf.download(ticker,    period=period, progress=False)
         b_data = yf.download(benchmark, period=period, progress=False)

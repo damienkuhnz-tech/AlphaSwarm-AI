@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  TOOLS / FINANCIAL METRICS — CALCUL DES MÉTRIQUES DE RISQUE PORTEFEUILLE   ║
+║  TOOLS / FINANCIAL METRICS - CALCUL DES MÉTRIQUES DE RISQUE PORTEFEUILLE   ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : calculer les métriques quantitatives de risque d'un portefeuille.  ║
 ║  Appelé par : RiskManagementAgent via l'outil "compute_portfolio_metrics". ║
@@ -31,7 +31,7 @@ import yfinance as yf
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  HELPER — MAPPING BENCHMARK DU MANDAT → ETF PROXY YAHOO FINANCE            ║
+# ║  HELPER - MAPPING BENCHMARK DU MANDAT → ETF PROXY YAHOO FINANCE            ║
 # ╠═══════════════════════════════════════════════════════════════════════════╣
 # ║  Yahoo Finance ne connaît pas les indices "MSCI World" directement.        ║
 # ║  On utilise un ETF qui le réplique (URTH pour MSCI World, etc.) afin de    ║
@@ -88,11 +88,11 @@ def compute_portfolio_metrics(
     """
     Calcule volatilité, beta, tracking error et corrélations d'un portefeuille,
     sur la période et le benchmark fournis. Toutes les métriques sont des CALCULS
-    réels (numpy/pandas sur données yfinance) — aucune estimation.
+    réels (numpy/pandas sur données yfinance) - aucune estimation.
     """
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  BLOC 1 — EXTRACTION DES TICKERS ET POIDS                              │
+    # │  BLOC 1 - EXTRACTION DES TICKERS ET POIDS                              │
     # └─────────────────────────────────────────────────────────────────────────┘
 
     tickers = [p["ticker"] for p in positions]
@@ -104,7 +104,7 @@ def compute_portfolio_metrics(
 
     try:
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  BLOC 2 — TÉLÉCHARGEMENT DES PRIX (yfinance)                       │
+        # │  BLOC 2 - TÉLÉCHARGEMENT DES PRIX (yfinance)                       │
         # └─────────────────────────────────────────────────────────────────────┘
 
         raw = yf.download(
@@ -128,7 +128,7 @@ def compute_portfolio_metrics(
         )
 
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  BLOC 3 — EXTRACTION DES PRIX DE CLÔTURE                           │
+        # │  BLOC 3 - EXTRACTION DES PRIX DE CLÔTURE                           │
         # └─────────────────────────────────────────────────────────────────────┘
 
         if "Close" in raw.columns:
@@ -149,7 +149,7 @@ def compute_portfolio_metrics(
         # Utilisés pour calculer beta et tracking error
 
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  BLOC 4 — VOLATILITÉ INDIVIDUELLE PAR TITRE                        │
+        # │  BLOC 4 - VOLATILITÉ INDIVIDUELLE PAR TITRE                        │
         # └─────────────────────────────────────────────────────────────────────┘
 
         vol_dict = {}
@@ -162,7 +162,7 @@ def compute_portfolio_metrics(
         # vol_dict = {"NVDA": 0.45, "MSFT": 0.28, ...} (volatilités annualisées)
 
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  BLOC 5 — VOLATILITÉ DU PORTEFEUILLE (approche matricielle)        │
+        # │  BLOC 5 - VOLATILITÉ DU PORTEFEUILLE (approche matricielle)        │
         # └─────────────────────────────────────────────────────────────────────┘
 
         # ── On ne garde que les tickers avec des données disponibles ──────────
@@ -200,7 +200,7 @@ def compute_portfolio_metrics(
         # port_vol : volatilité annualisée du portefeuille. Ex: 0.142 = 14.2%
 
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  BLOC 6 — BETA ET TRACKING ERROR vs ACWI                           │
+        # │  BLOC 6 - BETA ET TRACKING ERROR vs ACWI                           │
         # └─────────────────────────────────────────────────────────────────────┘
 
         beta = None  # Initialisés à None : si les données manquent → on renvoie None
@@ -247,7 +247,7 @@ def compute_portfolio_metrics(
                 # Limite mandat : tracking_error_max = 5% (défaut)
 
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  BLOC 7 — CORRÉLATIONS ÉLEVÉES ENTRE PAIRES DE TITRES              │
+        # │  BLOC 7 - CORRÉLATIONS ÉLEVÉES ENTRE PAIRES DE TITRES              │
         # └─────────────────────────────────────────────────────────────────────┘
 
         corr_matrix = returns[valid_tickers].corr()
@@ -270,7 +270,7 @@ def compute_portfolio_metrics(
         # Ex: [{"pair": "MSFT/NVDA", "correlation": 0.82}, ...]
 
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  BLOC 7bis — CONCENTRATIONS top1 / top5 / top10                    │
+        # │  BLOC 7bis - CONCENTRATIONS top1 / top5 / top10                    │
         # │  Calculées en Python à partir des poids fournis (pas par le LLM).  │
         # └─────────────────────────────────────────────────────────────────────┘
         poids_tries = sorted((p["poids"] for p in positions), reverse=True)
@@ -279,7 +279,7 @@ def compute_portfolio_metrics(
         conc_top10 = round(sum(poids_tries[:10]), 4)
 
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  BLOC 8 — RETOUR DES RÉSULTATS                                     │
+        # │  BLOC 8 - RETOUR DES RÉSULTATS                                     │
         # └─────────────────────────────────────────────────────────────────────┘
 
         return {
@@ -310,7 +310,7 @@ def compute_portfolio_metrics(
 
     except Exception as e:
         # ┌─────────────────────────────────────────────────────────────────────┐
-        # │  BLOC 9 — GESTION D'ERREUR (retour dégradé)                        │
+        # │  BLOC 9 - GESTION D'ERREUR (retour dégradé)                        │
         # │  Si yfinance échoue (réseau, ticker invalide, etc.)                │
         # │  Le Risk Agent peut quand même fonctionner avec des données nulles.│
         # └─────────────────────────────────────────────────────────────────────┘

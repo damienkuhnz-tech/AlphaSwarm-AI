@@ -1,4 +1,4 @@
-  /* ════ MODULE DATAVIZ — composants SVG maison (aucune dépendance) ════ */
+  /* ════ MODULE DATAVIZ - composants SVG maison (aucune dépendance) ════ */
   // Échappement HTML (sécurité XSS : tout contenu issu du LLM ou des données
   // de marché passe par ici avant innerHTML). Correction d'un bug latent :
   // cette fonction était appelée par CHART.donut et renderRisk sans être définie.
@@ -160,7 +160,7 @@
         '</svg><div class="perf-legend"><span><i style="background:#117B54"></i>Médiane</span><span><i style="background:rgba(17,123,84,0.35)"></i>IC 50%</span><span><i style="background:rgba(17,123,84,0.15)"></i>IC 90%</span></div>';
     }
     // ── Barres horizontales comparatives (stress tests) ──
-    // rows = [{label, value, ref}] — value = portefeuille, ref = benchmark
+    // rows = [{label, value, ref}] - value = portefeuille, ref = benchmark
     function hbars(rows, opts) {
       opts = opts || {};
       if (!rows || !rows.length) return '';

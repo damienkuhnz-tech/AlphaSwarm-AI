@@ -1,5 +1,5 @@
 """
-WEBAPP / ROUTES / CHAT — dialogues avec les agents.
+WEBAPP / ROUTES / CHAT - dialogues avec les agents.
 
 POST /api/chat               : chat avec un agent (research/portfolio/risk/execution)
 POST /api/portfolio/briefing : briefing du PM avant construction du portefeuille
@@ -15,7 +15,7 @@ from webapp.services.chat_service import _mandate_summary, _buy_list
 bp = Blueprint("chat", __name__)
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  POST /api/chat — CHAT AVEC UN AGENT INDIVIDUEL                             │
+# │  POST /api/chat - CHAT AVEC UN AGENT INDIVIDUEL                             │
 # │  Permet d'interroger un agent précis (research, portfolio, risk, execution) │
 # │  avec un historique de messages et un contexte du run courant.             │
 # └─────────────────────────────────────────────────────────────────────────────┘
@@ -55,14 +55,14 @@ Contexte actuel : {context}"""
 
     # ── Contexte injecté dans le prompt système ───────────────────────────────
     # On met EN PREMIER le mandat (créé par l'Agent Mandats) pour que l'agent
-    # connaisse profil, horizon, univers, contraintes, budget risque et ESG —
+    # connaisse profil, horizon, univers, contraintes, budget risque et ESG -
     # et n'ait jamais à les redemander. Vient ensuite la liste BUY (pour le PM)
     # puis le reste de l'état (portfolio/risk/execution) si présent.
     ctx_parts = []
     mandate_ctx = _mandate_summary(context.get("mandate") or {})
     if mandate_ctx:
         ctx_parts.append(
-            "MANDAT EN VIGUEUR (déjà décidé par l'Agent Mandats — appuie-toi dessus, "
+            "MANDAT EN VIGUEUR (déjà décidé par l'Agent Mandats - appuie-toi dessus, "
             "ne redemande PAS ce qui y figure) : "
             + json.dumps(mandate_ctx, ensure_ascii=False)
         )
@@ -109,7 +109,7 @@ Contexte actuel : {context}"""
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  POST /api/portfolio/briefing — CHAT AVEC LE PM AVANT CONSTRUCTION         │
+# │  POST /api/portfolio/briefing - CHAT AVEC LE PM AVANT CONSTRUCTION         │
 # │  Permet au gérant de dialoguer avec le Portfolio Manager AVANT que ce       │
 # │  dernier ne construise le portefeuille (niveau 3 d'interaction).            │
 # │  Body : { "messages": [...], "context": { "mandate": ..., "research": [...] } }
@@ -122,7 +122,7 @@ def portfolio_briefing():
     Chat conversationnel avec le Portfolio Manager Agent AVANT la construction.
     Le PM (utilisateur) peut écarter des titres, demander un style de portefeuille,
     poser des questions sur les BUY de la recherche, etc.
-    Le LLM répond sans construire — il dialogue.
+    Le LLM répond sans construire - il dialogue.
     """
     from llm.client import get_client
     chat_provider = settings.resolve_provider("chat")
@@ -148,7 +148,7 @@ def portfolio_briefing():
         "pas un humain externe). Tu dialogues avec le gérant pour CADRER le portefeuille "
         "avant sa construction.\n"
         "\n"
-        "RÈGLE N°1 — NE JAMAIS INVENTER D'INTERFACE.\n"
+        "RÈGLE N°1 - NE JAMAIS INVENTER D'INTERFACE.\n"
         "Tu ne connais PAS de menus, d'onglets, de boutons d'import. N'utilise JAMAIS les "
         "mots 'onglet', 'Watchlist', 'Buy List', 'importer une liste', 'charger l'univers', "
         "'support technique', 'équipe technique'. Le gérant n'a AUCUNE liste à fournir ni à "
@@ -176,12 +176,12 @@ def portfolio_briefing():
         "avec poids, pas de tableau de répartition final). Si on te demande de construire, "
         "renvoie au bouton 'Construire le portefeuille'.\n"
         "\n"
-        "Tu CONNAIS déjà le mandat ci-dessous — ne redemande jamais ce qui y figure.\n"
+        "Tu CONNAIS déjà le mandat ci-dessous - ne redemande jamais ce qui y figure.\n"
         "\n"
         f"MANDAT EN VIGUEUR : {json.dumps(mandate_summary, ensure_ascii=False) if mandate_summary else 'Non disponible'}\n"
         f"\nTITRES DÉJÀ ANALYSÉS ({len(buy_list)}) : "
         + (json.dumps(buy_list, ensure_ascii=False)[:3500] if buy_list else
-           "aucun encore — c'est ATTENDU à ce stade : l'analyse des titres du benchmark se "
+           "aucun encore - c'est ATTENDU à ce stade : l'analyse des titres du benchmark se "
            "lancera à la construction. Ce n'est PAS un problème à résoudre, ne demande PAS de "
            "charger quoi que ce soit, n'invente pas de titres. Concentre-toi sur le cadrage "
            "(secteurs, biais, contraintes).")

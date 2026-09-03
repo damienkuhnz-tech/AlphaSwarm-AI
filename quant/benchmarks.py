@@ -1,5 +1,5 @@
 """
-QUANT / BENCHMARKS — Comparaison multi-benchmarks.
+QUANT / BENCHMARKS - Comparaison multi-benchmarks.
 
 Le portefeuille est comparé à :
   - le benchmark du mandat (ETF proxy),
@@ -7,7 +7,7 @@ Le portefeuille est comparé à :
   - un portefeuille ÉQUIPONDÉRÉ sur les mêmes titres (l'allocation
     apporte-t-elle quelque chose au-delà de la sélection ?),
   - des portefeuilles ALÉATOIRES sur le même univers (test placebo :
-    la performance est-elle distinguable du hasard ? — répond à la
+    la performance est-elle distinguable du hasard ? - répond à la
     critique "conclusions trop affirmatives").
 
 Les portefeuilles aléatoires sont seedés → reproductibles.

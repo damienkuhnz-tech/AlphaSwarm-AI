@@ -62,7 +62,7 @@
         tab.appendChild(lbl);
         container.appendChild(tab);
       }
-      // ── Onglet "Marché" — toujours accessible, hors flux verrouillé ──
+      // ── Onglet "Marché" - toujours accessible, hors flux verrouillé ──
       var mtab = document.createElement('div');
       mtab.id = 'tab-item-market';
       mtab.className = 'tab-item';
@@ -288,7 +288,7 @@
     refreshLaunchButtons();
     goToStep(1);
     // Visual feedback
-    alert('Workflow rejeté. Retour à l\'étape 1 — Mandate Agent.');
+    alert('Workflow rejeté. Retour à l\'étape 1 - Mandate Agent.');
   }
 
   // ── Init ──

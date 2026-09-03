@@ -1,4 +1,4 @@
-# AlphaSwarm Plateforme multi-agent de gestion de portefeuille
+# AlphaSwarm - Plateforme multi-agent de gestion de portefeuille
 
 Travail de bachelor. AlphaSwarm orchestre cinq agents spécialisés qui couvrent
 le cycle complet de la gestion de portefeuille institutionnelle, de la
@@ -6,7 +6,7 @@ définition du mandat jusqu'à la préparation des ordres d'exécution.
 
 ## Architecture
 
-Pipeline strictement séquentiel  chaque agent consomme la sortie du précédent :
+Pipeline strictement séquentiel - chaque agent consomme la sortie du précédent :
 
 | # | Agent | Rôle |
 |---|-------|------|
@@ -18,14 +18,14 @@ Pipeline strictement séquentiel  chaque agent consomme la sortie du précédent
 
 Modules principaux :
 
-- `agents/`  les cinq agents (LLM : API Anthropic, fallback Groq)
-- `quant/`  moteur de validation quantitative 100 % Python (voir `docs/VALIDATION_QUANTITATIVE.md`)
-- `orchestrator/`  enchaînement du pipeline et gestion d'état
-- `models/` schémas Pydantic partagés
-- `api.py` serveur Flask (port 5001) : API de pilotage + interface web
-- `templates/` + `static/` — interface de la plateforme (`/app`) : templates Jinja par écran, CSS/JS modulaires
-- `landing/`  page d'accueil (`/`)
-- `docs/architecture/` diagrammes Mermaid
+- `agents/` - les cinq agents (LLM : API Anthropic, fallback Groq)
+- `quant/` - moteur de validation quantitative 100 % Python (voir `docs/VALIDATION_QUANTITATIVE.md`)
+- `orchestrator/` - enchaînement du pipeline et gestion d'état
+- `models/` - schémas Pydantic partagés
+- `api.py` - serveur Flask (port 5001) : API de pilotage + interface web
+- `templates/` + `static/` - interface de la plateforme (`/app`) : templates Jinja par écran, CSS/JS modulaires
+- `landing/` - page d'accueil (`/`)
+- `docs/architecture/` - diagrammes Mermaid
 
 ## Installation
 
@@ -38,8 +38,8 @@ copy .env.example .env          # puis renseigner les clés
 
 Variables d'environnement requises dans `.env` :
 
-- `ANTHROPIC_API_KEY` — clé API Anthropic (obligatoire)
-- `FINNHUB_API_KEY`, `ALPHA_VANTAGE_API_KEY` — données de marché enrichies (optionnel)
+- `ANTHROPIC_API_KEY` - clé API Anthropic (obligatoire)
+- `FINNHUB_API_KEY`, `ALPHA_VANTAGE_API_KEY` - données de marché enrichies (optionnel)
 
 ## Lancement
 
@@ -49,8 +49,8 @@ start.bat            # Windows : démarre le serveur et ouvre le navigateur
 python api.py        # puis ouvrir http://localhost:5001
 ```
 
-- `/` — présentation du projet
-- `/app` — plateforme (définir le mandat, puis lancer les agents dans l'ordre du pipeline)
+- `/` - présentation du projet
+- `/app` - plateforme (définir le mandat, puis lancer les agents dans l'ordre du pipeline)
 
 ## Validation quantitative
 

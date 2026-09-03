@@ -1,5 +1,5 @@
 """
-QUANT / STRESS — Stress tests sur scénarios historiques réels.
+QUANT / STRESS - Stress tests sur scénarios historiques réels.
 
 Méthodologie : on rejoue l'allocation actuelle sur des fenêtres de crise
 RÉELLES (pas des chocs synthétiques) et on compare au benchmark du mandat.

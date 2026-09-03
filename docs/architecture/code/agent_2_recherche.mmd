@@ -17,10 +17,10 @@ config:
     wrappingWidth: 200
 ---
 flowchart LR
-  U("<b>univers</b> — EquityResearchAgent.run()<br/>_target_positions(mandate)<br/>a state['tickers'] · b _generate_tickers_from_brief()<br/>c _build_benchmark_universe() → _validate_tickers()<br/>→ _screen_universe() · d _DEFAULT_UNIVERSE<br/>_apply_beta_bias() : tri bêta + troncature 1,5×")
+  U("<b>univers</b> - EquityResearchAgent.run()<br/>_target_positions(mandate)<br/>a state['tickers'] · b _generate_tickers_from_brief()<br/>c _build_benchmark_universe() → _validate_tickers()<br/>→ _screen_universe() · d _DEFAULT_UNIVERSE<br/>_apply_beta_bias() : tri bêta + troncature 1,5×")
   EX("<b>parallélisme</b><br/>ThreadPoolExecutor(max_workers=5)<br/>→ _analyze_ticker(idea, …)")
   FM("<b>collecte</b><br/>_fetch_all_market_data(ticker, benchmark_etf)<br/>ThreadPoolExecutor(6) · _safe(fn) → statut au lieu de raise<br/>_enrich_idea_from_market(idea, pkg)<br/>_format_market_data(pkg)")
-  L("<b>appel</b> — 1 par titre<br/>_call_llm_with_retry()<br/>REPORT_NARRATIVE_PROMPT<br/>_parse_json(raw)")
+  L("<b>appel</b> - 1 par titre<br/>_call_llm_with_retry()<br/>REPORT_NARRATIVE_PROMPT<br/>_parse_json(raw)")
   BR("<b>construction</b><br/>_build_research_output()<br/>_as_int() · _as_float() bornés<br/><i>except → _fallback_research()</i>")
   RD("<b>SORTIE</b><br/>_build_report_data() → generate_company_report()<br/>outputs/research/&lt;TICKER&gt;_report_&lt;date&gt;.html<br/>_generate_sector_reports()<br/>return {'research': […]}")
   U --> EX --> FM --> L --> BR --> RD

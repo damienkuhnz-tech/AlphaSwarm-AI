@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  CONFIG / SETTINGS — CONFIGURATION GLOBALE DE L'APPLICATION                 ║
+║  CONFIG / SETTINGS - CONFIGURATION GLOBALE DE L'APPLICATION                 ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : centraliser tous les paramètres réglables en un seul endroit.      ║
 ║  Importé très tôt par : base_agent.py, runner.py, workflow.py.             ║
@@ -27,7 +27,7 @@ from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).parent.parent / ".env", override=True)
 # Path(__file__).parent.parent : c:\Users\Kylor\alphaswarm\ (racine du projet)
-# / ".env" → c:\Users\Kylor\alphaswarm\.env — chemin absolu, indépendant du CWD.
+# / ".env" → c:\Users\Kylor\alphaswarm\.env - chemin absolu, indépendant du CWD.
 # override=True : force le rechargement même si la variable existe déjà dans l'env
 # (évite le cas où ANTHROPIC_API_KEY="" est déjà défini dans l'environnement Windows).
 
@@ -40,7 +40,7 @@ load_dotenv(Path(__file__).parent.parent / ".env", override=True)
 class Settings:
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  PARAMÈTRE 0 — PROVIDER LLM ACTIF                                      │
+    # │  PARAMÈTRE 0 - PROVIDER LLM ACTIF                                      │
     # │  "groq" (gratuit, Llama 3.3 70B) ou "anthropic" (Claude, payant)       │
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -63,13 +63,13 @@ class Settings:
     LLM_PROVIDER_EXECUTION: str = os.getenv("LLM_PROVIDER_EXECUTION", "").lower()
     LLM_PROVIDER_CHAT:      str = os.getenv("LLM_PROVIDER_CHAT",      "").lower()
 
-    # Modèles par provider — utilisés quand un agent override le provider global.
+    # Modèles par provider - utilisés quand un agent override le provider global.
     # MODEL reste pour le provider GLOBAL ; ces deux-là pour les overrides.
     MODEL_ANTHROPIC: str = os.getenv("MODEL_ANTHROPIC", "claude-sonnet-4-6")
     MODEL_GROQ:      str = os.getenv("MODEL_GROQ",      "openai/gpt-oss-20b")
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  PARAMÈTRE 1 — CLÉS API                                                │
+    # │  PARAMÈTRE 1 - CLÉS API                                                │
     # │  Une clé par provider. Seule celle du provider actif est obligatoire. │
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -81,7 +81,7 @@ class Settings:
     # Inscription gratuite sur console.groq.com.
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  PARAMÈTRE 2 — MODÈLE                                                  │
+    # │  PARAMÈTRE 2 - MODÈLE                                                  │
     # │  Le nom du modèle dépend du provider actif.                            │
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -91,7 +91,7 @@ class Settings:
     # Provider anthropic → claude-sonnet-4-6, claude-opus-4-6
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  PARAMÈTRE 3 — LIMITE DE TOKENS DE SORTIE                             │
+    # │  PARAMÈTRE 3 - LIMITE DE TOKENS DE SORTIE                             │
     # └─────────────────────────────────────────────────────────────────────────┘
 
     MAX_TOKENS: int = 4000
@@ -102,7 +102,7 @@ class Settings:
     # le modèle ne génère que ce qu'il a à dire, max_tokens est juste un plafond.
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  PARAMÈTRE 3b — TIMEOUT DES APPELS LLM (secondes)                       │
+    # │  PARAMÈTRE 3b - TIMEOUT DES APPELS LLM (secondes)                       │
     # └─────────────────────────────────────────────────────────────────────────┘
 
     LLM_TIMEOUT: int = int(os.getenv("LLM_TIMEOUT", "120"))
@@ -115,7 +115,7 @@ class Settings:
     # _call_llm_with_retry (cf. base_agent.py).
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  PARAMÈTRE 4 — BOUCLE RISK ↔ PORTFOLIO                                │
+    # │  PARAMÈTRE 4 - BOUCLE RISK ↔ PORTFOLIO                                │
     # └─────────────────────────────────────────────────────────────────────────┘
 
     MAX_PORTFOLIO_ITERATIONS: int = 3
@@ -125,13 +125,13 @@ class Settings:
     # les timeouts. Chaque itération = ~30-45s de latence LLM.
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  PARAMÈTRES 5-6 — DOSSIERS DE SORTIE                                  │
+    # │  PARAMÈTRES 5-6 - DOSSIERS DE SORTIE                                  │
     # └─────────────────────────────────────────────────────────────────────────┘
 
     FMP_API_KEY: str = os.getenv("FMP_API_KEY", "")
 
     TAVILY_API_KEY: str = os.getenv("TAVILY_API_KEY", "")
-    # Clé API Tavily (tavily.com) — moteur de recherche conçu pour agents IA.
+    # Clé API Tavily (tavily.com) - moteur de recherche conçu pour agents IA.
     # Free tier : 1 000 recherches/mois.
     # Utilisée par tools/web_search.py pour les actualités et vues analystes.
     # Si vide → web_search.py retourne {"statut": "SKIP"} sans erreur.
@@ -156,7 +156,7 @@ class Settings:
     # Créé automatiquement par runner.py si absent.
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  MÉTHODE validate() — VÉRIFICATION AVANT DÉMARRAGE                    │
+    # │  MÉTHODE validate() - VÉRIFICATION AVANT DÉMARRAGE                    │
     # │  Appelée en tout premier dans runner.py (avant les agents).            │
     # └─────────────────────────────────────────────────────────────────────────┘
 

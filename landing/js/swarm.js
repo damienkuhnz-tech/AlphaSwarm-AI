@@ -1,5 +1,5 @@
 /* ================================================================
-   AlphaSwarm Landing — Hero 3D "Essaim d'agents"
+   AlphaSwarm Landing - Hero 3D "Essaim d'agents"
    Three.js Points : vol libre organique → convergence vers le
    monogramme "A + chandeliers" → dispersion au scroll.
    Perf : 1 renderer, BufferGeometry, dpr≤2, pause hors viewport /

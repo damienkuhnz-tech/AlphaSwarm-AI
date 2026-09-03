@@ -1,5 +1,5 @@
 
-  // ── Rendu dynamique — Étape 2 : Idées ──
+  // ── Rendu dynamique - Étape 2 : Idées ──
   function renderIdeasTable(ideas) {
     var tbody = document.getElementById('ideasBody');
     if (!tbody || !ideas.length) return;
@@ -11,13 +11,13 @@
         '<td>' + (i+1) + '</td>' +
         '<td><strong>' + (idea.ticker||'') + '</strong></td>' +
         '<td>' + (idea.nom||'').substring(0,24) + '</td>' +
-        '<td>' + (idea.secteur||'—') + '</td>' +
-        '<td>' + (idea.geographie||'—') + '</td>' +
-        '<td><span class="badge badge-blue">' + (idea.type_signal||'—') + '</span></td>' +
-        '<td><span class="badge ' + confBadge + '">' + (idea.confiance||'—') + '</span></td>' +
-        '<td>—</td>' +
+        '<td>' + (idea.secteur||'') + '</td>' +
+        '<td>' + (idea.geographie||'') + '</td>' +
+        '<td><span class="badge badge-blue">' + (idea.type_signal||'') + '</span></td>' +
+        '<td><span class="badge ' + confBadge + '">' + (idea.confiance||'') + '</span></td>' +
+        '<td>-</td>' +
         '<td><strong style="color:' + scoreColor + '">' + score + '</strong></td>' +
-        '<td>—</td>' +
+        '<td>-</td>' +
         '<td><button type="button" class="btn-action keep" onclick="keepIdea(' + (i+1) + ')">✓</button>' +
         '<button type="button" class="btn-action exclude" onclick="excludeIdea(' + (i+1) + ')">✗</button></td>' +
         '</tr>';
@@ -26,7 +26,7 @@
     if (counter) counter.textContent = ideas.length + '/' + ideas.length + ' titres sélectionnés';
   }
 
-  // ── Rendu dynamique — Étape 3 : Research ──
+  // ── Rendu dynamique - Étape 3 : Research ──
   function renderResearchGrid(research) {
     var grid = document.getElementById('researchGrid');
     if (!grid || !research.length) return;
@@ -54,15 +54,15 @@
       var ratingData  = reco === 'STRONG BUY' ? 'strong-buy' : reco === 'BUY' ? 'buy' : 'hold';
       var score = r.score_conviction || 50;
 
-      // Valorisation — champs réels du modèle ResearchOutput
+      // Valorisation - champs réels du modèle ResearchOutput
       var val    = r.valorisation || {};
-      var upside = val.upside_potentiel || '—';
+      var upside = val.upside_potentiel || '';
       var valLine = val.PER_estime_NTM  ? 'PER NTM : ' + val.PER_estime_NTM
                   : val.EV_EBITDA_NTM   ? 'EV/EBITDA : ' + val.EV_EBITDA_NTM
                   : val.methode_principale ? val.methode_principale
-                  : '—';
-      var summary = r.these_investissement || '—';
-      var poids   = r.poids_suggere_initial ? (r.poids_suggere_initial * 100).toFixed(1) + '%' : '—';
+                  : '';
+      var summary = r.these_investissement || '';
+      var poids   = r.poids_suggere_initial ? (r.poids_suggere_initial * 100).toFixed(1) + '%' : '';
 
       return '<div class="research-card ' + ratingClass + '" data-rating="' + ratingData + '" data-score="' + score + '">' +
         '<div class="research-card-header">' +
@@ -86,7 +86,7 @@
     }).join('');
   }
 
-  // ── Rendu dynamique — Étape 4 : Portfolio ──
+  // ── Rendu dynamique - Étape 4 : Portfolio ──
   function renderPortfolio(portfolio) {
     var tbody = document.querySelector('#screen-3 tbody');
     if (!tbody || !portfolio.positions) return;
@@ -98,16 +98,16 @@
         '<td>' + (i+1) + '</td>' +
         '<td><strong>' + _escapeHtml(p.ticker||'') + '</strong></td>' +
         '<td>' + _escapeHtml((p.nom||'').substring(0,22)) + '</td>' +
-        '<td>' + _escapeHtml(p.secteur||'—') + '</td>' +
-        '<td>' + _escapeHtml(p.geographie||'—') + '</td>' +
-        '<td>—</td>' +
+        '<td>' + _escapeHtml(p.secteur||'') + '</td>' +
+        '<td>' + _escapeHtml(p.geographie||'') + '</td>' +
+        '<td>-</td>' +
         '<td class="' + pctColor + '">' + ((p.poids||0)*100).toFixed(2) + '%</td>' +
         '<td style="font-family:\'JetBrains Mono\',monospace;">$' + Math.round(p.valeur_usd||0).toLocaleString() + '</td>' +
-        '<td style="font-size:11px;color:var(--accent-green);">' + _escapeHtml((p.role_portefeuille||'—').substring(0,28)) + '</td>' +
+        '<td style="font-size:11px;color:var(--accent-green);">' + _escapeHtml((p.role_portefeuille||'').substring(0,28)) + '</td>' +
         '</tr>';
     }).join('');
     // Cash row
-    rows += '<tr style="opacity:0.6"><td></td><td><strong>CASH</strong></td><td>—</td><td>—</td><td>—</td><td>—</td>' +
+    rows += '<tr style="opacity:0.6"><td></td><td><strong>CASH</strong></td><td></td><td></td><td></td><td></td>' +
       '<td class="weight-mid">' + ((portfolio.cash_poids||0)*100).toFixed(1) + '%</td>' +
       '<td style="font-family:\'JetBrains Mono\',monospace;">$' + Math.round(portfolio.cash_valeur_usd||0).toLocaleString() + '</td>' +
       '<td style="font-size:11px;color:#5F6E66;">Liquidités</td></tr>';
@@ -119,10 +119,10 @@
       ['Capital investi', '$' + Math.round((portfolio.capital_total||0)*(1-(portfolio.cash_poids||0))).toLocaleString()],
       ['Nombre de positions', portfolio.nombre_positions || portfolio.positions.length],
       ['Cash', ((portfolio.cash_poids||0)*100).toFixed(1) + '%'],
-      ['Tracking Error estimé', pa.tracking_error || '—'],
-      ['Beta estimé', pa.beta || '—'],
-      ['Rendement attendu', pa.rendement_annualise || '—'],
-      ['Volatilité estimée', pa.volatilite_estimee || '—'],
+      ['Tracking Error estimé', pa.tracking_error || ''],
+      ['Beta estimé', pa.beta || ''],
+      ['Rendement attendu', pa.rendement_annualise || ''],
+      ['Volatilité estimée', pa.volatilite_estimee || ''],
     ];
     var rightPanels = document.getElementById('portfolioRightPanels');
     if (!rightPanels) return;
@@ -158,7 +158,7 @@
     rightPanels.innerHTML = html;
   }
 
-  // ── Analyse Sectorielle — construite depuis research + ideas (secteurs réels) ──
+  // ── Analyse Sectorielle - construite depuis research + ideas (secteurs réels) ──
   function renderSectorAnalysisTab(research, ideas) {
     var grid = document.getElementById('research-sectors');
     if (!grid || !research || !research.length) return;
@@ -240,9 +240,9 @@
       }).join('') + '</div>';
   }
 
-  // ── Rendu dynamique — Étape 5 : Risk ──
+  // ── Rendu dynamique - Étape 5 : Risk ──
   // ═══════════════════════════════════════════════════════════════════════════
-  //  RISK — DASHBOARD DE VALIDATION QUANTITATIVE
+  //  RISK - DASHBOARD DE VALIDATION QUANTITATIVE
   //  Rend le rapport complet produit par quant.run_full_validation() :
   //  Executive Summary, Compliance, Performance, Train/Test, Walk-Forward,
   //  Rolling, Drawdown, Bootstrap, Monte Carlo, Stress Tests, Benchmarks.

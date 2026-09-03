@@ -1,5 +1,5 @@
 """
-WEBAPP / SERVICES / RUN SERVICE — exécution du workflow en arrière-plan.
+WEBAPP / SERVICES / RUN SERVICE - exécution du workflow en arrière-plan.
 
 Contient la logique métier extraite d'api.py : sérialisation Pydantic,
 validation numérique et le thread principal _run_workflow_thread qui pilote
@@ -20,7 +20,7 @@ from config.settings import settings
 from webapp.run_store import _runs, _runs_lock
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  _serialize() — SÉRIALISATION RÉCURSIVE PYDANTIC → DICT JSON               │
+# │  _serialize() - SÉRIALISATION RÉCURSIVE PYDANTIC → DICT JSON               │
 # │  Convertit n'importe quel objet en quelque chose que json.dumps() accepte. │
 # └─────────────────────────────────────────────────────────────────────────────┘
 
@@ -46,15 +46,15 @@ def _serialize(obj):
         # Ex: {"NVDA": ResearchOutput} → {"NVDA": dict}
 
     return obj
-    # Scalaires (str, int, float, bool) : retournés tels quels — déjà JSON-compatibles
+    # Scalaires (str, int, float, bool) : retournés tels quels - déjà JSON-compatibles
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  THREAD WORKFLOW — EXÉCUTION EN ARRIÈRE-PLAN                               ║
+# ║  THREAD WORKFLOW - EXÉCUTION EN ARRIÈRE-PLAN                               ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  _run_workflow_thread() — CŒUR DU RUN                                      │
+# │  _run_workflow_thread() - CŒUR DU RUN                                      │
 # │  Lancé dans un thread séparé pour ne pas bloquer les requêtes Flask.       │
 # │  Met à jour _runs[run_id] à chaque étape pour que le polling fonctionne.  │
 # └─────────────────────────────────────────────────────────────────────────────┘
@@ -85,7 +85,7 @@ def _run_workflow_thread(run_id: str, params: dict):
 
         # ── BLOC 2 : Construction de l'état initial ───────────────────────────
         # L'état initial contient les paramètres saisis dans le formulaire HTML.
-        # Les clés agents (mandate, research, ...) sont initialisées à None —
+        # Les clés agents (mandate, research, ...) sont initialisées à None -
         # chaque agent les remplira au fur et à mesure du workflow.
         initial_state: PortfolioState = {
             "strategie":            params.get("strategie", "long-only equity global"),
@@ -129,7 +129,7 @@ def _run_workflow_thread(run_id: str, params: dict):
             "risk_report":     None,  # RiskManagementAgent → RiskReport
             "execution_output": None, # ExecutionAgent → ExecutionOutput
 
-            # ── Briefing PM (niveau 3 — conversation avant construction) ───────
+            # ── Briefing PM (niveau 3 - conversation avant construction) ───────
             # Liste de messages [{"role": "user"|"assistant", "content": str}].
             # Alimentée par /api/portfolio/briefing avant que le PM clique "Construire".
             # Lue par PortfolioConstructionAgent pour respecter les directives.
@@ -153,7 +153,7 @@ def _run_workflow_thread(run_id: str, params: dict):
         # ── BLOC 2b : REPRISE D'UN RUN PRÉCÉDENT (défaut A2) ──────────────────
         # Sans ceci, relancer un seul agent repartait d'un état vide : le moteur
         # reconstruisait mandat, recherche et portefeuille depuis zéro, puis
-        # jugeait CE nouveau portefeuille — pas celui affiché à l'écran.
+        # jugeait CE nouveau portefeuille - pas celui affiché à l'écran.
         # On réutilise donc les objets Pydantic du run précédent tels quels
         # (jamais leur version sérialisée, qui ne se reconstruit pas fidèlement).
         from_run_id = params.get("from_run_id")
@@ -174,7 +174,7 @@ def _run_workflow_thread(run_id: str, params: dict):
                       f"{', '.join(reprises)}", flush=True)
             else:
                 print(f"[run {run_id}] from_run_id={from_run_id} sans état "
-                      f"réutilisable — reconstruction complète.", flush=True)
+                      f"réutilisable - reconstruction complète.", flush=True)
 
         # ── BLOC 3 : Hook de progression pour la recherche ────────────────────
         # EquityResearchAgent appelle ce hook après chaque ticker analysé.
@@ -197,13 +197,13 @@ def _run_workflow_thread(run_id: str, params: dict):
 
         # ── BLOC 4 : Labels des étapes (pour l'interface) ─────────────────────
         # Mappe le nom interne de chaque étape (ex: "mandate") vers son label
-        # lisible pour l'affichage dans l'interface (ex: "1/8 — Mandate Agent").
+        # lisible pour l'affichage dans l'interface (ex: "1/8 - Mandate Agent").
         step_labels = {
-            "mandate":   "1/5 — Mandate Agent",
-            "research":  "2/5 — Equity Research Agent",
-            "portfolio": "3/5 — Portfolio Construction Agent",
-            "risk":      "4/5 — Risk Management Agent",
-            "execution": "5/5 — Execution Agent",
+            "mandate":   "1/5 - Mandate Agent",
+            "research":  "2/5 - Equity Research Agent",
+            "portfolio": "3/5 - Portfolio Construction Agent",
+            "risk":      "4/5 - Risk Management Agent",
+            "execution": "5/5 - Execution Agent",
         }
 
         # ── BLOC 5 : Callback appelé après chaque étape du workflow ───────────
@@ -216,7 +216,7 @@ def _run_workflow_thread(run_id: str, params: dict):
                 # Ajoute une entrée dans le journal des étapes terminées
                 _runs[run_id]["log"].append({
                     "step":      node,               # Nom interne (ex: "mandate")
-                    "label":     label,              # Nom lisible (ex: "1/8 — Mandate Agent")
+                    "label":     label,              # Nom lisible (ex: "1/8 - Mandate Agent")
                     "timestamp": datetime.utcnow().isoformat() + "Z",  # Heure UTC ISO 8601
                 })
                 _runs[run_id]["current_step"] = node
@@ -249,7 +249,7 @@ def _run_workflow_thread(run_id: str, params: dict):
         run_path = os.path.join(settings.OUTPUTS_DIR, f"run_{run_id}.json")
 
         # _serialize (définie ligne 48) gère : None, Pydantic, list, dict récursifs.
-        # On ne redéfinit pas _serial ici — utiliser _serialize partout.
+        # On ne redéfinit pas _serial ici - utiliser _serialize partout.
         run_payload = {
             "run_id":    run_id,
             "timestamp": datetime.utcnow().isoformat() + "Z",
@@ -287,7 +287,7 @@ def _run_workflow_thread(run_id: str, params: dict):
         # L'interface affichera un message d'erreur au lieu de rester bloquée.
         #
         # On imprime la stack COMPLÈTE sur stderr (visible dans la console serveur)
-        # et on la persiste dans le run — sans ça, str(e) seul masque la cause
+        # et on la persiste dans le run - sans ça, str(e) seul masque la cause
         # racine (ex: une ValidationError Pydantic dont le détail est dans la trace).
         tb = traceback.format_exc()
         print(

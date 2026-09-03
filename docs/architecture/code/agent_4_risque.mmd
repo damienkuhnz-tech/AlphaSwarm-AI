@@ -18,7 +18,7 @@ config:
 ---
 flowchart LR
   IN("<b>ENTRÉE</b><br/>state['portfolio'] · state['mandate']")
-  Q("<b>calcul — quant/</b><br/>benchmark_to_etf(mandate.benchmark)<br/>run_full_validation(positions, mandate, portfolio, …)<br/>load_prices → portfolio_returns → M.full_metrics<br/>train_test_split · walk_forward · bootstrap · monte_carlo<br/>stress_tests · compare_benchmarks<br/>check_mandate_compliance")
+  Q("<b>calcul - quant/</b><br/>benchmark_to_etf(mandate.benchmark)<br/>run_full_validation(positions, mandate, portfolio, …)<br/>load_prices → portfolio_returns → M.full_metrics<br/>train_test_split · walk_forward · bootstrap · monte_carlo<br/>stress_tests · compare_benchmarks<br/>check_mandate_compliance")
   PR("<b>prompt</b><br/>conc = top1/top5/top10 depuis les poids<br/>_build_judgment_prompt(portfolio, mandate, quant, conc)<br/><i>~1500 tokens · variante dégradée si quant KO</i>")
   L("<b>appel</b><br/>_call_llm_with_retry()<br/>RISK_MANAGEMENT_PROMPT<br/>data = _parse_json(raw)")
   GF("<b>garde-fous</b><br/>data['metriques_risque'] ← quant['performance']<br/>_merge_violations(data['violations'], compliance)<br/>n_fail &gt; 0 et 'PASS' → 'AJUSTER'<br/>n_fail == 0 et 'FAIL' → 'PASS'<br/>_legacy_backtest(quant, bench_etf)")

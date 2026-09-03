@@ -1,8 +1,8 @@
-# FinAgent — Moteur de validation quantitative & refonte du Risk Agent
+# FinAgent - Moteur de validation quantitative & refonte du Risk Agent
 
 > Document de référence pour le mémoire de Bachelor. Décrit l'architecture du
 > nouveau module `quant/`, la refonte du `RiskManagementAgent`, le dashboard
-> de validation, les optimisations de performance, et — pour chaque choix —
+> de validation, les optimisations de performance, et pour chaque choix
 > sa **justification académique** (quel biais il réduit, quelle critique du
 > jury il adresse).
 
@@ -19,14 +19,14 @@ reprochées aux travaux appliqués en finance quantitative :
 | Absence de validation out-of-sample | Aucune | Split chronologique 80/20 + walk-forward |
 | Faible significativité statistique | Un point de mesure unique | Bootstrap 1 000 simulations, IC à 95 % |
 | Absence de benchmark | Un seul indice | Mandat + S&P 500 + Nasdaq + équipondéré + 200 portefeuilles aléatoires |
-| Manque de robustesse | — | 5 stress tests historiques + Monte Carlo 2 000 trajectoires |
+| Manque de robustesse | - | 5 stress tests historiques + Monte Carlo 2 000 trajectoires |
 | Manque de reproductibilité | Données retéléchargées à chaque run | Toutes les simulations seedées, prix cachés sur disque |
 | Conclusions trop affirmatives | Verdict 100 % LLM | Compliance PASS/FAIL calculée en Python + garde-fou déterministe sur le LLM |
 
 **Principe architectural : « calcul d'abord, jugement ensuite ».**
 Tout ce qui est chiffrable est calculé en Python (déterministe, auditable,
 reproductible). Le LLM n'intervient que pour l'interprétation et les
-recommandations — et son verdict ne peut pas contredire les tests calculés.
+recommandations - et son verdict ne peut pas contredire les tests calculés.
 
 ---
 
@@ -34,7 +34,7 @@ recommandations — et son verdict ne peut pas contredire les tests calculés.
 
 ```
 quant/
-├── data.py         Chargement des prix — cache mémoire + disque PAR TICKER,
+├── data.py         Chargement des prix - cache mémoire + disque PAR TICKER,
 │                   téléchargement batch des seuls manquants (1 appel réseau)
 ├── metrics.py      Bibliothèque de métriques (fonctions pures, testables)
 ├── engine.py       Séries de rendements du portefeuille (rebalancement mensuel)
@@ -60,7 +60,7 @@ Le rapport (~40 Ko de JSON) alimente à la fois le `RiskReport` Pydantic
 
 - **Rebalancement mensuel vers les poids cibles** (mode par défaut) : entre
   deux rebalancements, les poids dérivent avec les prix, puis sont réalignés.
-  C'est la simulation correcte d'une politique d'allocation — l'ancien code
+  C'est la simulation correcte d'une politique d'allocation - l'ancien code
   supposait des poids constants chaque jour, ce qui équivaut à un
   rebalancement quotidien gratuit, irréaliste.
 - Le **turnover induit** par le rebalancement est mesuré et rapporté.
@@ -112,7 +112,7 @@ fenêtres profitables).
 
 **Justification.** Une bonne performance sur une seule période peut être de la
 chance (un seul tirage). La dispersion inter-fenêtres quantifie la robustesse
-temporelle — c'est la réponse standard de la littérature praticienne
+temporelle - c'est la réponse standard de la littérature praticienne
 (Pardo, *The Evaluation and Optimization of Trading Strategies*) au problème
 du backtest unique.
 
@@ -125,7 +125,7 @@ empiriques du CAGR, du Sharpe, du max drawdown, avec **IC à 95 %**, et la
 
 **Justification.** Répond à « faible significativité statistique » : au lieu
 d'un Sharpe ponctuel (1.19), on rapporte « Sharpe médian 1.18, IC95
-[0.47 ; 2.11] » — si l'IC exclut 0, la performance est significative. Les
+[0.47 ; 2.11] » - si l'IC exclut 0, la performance est significative. Les
 blocs préservent l'autocorrélation des rendements (le bootstrap i.i.d. la
 détruirait) ; le ré-échantillonnage conjoint préserve la corrélation
 portefeuille/benchmark (sinon la probabilité de surperformance serait biaisée).
@@ -137,7 +137,7 @@ historiques. Produit : probabilité de perte, P(perte > 10 %), VaR/CVaR 95 et
 99 % à 1 an, probabilité d'atteindre le rendement cible, fan chart p5-p95.
 
 **Justification.** Contrairement au Monte Carlo gaussien classique, aucune
-hypothèse de normalité — les queues épaisses observées sont conservées dans
+hypothèse de normalité - les queues épaisses observées sont conservées dans
 les scénarios. Donne au PM une lecture *prospective* du risque (l'historique
 seul est rétrospectif).
 
@@ -159,7 +159,7 @@ paramétriques sous-estiment systématiquement.
 - **Équipondéré sur les mêmes titres** : isole la valeur de la *pondération*.
 - **200 portefeuilles aléatoires** (poids Dirichlet, seed 123) sur le même
   univers : le percentile du Sharpe du portefeuille dans cette distribution
-  est un **test placebo** — si le portefeuille est au 50ᵉ percentile de
+  est un **test placebo** - si le portefeuille est au 50ᵉ percentile de
   portefeuilles aléatoires, l'allocation n'apporte rien.
 
 **Justification.** Répond à « absence de benchmark » et « conclusions trop
@@ -168,17 +168,17 @@ le hasard pur.
 
 ---
 
-## 4. Mandate Compliance — PASS/FAIL mécanique
+## 4. Mandate Compliance - PASS/FAIL mécanique
 
 `quant/compliance.py` transforme chaque contrainte du mandat en test unitaire
 objectif : volatilité max, tracking error max, plage de beta, drawdown max,
 concentration top 10, poids max par position, nombre de positions, bornes de
 cash, contraintes sectorielles et géographiques (matching insensible aux
-accents), exclusions (vérification lexicale), critères ESG (marqué N/A —
+accents), exclusions (vérification lexicale), critères ESG (marqué N/A -
 **limite documentée** : non vérifiable sans fournisseur de données ESG).
 
 Sortie : `{nom, catégorie, limite, valeur mesurée, PASS/FAIL/N-A}` + verdict
-global. **Le LLM n'intervient pas dans cette section** — le jury voit des
+global. **Le LLM n'intervient pas dans cette section** - le jury voit des
 tests calculés, pas des affirmations.
 
 ---
@@ -187,7 +187,7 @@ tests calculés, pas des affirmations.
 
 Nouveau flux (`agents/risk_management_agent.py`) :
 
-1. `run_full_validation()` — tout le calcul, en Python.
+1. `run_full_validation()` - tout le calcul, en Python.
 2. **Un seul appel LLM** (au lieu de deux) sur un résumé compact (~800
    tokens) : compliance, IS/OOS, walk-forward, bootstrap, Monte Carlo,
    stress, placebo. Le LLM produit : statut, violations, recommandations,
@@ -225,7 +225,7 @@ avec la charte existante) : `histogram`, `dlines` (multi-lignes datées),
 quant est indisponible (réseau coupé), avec bandeau explicatif.
 
 Correctif au passage : la fonction `_escapeHtml` était appelée (y compris par
-du code préexistant) **sans jamais être définie** — elle est maintenant
+du code préexistant) **sans jamais être définie** - elle est maintenant
 implémentée (échappement XSS de tout contenu LLM/marché avant `innerHTML`).
 
 ---
@@ -235,14 +235,14 @@ implémentée (échappement XSS de tout contenu LLM/marché avant `innerHTML`).
 | Optimisation | Fichier | Avant | Après | Justification |
 |---|---|---|---|---|
 | Cache de prix **par ticker** (mémoire + disque, clé datée) + download batch des seuls manquants | `quant/data.py` | Chaque itération Risk retéléchargeait tous les prix (2 downloads × N itérations) | 1 download le 1ᵉʳ run du jour ; itérations suivantes ~0,7 s | I/O réseau = goulot dominant ; le cache disque rend aussi les runs **rejouables** (reproductibilité) |
-| Validation quantitative vectorisée numpy (bootstrap 1 000 + MC 2 000 en matrices) | `quant/validation.py` | — | ~1,5 s de calcul pur | Boucles Python remplacées par `np.cumprod`/`np.maximum.accumulate` sur matrices (n_sims × jours) |
+| Validation quantitative vectorisée numpy (bootstrap 1 000 + MC 2 000 en matrices) | `quant/validation.py` | - | ~1,5 s de calcul pur | Boucles Python remplacées par `np.cumprod`/`np.maximum.accumulate` sur matrices (n_sims × jours) |
 | **1 appel LLM au lieu de 2** dans le Risk Agent (jugement + commentaire backtest fusionnés) | `agents/risk_management_agent.py` | 2 appels séquentiels | 1 appel | Latence LLM ≈ 15-30 s/appel : gain direct de ~50 % sur l'étape Risk |
 | Prompt de jugement compact (~800 tokens) au lieu du JSON complet des positions | idem | ~2 500 tokens | ~800 tokens | Moins de tokens = latence et coût réduits, sans perte d'information décisionnelle |
 | `/api/quotes` parallélisé (ThreadPoolExecutor 8 workers) | `api.py` | 5 tickers ≈ 10 s (séquentiel) | 5 tickers ≈ 0,9 s (mesuré) | I/O bound → threads ; l'ordre des résultats est préservé |
 | `/api/quotes/live` parallélisé | `api.py` | N × latence fast_info | latence du plus lent (8 tickers ≈ 2,8 s mesuré) | Endpoint pollé toutes les 8 s par l'UI |
 | Cache market_data borné (512 entrées) + thread-safe | `tools/market_data.py` | Croissance illimitée, accès concurrent non protégé | Éviction des 25 % plus anciens, verrou | Les endpoints sont désormais multi-threads |
 
-Note : l'agent Research était déjà parallélisé (5 workers) — vérifié, aucun
+Note : l'agent Research était déjà parallélisé (5 workers) - vérifié, aucun
 changement nécessaire.
 
 **Temps de la validation quantitative complète** (22 titres, 10 ans,

@@ -1,8 +1,8 @@
   /* ════════════════════════════════════════════════════════════════════════
-     AlphaSwarm — SKIN "Chrome & papier" (style C) — couche d'override finale
+     AlphaSwarm SKIN "Chrome & papier" (style C) couche d'override finale
      Remplace les anciennes couches PREMIUM + Essaim (glows, dégradés, verre).
      RÈGLE : la GÉOMÉTRIE historique est conservée à l'identique (hauteur topbar
-     74px, paddings, tailles logo/onglets…) — seuls les choix visuels changent.
+     74px, paddings, tailles logo/onglets…) - seuls les choix visuels changent.
      Chrome vert-noir #0C1A14 (topbar/footer/login) · corps papier #F7F8F7 ·
      actions vert encre #117B54 · #3DDC97 réservé au chrome et aux marqueurs.
      ════════════════════════════════════════════════════════════════════════ */
@@ -24,7 +24,7 @@
   body{ padding-top:74px !important; }
   #agentProgressBar{ top:74px !important; }
 
-  /* Logo — monogramme officiel "A + chandeliers" (SVG inline) sur le chrome */
+  /* Logo - monogramme officiel "A + chandeliers" (SVG inline) sur le chrome */
   .logo-mark{
     width:56px;height:36px;flex-shrink:0;
     display:flex;align-items:center;justify-content:center;

@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  MODELS / MANDATE — SCHÉMA DE SORTIE DU MANDATE AGENT (ÉTAPE 1/8)          ║
+║  MODELS / MANDATE - SCHÉMA DE SORTIE DU MANDATE AGENT (ÉTAPE 1/8)          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : définir la structure du mandat d'investissement.                    ║
 ║  Le MandateAgent demande au LLM de produire un JSON conforme à ce schéma.  ║
@@ -15,7 +15,7 @@ from typing import Any, Dict, List
 
 # ── Sous-modèles ──────────────────────────────────────────────────────────────
 # Chaque modèle imbriqué représente une contrainte structurée.
-# Pydantic valide les types au moment de la construction — si le LLM
+# Pydantic valide les types au moment de la construction - si le LLM
 # retourne un mauvais type, une ValidationError est levée immédiatement.
 
 class ContrainteSectorielle(BaseModel):
@@ -101,10 +101,10 @@ class MandateOutput(BaseModel):
 
     # ── Filtres ESG et exclusions ─────────────────────────────────────────────
     actifs_exclus: List[str] = Field(default_factory=list)
-    # ex: ["tobacco", "weapons", "coal"] — vérifiés par ComplianceAgent
+    # ex: ["tobacco", "weapons", "coal"] - vérifiés par ComplianceAgent
 
     criteres_ESG: Dict[str, Any] = Field(default_factory=dict)
-    # ex: {"score_minimum": "BB"} — vérifiés par ComplianceAgent
+    # ex: {"score_minimum": "BB"} - vérifiés par ComplianceAgent
     # Any : le LLM peut retourner str, bool, ou dict imbriqué (ex: piliers_minimum)
 
     # ── Contraintes opérationnelles ───────────────────────────────────────────
@@ -123,7 +123,7 @@ class MandateOutput(BaseModel):
     # ── Analyse de cohérence du mandat ────────────────────────────────────────
     # Incohérences détectées entre priorité_principale et contraintes choisies
     # (ex: préservation_capital avec volatilité 20% → incohérent).
-    # Rempli par le LLM — liste vide si aucune incohérence.
+    # Rempli par le LLM - liste vide si aucune incohérence.
     alertes_incoherence: List[str] = Field(default_factory=list)
 
     # Recommandations correctives proposées par l'agent pour aligner les paramètres

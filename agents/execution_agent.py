@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  AGENTS / EXECUTION AGENT — ÉTAPE 5/5                                       ║
+║  AGENTS / EXECUTION AGENT - ÉTAPE 5/5                                       ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : préparer la liste d'ordres pour transmission à l'OMS externe.      ║
 ║  Input  : portfolio (positions cibles), mandate (contraintes d'exécution)   ║
@@ -42,7 +42,7 @@ class ExecutionAgent(BaseAgent):
     # L'agent n'a pas besoin de données de marché additionnelles.
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  run() — MÉTHODE PRINCIPALE                                             │
+    # │  run() - MÉTHODE PRINCIPALE                                             │
     # └─────────────────────────────────────────────────────────────────────────┘
 
     def run(self, state: PortfolioState) -> Dict[str, Any]:

@@ -1,5 +1,5 @@
 """
-Runner CLI — interface Rich pour le Portfolio Manager.
+Runner CLI - interface Rich pour le Portfolio Manager.
 Gère l'affichage en temps réel, les points de validation humaine
 et l'export des ordres.
 """
@@ -73,7 +73,7 @@ def _show_portfolio(portfolio) -> None:
         )
     # Cash row
     table.add_row(
-        "CASH", "—", "—",
+        "CASH", "", "",
         f"{portfolio.cash_poids:.1%}",
         f"${portfolio.cash_valeur_usd:>12,.0f}",
         "Liquidités",
@@ -97,7 +97,7 @@ def _show_risk(risk) -> None:
                 v.severite, "white"
             )
             console.print(
-                f"  [{sev_color}]⚠[/{sev_color}]  [{sev_color}]{v.severite}[/{sev_color}] — {v.detail}"
+                f"  [{sev_color}]⚠[/{sev_color}]  [{sev_color}]{v.severite}[/{sev_color}] - {v.detail}"
             )
     if risk.recommandations:
         for r in risk.recommandations:
@@ -108,7 +108,7 @@ def _show_orders(execution) -> None:
     if not execution:
         return
     table = Table(
-        title=f"Ordres préparés — Export OMS ({execution.nombre_ordres} ordres)",
+        title=f"Ordres préparés - Export OMS ({execution.nombre_ordres} ordres)",
         box=box.SIMPLE_HEAD,
         header_style="bold magenta",
     )
@@ -282,7 +282,7 @@ def run_workflow(
     # « valide » mais vide. On rend les échecs visibles au gérant.
     agent_errors = final_state.get("errors") or []
     if agent_errors:
-        console.print("\n  [bold red]⚠ AVERTISSEMENTS[/bold red] — "
+        console.print("\n  [bold red]⚠ AVERTISSEMENTS[/bold red] - "
                       f"{len(agent_errors)} étape(s) en échec :")
         for err in agent_errors:
             console.print(f"    [red]•[/red] {err}")
@@ -291,7 +291,7 @@ def run_workflow(
     console.print("\n" + "─" * 60)
     console.print(
         "\n  [bold yellow]VALIDATION REQUISE[/bold yellow]  "
-        "— Aucun ordre ne sera exporté sans votre approbation.\n"
+        "- Aucun ordre ne sera exporté sans votre approbation.\n"
     )
 
     action = Prompt.ask(
@@ -324,6 +324,6 @@ def run_workflow(
         run_path = _export_full_run(final_state, run_id)
         console.print(f"\n  [green]✓[/green]  Run exporté : [bold]{run_path}[/bold]\n")
     else:
-        console.print("\n  [red]✗[/red]  Workflow rejeté — aucun ordre exporté.\n")
+        console.print("\n  [red]✗[/red]  Workflow rejeté - aucun ordre exporté.\n")
 
     return final_state

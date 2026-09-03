@@ -1,5 +1,5 @@
 """
-WEBAPP / ROUTES / RESEARCH — skills de recherche et briefing conversationnel.
+WEBAPP / ROUTES / RESEARCH - skills de recherche et briefing conversationnel.
 
 GET  /api/research/skills               : catalogue des skills
 GET  /api/research/skill/<id>           : questions du wizard d'un skill
@@ -20,7 +20,7 @@ from config.settings import settings
 bp = Blueprint("research", __name__)
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  GET /api/research/skills — CATALOGUE DES SKILLS DE RECHERCHE              │
+# │  GET /api/research/skills - CATALOGUE DES SKILLS DE RECHERCHE              │
 # │  Retourne la liste des skills disponibles (id, label, icon, description).   │
 # └─────────────────────────────────────────────────────────────────────────────┘
 
@@ -32,7 +32,7 @@ def research_skills_list():
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  GET /api/research/skill/<skill_id> — DÉTAIL D'UN SKILL                    │
+# │  GET /api/research/skill/<skill_id> - DÉTAIL D'UN SKILL                    │
 # │  Retourne les questions du wizard pour un skill donné.                      │
 # └─────────────────────────────────────────────────────────────────────────────┘
 
@@ -55,7 +55,7 @@ def research_skill_detail(skill_id):
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  POST /api/research/skill/<skill_id>/run — EXÉCUTE UN SKILL                │
+# │  POST /api/research/skill/<skill_id>/run - EXÉCUTE UN SKILL                │
 # │  Body : { "answers": {q_id: value, ...}, "context": {...} }                │
 # │  Retourne : { "markdown": "...", "exports": {excel, word, pptx urls} }     │
 # └─────────────────────────────────────────────────────────────────────────────┘
@@ -176,7 +176,7 @@ def research_skill_run(skill_id):
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  POST /api/research/briefing — BRIEFING CONVERSATIONNEL DYNAMIQUE          │
+# │  POST /api/research/briefing - BRIEFING CONVERSATIONNEL DYNAMIQUE          │
 # │  L'agent pose des questions guidées au PM AVANT de lancer la recherche.    │
 # │  Les questions sont GÉNÉRÉES par le LLM (pas hardcodées) selon contexte.   │
 # │  Body : { "messages": [...], "context": { "mandate": ... } }                │
@@ -302,7 +302,7 @@ def research_briefing():
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  POST /api/research/exports/<format> — GÉNÉRATION DES LIVRABLES            │
+# │  POST /api/research/exports/<format> - GÉNÉRATION DES LIVRABLES            │
 # │  format ∈ {excel, word, pptx}. Le PDF/HTML existe déjà via chat-report.     │
 # │  Body : { "research": [...], "brief": {...} }                              │
 # └─────────────────────────────────────────────────────────────────────────────┘

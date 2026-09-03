@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  TOOLS / FMP DATA — DONNÉES VIA FINANCIAL MODELING PREP                     ║
+║  TOOLS / FMP DATA - DONNÉES VIA FINANCIAL MODELING PREP                     ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : fournir une source alternative à yfinance via les endpoints stable  ║
 ║  de FMP (financialmodelingprep.com). Utilisé en fallback automatique par    ║
@@ -39,7 +39,7 @@ _BASE_URL = "https://financialmodelingprep.com/stable"
 def _fmp_get(endpoint: str, **params) -> Optional[Any]:
     """
     Appel HTTP GET vers FMP. Retourne le JSON parsé ou None si erreur.
-    Pas de retry automatique — laisse l'appelant décider du fallback.
+    Pas de retry automatique - laisse l'appelant décider du fallback.
     """
     if not settings.FMP_API_KEY:
         return None
@@ -64,7 +64,7 @@ def _to_float(val) -> Optional[float]:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  FONCTION 1 — STOCK INFO (équivalent yfinance .info)                        ║
+# ║  FONCTION 1 - STOCK INFO (équivalent yfinance .info)                        ║
 # ║  Combine /profile + /quote pour avoir les mêmes champs que yfinance.        ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
@@ -102,7 +102,7 @@ def fmp_stock_info(ticker: str) -> Dict[str, Any]:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  FONCTION 2 — FINANCIALS (ratios fondamentaux)                              ║
+# ║  FONCTION 2 - FINANCIALS (ratios fondamentaux)                              ║
 # ║  Source : /key-metrics-ttm + /quote                                         ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
@@ -144,7 +144,7 @@ def fmp_financials(ticker: str) -> Dict[str, Any]:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  FONCTION 3 — HISTORIQUE DE PRIX (performance + volatilité)                 ║
+# ║  FONCTION 3 - HISTORIQUE DE PRIX (performance + volatilité)                 ║
 # ║  Source : /historical-price-eod/full (5 ans de cotations)                   ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
@@ -158,7 +158,7 @@ def fmp_price_history(ticker: str, period: str = "1y") -> Dict[str, Any]:
     days_map = {"1d": 1, "5d": 5, "1mo": 21, "3mo": 63, "6mo": 126,
                 "1y": 252, "2y": 504, "5y": 1260}
     n = days_map.get(period, 252)
-    # FMP retourne du plus récent au plus ancien — on prend les n premiers
+    # FMP retourne du plus récent au plus ancien - on prend les n premiers
     closes = [_to_float(d.get("close")) for d in data[:n] if _to_float(d.get("close"))]
     if len(closes) < 2:
         return {"ticker": ticker, "statut": "VIDE"}
@@ -196,7 +196,7 @@ def fmp_price_history(ticker: str, period: str = "1y") -> Dict[str, Any]:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  FONCTION 4 — INCOME STATEMENT HISTORIQUE                                   ║
+# ║  FONCTION 4 - INCOME STATEMENT HISTORIQUE                                   ║
 # ║  Source : /income-statement (4 ans dispo en free tier)                      ║
 # ║  Retourne la même structure que get_annual_financials de yfinance.          ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
@@ -252,7 +252,7 @@ def fmp_annual_financials(ticker: str) -> Dict[str, Any]:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  COMPATIBILITÉ ASCENDANTE — alias des anciennes fonctions de fmp_data.py    ║
+# ║  COMPATIBILITÉ ASCENDANTE - alias des anciennes fonctions de fmp_data.py    ║
 # ║  L'ancienne version utilisait yfinance derrière une façade FMP. On garde   ║
 # ║  les noms pour ne pas casser les imports existants ailleurs dans le code.  ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝

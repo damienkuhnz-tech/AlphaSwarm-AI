@@ -1,10 +1,10 @@
 @echo off
-title AlphaSwarm — API Server
+title AlphaSwarm - API Server
 cd /d "%~dp0"
 
 echo.
 echo  ============================================
-echo   AlphaSwarm v2.1 — Multi-Agent Portfolio Mgmt
+echo   AlphaSwarm v2.1 - Multi-Agent Portfolio Mgmt
 echo  ============================================
 echo.
 echo  Arret des instances precedentes...

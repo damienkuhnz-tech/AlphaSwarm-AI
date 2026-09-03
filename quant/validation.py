@@ -1,10 +1,10 @@
 """
-QUANT / VALIDATION — Validation statistique du portefeuille.
+QUANT / VALIDATION - Validation statistique du portefeuille.
 
 Quatre protocoles complémentaires, chacun visant un biais précis :
 
   1. train_test_split : sépare l'historique 80/20. Les métriques in-sample
-     (IS) et out-of-sample (OOS) sont rapportées côte à côte — répond à la
+     (IS) et out-of-sample (OOS) sont rapportées côte à côte - répond à la
      critique "absence de validation out-of-sample".
 
   2. walk_forward : fenêtres glissantes train 5 ans / test 1 an. Mesure la
@@ -71,7 +71,7 @@ def walk_forward(port: pd.Series, bench: pd.Series,
     Fenêtres glissantes : [train 5 ans → test 1 an], avancées d'un an.
     Les poids étant fixés par le mandat (allocation stratégique), le "train"
     sert de période de contexte et chaque fenêtre "test" mesure la performance
-    sur une période disjointe — l'agrégat mesure la stabilité temporelle.
+    sur une période disjointe - l'agrégat mesure la stabilité temporelle.
     """
     train_days = train_years * 252
     test_days = test_years * 252

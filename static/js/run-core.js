@@ -50,10 +50,10 @@
         // Désactivé si : un agent tourne, ou prérequis pipeline non satisfait.
         btn.disabled = agentRunning || !unlocked;
         if (isThisRunning) {
-          // bouton de l'agent actuellement en exécution — libellé géré par launchAgent
+          // bouton de l'agent actuellement en exécution - libellé géré par launchAgent
         } else if (agentRunning) {
           btn.textContent = done ? 'Relancer l\'agent' : 'Lancer l\'agent';
-          btn.title = 'Un agent est déjà en cours d\'exécution — attendez sa fin.';
+          btn.title = 'Un agent est déjà en cours d\'exécution - attendez sa fin.';
         } else if (!unlocked) {
           btn.textContent = 'Lancer l\'agent';
           btn.title = 'Terminez d\'abord l\'étape précédente du pipeline.';
@@ -86,7 +86,7 @@
     const radio   = (name) => { const el = document.querySelector('input[name="' + name + '"]:checked'); return el ? el.value : ''; };
     const checked = (id)   => { const el = document.getElementById(id); return el ? el.checked : false; };
 
-    // Exclusions ESG — IDs réels du formulaire
+    // Exclusions ESG - IDs réels du formulaire
     const exclusions = [];
     if (checked('esg-tabac'))   exclusions.push('tabac');
     if (checked('esg-armes'))   exclusions.push('armement');
@@ -95,20 +95,20 @@
     if (checked('esg-alcool'))  exclusions.push('alcool');
     if (checked('esg-nucleaire')) exclusions.push('nucleaire');
 
-    // Profil de risque — normalisation vers les clés Python attendues
+    // Profil de risque - normalisation vers les clés Python attendues
     const profilRaw = v('m-profil');
     const profilMap = {
       'conservateur': 'conservateur',
       'equilibre':    'equilibre',
       'agressif':     'agressif',
     };
-    // La valeur du <select> peut contenir un emoji — ex: "Conservateur — ..."
+    // La valeur du <select> peut contenir un emoji ex: "Conservateur ..."
     let profil = 'equilibre';
     Object.keys(profilMap).forEach(function(key) {
       if (profilRaw.toLowerCase().includes(key)) profil = profilMap[key];
     });
 
-    // Priorité principale — radio buttons
+    // Priorité principale - radio buttons
     const prioriteRaw = radio('m-priorite') || 'Croissance long terme';
     const prioriteMap = {
       'préservation': 'preservation', 'preservation': 'preservation',
@@ -163,7 +163,7 @@
     if (rg) rg.innerHTML = _emptyPlaceholder('Cliquez sur « Lancer l\'agent » pour analyser les titres selon votre mandat.');
     var sectGrid = document.getElementById('research-sectors');
     if (sectGrid) sectGrid.innerHTML = _emptyPlaceholder('L\'analyse sectorielle sera générée après l\'exécution de l\'agent.');
-    // Portfolio — tbody
+    // Portfolio - tbody
     var pb = document.querySelector('#screen-3 tbody');
     if (pb) pb.innerHTML = '<tr><td colspan="9" style="padding:48px;text-align:center;color:var(--text-dim);">Cliquez sur « Lancer l\'agent » pour construire le portefeuille.</td></tr>';
     // Portfolio right panels (secteurs / géo)
@@ -197,7 +197,7 @@
     // Alerte risk
     var ra = document.getElementById('riskAlert');
     if (ra) { ra.style.display = 'none'; }
-    // Analyse sectorielle — vide le hardcodé
+    // Analyse sectorielle - vide le hardcodé
     var sectGrid = document.getElementById('research-sectors');
     if (sectGrid) sectGrid.innerHTML = _loadingDiv('Analyse sectorielle en cours...');
     // Progress bar
@@ -206,7 +206,7 @@
     var pf = document.getElementById('agentProgressFill');
     if (pf) { pf.style.width = '5%'; }
     lastProgressPct = 5;
-    // Ne pas réinitialiser _mandateSubmitted ici — il est géré par completeStep/session restore
+    // Ne pas réinitialiser _mandateSubmitted ici - il est géré par completeStep/session restore
     _lastIdeasLen = -1; _lastResearchLen = -1; _lastResearchDoneN = -1;
     _lastPortfolioJSON = ''; _lastRiskJSON = '';
     _lastExecutionJSON = '';
@@ -225,12 +225,12 @@
     .then(function(data) {
       currentRunId = data.run_id;
       sessionStorage.setItem('alphaswarm_run_id', currentRunId);
-      showRunBanner('Run ' + currentRunId + ' lancé — agents en cours...', 'info');
+      showRunBanner('Run ' + currentRunId + ' lancé - agents en cours...', 'info');
       startPolling(currentRunId, _pipelinePollCallbacks());
     })
     .catch(function(err) {
       // Il n'existe aucun mode demonstration : l'interface reste vide (defaut F2).
-      showRunBanner('Serveur injoignable — aucune donnée ne sera chargée. Démarrez le serveur (python api.py) puis relancez.', 'error');
+      showRunBanner('Serveur injoignable - aucune donnée ne sera chargée. Démarrez le serveur (python api.py) puis relancez.', 'error');
     });
   }
 
@@ -245,12 +245,12 @@
     }
     // ── Verrou global : un seul agent à la fois ──
     if (agentRunning) {
-      showRunBanner('Un agent est déjà en cours d\'exécution — attendez sa fin avant d\'en lancer un autre.', 'warn');
+      showRunBanner('Un agent est déjà en cours d\'exécution - attendez sa fin avant d\'en lancer un autre.', 'warn');
       return;
     }
     // ── Ordre du pipeline : l'étape précédente doit être terminée ──
     if (!_agentUnlocked(stepNum)) {
-      showRunBanner('Étape verrouillée — terminez d\'abord l\'agent précédent du pipeline.', 'warn');
+      showRunBanner('Étape verrouillée - terminez d\'abord l\'agent précédent du pipeline.', 'warn');
       return;
     }
     var stepName = _stepNameMap[stepNum];
@@ -303,7 +303,7 @@
       var runId = data.run_id;
       showRunBanner('Agent ' + stepName + ' lancé (run ' + runId + ')', 'info');
       // Suivi via la boucle unifiee (defaut D3). Le comportement propre a ce
-      // chemin — liberation du bouton, markStepDoneUI, badge d'erreur — est
+      // chemin - liberation du bouton, markStepDoneUI, badge d'erreur - est
       // porte par les callbacks ; le reste est mutualise dans startPolling.
       function releaseBtn() { if (launchBtn) delete launchBtn.dataset.running; }
       startPolling(runId, {
@@ -321,7 +321,7 @@
         onTimeout: function() {
           releaseBtn();
           showRunBanner('Agent ' + stepName + ' : aucune réponse après ' + MAX_RUN_MINUTES +
-                        ' minutes — suivi interrompu. Vérifiez la console du serveur.', 'error');
+                        ' minutes - suivi interrompu. Vérifiez la console du serveur.', 'error');
           if (badge) { badge.className = 'badge badge-red'; badge.textContent = 'INTERROMPU'; }
         }
       });
@@ -329,7 +329,7 @@
     .catch(function() {
       agentRunning = false; // libère le verrou en cas d'échec réseau
       if (launchBtn) delete launchBtn.dataset.running;
-      showRunBanner('Impossible de contacter l\'API — l\'agent n\'a pas été lancé. Démarrez le serveur (python api.py) puis réessayez.', 'error');
+      showRunBanner('Impossible de contacter l\'API - l\'agent n\'a pas été lancé. Démarrez le serveur (python api.py) puis réessayez.', 'error');
       if (badge) { badge.className = 'badge badge-orange'; badge.textContent = 'DISPONIBLE'; }
       refreshLaunchButtons();
     });

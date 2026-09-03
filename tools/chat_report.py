@@ -26,7 +26,7 @@ ROW_ALT = "#1E2A4A"
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# STEP 1 — Fetch market data
+# STEP 1 - Fetch market data
 # ══════════════════════════════════════════════════════════════════════════════
 
 def _fetch_market_data(ticker: str) -> dict:
@@ -105,7 +105,7 @@ def _fetch_market_data(ticker: str) -> dict:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# STEP 2 — Claude generates the full analysis
+# STEP 2 - Claude generates the full analysis
 # ══════════════════════════════════════════════════════════════════════════════
 
 def _generate_analysis_with_claude(data: dict, lang: str = "fr") -> dict:
@@ -134,7 +134,7 @@ Marge opérationnelle: {_fmt_pct(data.get('operating_margin'))}
 ROE: {_fmt_pct(data.get('roe'))}
 Description: {(data.get('description') or '')[:500]}
 Historique financier: {json.dumps(data.get('financials', []))}
-Actualités récentes: {json.dumps([n.get('title','') + ' — ' + n.get('snippet','') for n in data.get('news', [])])}
+Actualités récentes: {json.dumps([n.get('title','') + ' - ' + n.get('snippet','') for n in data.get('news', [])])}
 """
 
     prompt = f"""Tu es un analyste equity research senior buy-side. Génère un rapport complet sur {name} ({ticker}).
@@ -265,7 +265,7 @@ def _risk_color(level: str) -> str:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# STEP 3 — HTML Generator
+# STEP 3 - HTML Generator
 # ══════════════════════════════════════════════════════════════════════════════
 
 _CSS = f"""
@@ -392,7 +392,7 @@ def generate_html_report(mkt: dict, ai: dict, lang: str = "fr") -> str:
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{t} — Rapport Equity Research</title>
+<title>{t} - Rapport Equity Research</title>
 <style>{_CSS}</style>
 </head>
 <body><div class="page">
@@ -479,7 +479,7 @@ def generate_html_report(mkt: dict, ai: dict, lang: str = "fr") -> str:
   <div class="section-title">Conclusion</div>
   <div class="conclusion-box">
     <div class="conclusion-rec">Recommandation Finale</div>
-    <div style="font-size:22px;font-weight:700;color:{rating_color};margin:6px 0 12px;">{_esc(ai.get('rating','N/D'))} — Cible {_esc(ai.get('price_target','N/D'))} ({_esc(ai.get('upside','N/D'))})</div>
+    <div style="font-size:22px;font-weight:700;color:{rating_color};margin:6px 0 12px;">{_esc(ai.get('rating','N/D'))} - Cible {_esc(ai.get('price_target','N/D'))} ({_esc(ai.get('upside','N/D'))})</div>
     <div style="color:{TEXT2};font-size:13px;line-height:1.7;">{_esc(ai.get('conclusion',''))}</div>
   </div>
 </div>
@@ -490,7 +490,7 @@ def generate_html_report(mkt: dict, ai: dict, lang: str = "fr") -> str:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# STEP 4 — PDF Generator
+# STEP 4 - PDF Generator
 # ══════════════════════════════════════════════════════════════════════════════
 
 def generate_pdf_report(mkt: dict, ai: dict, output_path: str, lang: str = "fr") -> bool:
@@ -501,7 +501,7 @@ def generate_pdf_report(mkt: dict, ai: dict, output_path: str, lang: str = "fr")
         from reportlab.lib.styles import ParagraphStyle
         from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER, TA_LEFT
         from reportlab.lib.units import inch
-        # reportlab.pdfgen.canvas n'est plus nécessaire — on utilise onFirstPage/onLaterPages
+        # reportlab.pdfgen.canvas n'est plus nécessaire - on utilise onFirstPage/onLaterPages
 
         W, H = letter
         ticker = mkt["ticker"]
@@ -549,7 +549,7 @@ def generate_pdf_report(mkt: dict, ai: dict, output_path: str, lang: str = "fr")
             canvas.rect(0, H-50, W, 2, fill=1, stroke=0)
             canvas.setFillColor(HexColor(TEXT))
             canvas.setFont("Helvetica-Bold", 9)
-            canvas.drawString(28, H-28, f"{name}  —  Equity Research Report")
+            canvas.drawString(28, H-28, f"{name}  -  Equity Research Report")
             canvas.setFont("Helvetica-Bold", 13)
             canvas.setFillColor(HexColor(BLUE))
             canvas.drawRightString(W-28, H-30, ticker)
@@ -573,7 +573,7 @@ def generate_pdf_report(mkt: dict, ai: dict, output_path: str, lang: str = "fr")
 
         # Cover
         story += [
-            Paragraph(f"{ticker} — Rapport Equity Research", s_title),
+            Paragraph(f"{ticker} - Rapport Equity Research", s_title),
             Paragraph(name, sty("sub", fontSize=12, textColor=HexColor(TEXT2))),
             sp(4), Paragraph(f"Généré le {date}", s_muted), sp(12), hr(),
         ]
@@ -645,7 +645,7 @@ def generate_pdf_report(mkt: dict, ai: dict, output_path: str, lang: str = "fr")
             dcf_rows += [[k, str(v)] for k,v in dcf_a.items() if v]
             story.append(tbl(dcf_rows))
         story += [sp(8),
-                  Paragraph(f"Valeur intrinsèque : <b>{_esc(dcf_r.get('intrinsic_value','N/D'))}</b>  —  Upside DCF : <b>{_esc(dcf_r.get('upside_vs_current','N/D'))}</b>",
+                  Paragraph(f"Valeur intrinsèque : <b>{_esc(dcf_r.get('intrinsic_value','N/D'))}</b>  -  Upside DCF : <b>{_esc(dcf_r.get('upside_vs_current','N/D'))}</b>",
                              sty("dcfr", fontSize=10, textColor=HexColor(BLUE))),
                   sp(16), PageBreak()]
 
@@ -673,7 +673,7 @@ def generate_pdf_report(mkt: dict, ai: dict, output_path: str, lang: str = "fr")
         story += [Paragraph("Conclusion & Recommandation", s_h1), hr()]
         concl_data = [
             [Paragraph("RECOMMANDATION FINALE", sty("cl", fontSize=8, textColor=HexColor(MUTED)))],
-            [Paragraph(f"{_esc(rating)} — Cible {_esc(ai.get('price_target','N/D'))} ({_esc(ai.get('upside','N/D'))})", sty("crv", fontSize=14, textColor=HexColor(_rating_color(rating)), fontName="Helvetica-Bold", alignment=TA_CENTER))],
+            [Paragraph(f"{_esc(rating)} - Cible {_esc(ai.get('price_target','N/D'))} ({_esc(ai.get('upside','N/D'))})", sty("crv", fontSize=14, textColor=HexColor(_rating_color(rating)), fontName="Helvetica-Bold", alignment=TA_CENTER))],
             [Paragraph(_esc(ai.get("conclusion","")), s_body)],
         ]
         ct = Table(concl_data, colWidths=[7*inch])

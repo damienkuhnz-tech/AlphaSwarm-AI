@@ -1,5 +1,5 @@
 """
-QUANT / METRICS — Bibliothèque de métriques de performance et de risque.
+QUANT / METRICS - Bibliothèque de métriques de performance et de risque.
 
 Fonctions pures : elles prennent des séries de rendements journaliers
 (pd.Series alignées) et retournent des floats. Aucune I/O, aucun état.
@@ -7,7 +7,7 @@ Fonctions pures : elles prennent des séries de rendements journaliers
 Conventions :
   - 252 jours de bourse par an (annualisation standard).
   - Taux sans risque paramétrable (défaut 2 % annuel, hypothèse documentée
-    dans le mémoire — plus honnête que l'hypothèse 0 % de l'ancien code).
+    dans le mémoire - plus honnête que l'hypothèse 0 % de l'ancien code).
   - VaR/CVaR : quantiles empiriques (aucune hypothèse de normalité →
     capture l'asymétrie et les queues épaisses des rendements réels).
 """

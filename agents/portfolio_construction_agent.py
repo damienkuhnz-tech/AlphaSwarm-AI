@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  AGENTS / PORTFOLIO CONSTRUCTION AGENT — ÉTAPE 3/5                          ║
+║  AGENTS / PORTFOLIO CONSTRUCTION AGENT - ÉTAPE 3/5                          ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : construire le portefeuille optimal à partir des analyses Research.  ║
 ║  Input  : research (analyses), mandate (contraintes), risk_report (iter>1)  ║
@@ -44,7 +44,7 @@ class PortfolioConstructionAgent(BaseAgent):
     # Les données de marché ont déjà été fetchées par EquityResearchAgent.
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  run() — MÉTHODE PRINCIPALE                                             │
+    # │  run() - MÉTHODE PRINCIPALE                                             │
     # └─────────────────────────────────────────────────────────────────────────┘
 
     def run(self, state: PortfolioState) -> Dict[str, Any]:
@@ -69,7 +69,7 @@ class PortfolioConstructionAgent(BaseAgent):
 
         # ── BLOC 2 : Pré-conditions ───────────────────────────────────────────
         if not research:
-            return {"errors": ["Research manquant — Equity Research Agent requis"]}
+            return {"errors": ["Research manquant - Equity Research Agent requis"]}
         if not mandate:
             return {"errors": ["Mandate manquant"]}
 
@@ -101,7 +101,7 @@ class PortfolioConstructionAgent(BaseAgent):
             ensure_ascii=False, indent=2
         )
 
-        # ── BLOC 3b : Bloc briefing PM (niveau 3 — conversation avant build) ──
+        # ── BLOC 3b : Bloc briefing PM (niveau 3 - conversation avant build) ──
         # Si le PM a échangé avec l'agent avant de cliquer "Construire",
         # on injecte la conversation comme contexte directif. Le LLM doit
         # respecter les choix exprimés (titres écartés, surpondérations, etc.).
@@ -178,10 +178,10 @@ SIGNAL de priorisation, pas un filtre : tu peux écarter un BUY redondant/corré
 retenir un HOLD pour diversifier ou équilibrer le portefeuille. Justifie tout choix
 notable s'écartant du signal Research dans decisions_notables.
 
-⚠️ CONTRAINTE PRIORITAIRE — NOMBRE DE POSITIONS : {mandate.nombre_positions_cible}
+⚠️ CONTRAINTE PRIORITAIRE - NOMBRE DE POSITIONS : {mandate.nombre_positions_cible}
 Le portefeuille DOIT contenir ce nombre de positions (cf. règle "NOMBRE DE POSITIONS").
 
-ANALYSES DE RECHERCHE (univers complet — BUY / HOLD / SELL) :
+ANALYSES DE RECHERCHE (univers complet - BUY / HOLD / SELL) :
 {analyses_summary}
 
 MANDAT :

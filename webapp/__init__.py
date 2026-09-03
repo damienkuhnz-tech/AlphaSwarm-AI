@@ -1,5 +1,5 @@
 """
-WEBAPP — application Flask d'AlphaSwarm (factory + enregistrement des routes).
+WEBAPP - application Flask d'AlphaSwarm (factory + enregistrement des routes).
 
 Découpage issu de la refactorisation d'api.py (1 583 lignes → blueprints) :
   run_store.py            état partagé des runs (dict + lock, instance unique)
@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 def create_app() -> Flask:
     # root_path force la racine du PROJET (et non webapp/) : les templates
     # (templates/), le static_folder ('.') et tout chemin relatif se résolvent
-    # exactement comme quand api.py portait l'app — iso-comportement.
+    # exactement comme quand api.py portait l'app - iso-comportement.
     app = Flask(
         "api",
         static_folder=".",

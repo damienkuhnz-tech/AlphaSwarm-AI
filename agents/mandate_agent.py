@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  AGENTS / MANDATE AGENT — ÉTAPE 1/5                                         ║
+║  AGENTS / MANDATE AGENT - ÉTAPE 1/5                                         ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : formaliser le mandat d'investissement en règles précises.           ║
 ║  Input  : strategie, capital, benchmark, horizon (depuis state initial)     ║
@@ -44,7 +44,7 @@ class MandateAgent(BaseAgent):
     # de l'industrie que le LLM connaît intrinsèquement.
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  run() — MÉTHODE PRINCIPALE                                             │
+    # │  run() - MÉTHODE PRINCIPALE                                             │
     # └─────────────────────────────────────────────────────────────────────────┘
 
     def run(self, state: PortfolioState) -> Dict[str, Any]:
@@ -103,27 +103,27 @@ class MandateAgent(BaseAgent):
             "conservateur": {
                 "te": 0.03, "vol": 0.12, "dd": 0.12,
                 "beta_min": 0.40, "beta_max": 0.85, "top10": 0.45,
-                "description": "Préservation du capital — secteurs défensifs uniquement",
+                "description": "Préservation du capital - secteurs défensifs uniquement",
             },
             "modere": {
                 "te": 0.04, "vol": 0.15, "dd": 0.15,
                 "beta_min": 0.60, "beta_max": 1.05, "top10": 0.50,
-                "description": "Équilibre rendement/risque — mix défensif/croissance",
+                "description": "Équilibre rendement/risque - mix défensif/croissance",
             },
             "equilibre": {
                 "te": 0.05, "vol": 0.18, "dd": 0.20,
                 "beta_min": 0.80, "beta_max": 1.20, "top10": 0.55,
-                "description": "Croissance long terme — diversifié tous secteurs",
+                "description": "Croissance long terme - diversifié tous secteurs",
             },
             "dynamique": {
                 "te": 0.07, "vol": 0.22, "dd": 0.25,
                 "beta_min": 0.90, "beta_max": 1.35, "top10": 0.60,
-                "description": "Performance prioritaire — secteurs croissance et cycliques",
+                "description": "Performance prioritaire - secteurs croissance et cycliques",
             },
             "agressif": {
                 "te": 0.10, "vol": 0.28, "dd": 0.35,
                 "beta_min": 1.00, "beta_max": 1.55, "top10": 0.65,
-                "description": "Rendement maximal — haute concentration, forte volatilité",
+                "description": "Rendement maximal - haute concentration, forte volatilité",
             },
         }
         rp = _RISK_PARAMS.get(profil_risque, _RISK_PARAMS["equilibre"])
@@ -170,10 +170,10 @@ Définis le mandat d'investissement pour les paramètres suivants :
 - Capital géré   : {capital:,.0f} USD
 - Benchmark      : {benchmark}
 - Horizon        : {horizon}
-- Profil risque  : {profil_risque.upper()} — {rp['description']}
+- Profil risque  : {profil_risque.upper()} - {rp['description']}
 - Priorité       : {priorite}
 
-BUDGET RISQUE IMPOSÉ — PROFIL {profil_risque.upper()} :
+BUDGET RISQUE IMPOSÉ - PROFIL {profil_risque.upper()} :
   • Tracking Error max      = {rp['te']*100:.0f}%
   • Volatilité annuelle max = {rp['vol']*100:.0f}%
   • Drawdown max toléré     = {dd_max*100:.0f}%
@@ -239,9 +239,9 @@ Retourne UNIQUEMENT un JSON avec EXACTEMENT ces champs (pas d'autres) :
         data.setdefault("capital",      capital)
         data.setdefault("profil_risque", profil_risque)
         data.setdefault("univers", [
-            "Actions grandes capitalisations — marchés développés (US, Europe, Japon)",
-            "Actions moyennes capitalisations sélectives — marchés développés",
-            "Actions émergentes sélectives — jusqu'à 20% du portefeuille",
+            "Actions grandes capitalisations - marchés développés (US, Europe, Japon)",
+            "Actions moyennes capitalisations sélectives - marchés développés",
+            "Actions émergentes sélectives - jusqu'à 20% du portefeuille",
         ])
         # L'univers ci-dessus est le fallback standard pour "long-only equity global".
 

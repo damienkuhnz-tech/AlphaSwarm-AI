@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  MODELS / STATE — ÉTAT PARTAGÉ ENTRE TOUS LES AGENTS                        ║
+║  MODELS / STATE - ÉTAT PARTAGÉ ENTRE TOUS LES AGENTS                        ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : définir la structure du "bus de données" central du workflow.       ║
 ║  Chaque agent lit ce dont il a besoin et écrit son output dans ce dict.     ║
@@ -43,7 +43,7 @@ class PortfolioState(TypedDict, total=False):
     # Sans total=False, Python exigerait toutes les clés dès la création du dict.
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  SECTION 1 — INPUTS DU PORTFOLIO MANAGER                               │
+    # │  SECTION 1 - INPUTS DU PORTFOLIO MANAGER                               │
     # │  Fournis par main.py via argparse. Immuables durant le workflow.       │
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -91,7 +91,7 @@ class PortfolioState(TypedDict, total=False):
     # Lu par : MandateAgent
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  SECTION 2 — OUTPUTS CUMULÉS PAR LES AGENTS                            │
+    # │  SECTION 2 - OUTPUTS CUMULÉS PAR LES AGENTS                            │
     # │  Chaque clé est None jusqu'à ce que l'agent correspondant tourne.      │
     # │  L'agent écrit son output → le state est mergé dans workflow.py.       │
     # └─────────────────────────────────────────────────────────────────────────┘
@@ -141,19 +141,19 @@ class PortfolioState(TypedDict, total=False):
     # Contient  : statut PASS/AJUSTER/FAIL + violations + métriques calculées
 
     execution_output: Optional[ExecutionOutput]
-    # Écrit par : ExecutionAgent (étape 5) — SEULEMENT si risk OK
+    # Écrit par : ExecutionAgent (étape 5) - SEULEMENT si risk OK
     # Lu par    : runner.py (tableau des ordres)
     # Contient  : liste d'ordres BUY/SELL + coûts estimés + calendrier
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  SECTION 3 — MÉTADONNÉES DU WORKFLOW                                   │
+    # │  SECTION 3 - MÉTADONNÉES DU WORKFLOW                                   │
     # │  Variables techniques pour piloter la logique et l'affichage.          │
     # └─────────────────────────────────────────────────────────────────────────┘
 
     current_step: str
     # Trace l'étape courante. Ex: "mandate" → "research" → "portfolio"...
     # Chaque agent écrit la prochaine étape dans son retour.
-    # Utilisé pour le routing (non encore exploité pour le routing — c'est
+    # Utilisé pour le routing (non encore exploité pour le routing - c'est
     # le statut du risk_report qui pilote la boucle dans workflow.py).
 
     portfolio_iteration: int
@@ -171,7 +171,7 @@ class PortfolioState(TypedDict, total=False):
 
     human_approved: bool
     # Mis à True si l'utilisateur choisit "approuver" dans le prompt runner.py.
-    # Pas encore utilisé pour bloquer le code — c'est une métadonnée d'audit.
+    # Pas encore utilisé pour bloquer le code - c'est une métadonnée d'audit.
 
     run_id: str
     # Identifiant unique du run. Ex: "57234B42" (8 caractères hex majuscules).

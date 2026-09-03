@@ -1,5 +1,5 @@
 
-  // ── Auth (demo gate — pas de credentials stockés côté client) ──
+  // ── Auth (demo gate - pas de credentials stockés côté client) ──
   let currentUser = null;
 
   // ── Masque l'overlay de login (commun login + restore) ──
@@ -32,7 +32,7 @@
 
   // Allow Enter key on login inputs + restore session on reload
   document.addEventListener('DOMContentLoaded', function() {
-    // Vider les 4 écrans agents dès le chargement — pas de données hardcodées
+    // Vider les 4 écrans agents dès le chargement - pas de données hardcodées
     try { emptyAgentScreens(); } catch(e) { /* fonction définie plus bas */ }
 
     var loginEl = document.getElementById('loginUser');
@@ -42,7 +42,7 @@
     var savedUser = sessionStorage.getItem('alphaswarm_user');
     var savedRunId = sessionStorage.getItem('alphaswarm_run_id');
     if (savedUser) {
-      // Masquer l'overlay uniquement — NE PAS réinitialiser les états des étapes
+      // Masquer l'overlay uniquement - NE PAS réinitialiser les états des étapes
       _hideLoginOverlay(savedUser);
       if (savedRunId) {
         // Vérifier le statut du run avant de reprendre le polling
@@ -50,7 +50,7 @@
           .then(function(r) { return r.json(); })
           .then(function(data) {
             if (data.status === 'running') {
-              // Run encore actif : reprendre le polling — navigation bloquée pendant 3s
+              // Run encore actif : reprendre le polling - navigation bloquée pendant 3s
               currentRunId = savedRunId;
               _mandateSubmitted = true; // run en cours = mandat déjà soumis
               agentRunning = true;      // verrou : aucun autre agent lançable pendant ce run
@@ -59,7 +59,7 @@
               refreshLaunchButtons();
               setTimeout(function() { _restoringSession = false; }, 3000);
             } else {
-              // Run terminé : page fraîche propre — NE PAS restaurer les badges
+              // Run terminé : page fraîche propre - NE PAS restaurer les badges
               sessionStorage.removeItem('alphaswarm_run_id');
               buildNav(); updateFooter(); refreshLaunchButtons();
             }

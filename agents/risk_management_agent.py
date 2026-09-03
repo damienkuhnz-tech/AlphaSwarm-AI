@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  AGENTS / RISK MANAGEMENT AGENT — ÉTAPE 4/5                                 ║
+║  AGENTS / RISK MANAGEMENT AGENT - ÉTAPE 4/5                                 ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : moteur de validation quantitative du portefeuille.                  ║
 ║  Input  : portfolio (positions), mandate (contraintes risque)               ║
@@ -52,14 +52,14 @@ class RiskManagementAgent(BaseAgent):
     TOOLS = []  # aucun tool use : tout est calculé en Python avant l'appel LLM
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  run() — MÉTHODE PRINCIPALE                                             │
+    # │  run() - MÉTHODE PRINCIPALE                                             │
     # └─────────────────────────────────────────────────────────────────────────┘
 
     def run(self, state: PortfolioState) -> Dict[str, Any]:
         portfolio = state.get("portfolio")
         mandate = state.get("mandate")
         if not portfolio:
-            return {"errors": ["Portfolio manquant — Portfolio Construction Agent requis"]}
+            return {"errors": ["Portfolio manquant - Portfolio Construction Agent requis"]}
         if not mandate:
             return {"errors": ["Mandate manquant"]}
 
@@ -197,7 +197,7 @@ Secteurs : {json.dumps(secteurs, ensure_ascii=False)}
 CONTRAINTES DU MANDAT :
 {contraintes}
 
-COMPLIANCE CALCULÉE (Python) : {compliance.get('statut_global')} — \
+COMPLIANCE CALCULÉE (Python) : {compliance.get('statut_global')} - \
 {compliance.get('n_pass')} PASS / {compliance.get('n_fail')} FAIL / {compliance.get('n_na')} N-A
 Tests en échec :
 {fails_txt}
@@ -244,7 +244,7 @@ Retourne UNIQUEMENT le JSON du schéma RiskReport."""
         tests de compliance FAIL (garantit qu'aucun échec calculé n'est omis).
         """
         # Normalisation des sévérités LLM hors vocabulaire (ex: "MODEREE",
-        # "ELEVEE") vers le Literal du modèle — évite une ValidationError.
+        # "ELEVEE") vers le Literal du modèle - évite une ValidationError.
         sev_map = {
             "MINEURE": "MINEURE", "FAIBLE": "MINEURE", "BASSE": "MINEURE",
             "MAJEURE": "MAJEURE", "MODEREE": "MAJEURE", "MODÉRÉE": "MAJEURE",

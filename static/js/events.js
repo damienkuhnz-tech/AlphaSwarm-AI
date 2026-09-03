@@ -1,4 +1,4 @@
-// ── EVENTS — câblage des interactions du HTML statique ──────────────────────
+// ── EVENTS - câblage des interactions du HTML statique ──────────────────────
 // Remplace les 56 anciens attributs onclick/onchange/onkeydown inline du HTML
 // (refactor phase 3b). Chargé EN DERNIER : toutes les fonctions référencées
 // sont des globales définies par les fichiers précédents. Les éléments générés

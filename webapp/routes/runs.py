@@ -1,5 +1,5 @@
 """
-WEBAPP / ROUTES / RUNS — cycle de vie d'un run de workflow.
+WEBAPP / ROUTES / RUNS - cycle de vie d'un run de workflow.
 
 POST /api/run              : démarre un workflow (complet ou agent ciblé)
 GET  /api/run/<run_id>     : polling du statut (toutes les 2,5 s côté UI)
@@ -24,7 +24,7 @@ from webapp.services.run_service import _run_workflow_thread
 bp = Blueprint("runs", __name__)
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  POST /api/run — DÉMARRAGE D'UN NOUVEAU RUN                                │
+# │  POST /api/run - DÉMARRAGE D'UN NOUVEAU RUN                                │
 # │  Reçoit les paramètres du formulaire HTML → lance le workflow en thread.  │
 # └─────────────────────────────────────────────────────────────────────────────┘
 
@@ -82,7 +82,7 @@ def start_run():
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  GET /api/run/<run_id> — POLLING DU STATUT                                 │
+# │  GET /api/run/<run_id> - POLLING DU STATUT                                 │
 # │  Appelé toutes les 2s par l'interface pour mettre à jour l'affichage.     │
 # └─────────────────────────────────────────────────────────────────────────────┘
 
@@ -95,7 +95,7 @@ def get_run_status(run_id: str):
     """
     # Snapshot COMPLET pris SOUS verrou (défaut C2) : auparavant seule la
     # référence était copiée, et jsonify() itérait le dict hors verrou pendant
-    # que le thread worker le mutait — snapshot incohérent, voire RuntimeError.
+    # que le thread worker le mutait - snapshot incohérent, voire RuntimeError.
     with _runs_lock:
         run = _runs.get(run_id)
         snapshot = copy.deepcopy({
@@ -120,7 +120,7 @@ def get_run_status(run_id: str):
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  POST /api/run/<run_id>/approve — VALIDATION HUMAINE + EXPORT OMS          │
+# │  POST /api/run/<run_id>/approve - VALIDATION HUMAINE + EXPORT OMS          │
 # │  Déclenché quand le PM clique "Approuver" dans l'interface.               │
 # └─────────────────────────────────────────────────────────────────────────────┘
 
@@ -167,7 +167,7 @@ def approve_run(run_id: str):
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  GET /api/health — HEALTH CHECK                                             │
+# │  GET /api/health - HEALTH CHECK                                             │
 # │  Utilisé pour vérifier que l'API est bien démarrée (ex: start.bat).       │
 # └─────────────────────────────────────────────────────────────────────────────┘
 

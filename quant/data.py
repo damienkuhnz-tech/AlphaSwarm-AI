@@ -1,11 +1,11 @@
 """
-QUANT / DATA — Chargement des prix avec cache disque + mémoire PAR TICKER.
+QUANT / DATA - Chargement des prix avec cache disque + mémoire PAR TICKER.
 
 Objectif performance : minimiser les appels réseau.
 
   - Le cache est PAR TICKER (pas par ensemble de tickers) : quand la boucle
     Portfolio ↔ Risk modifie 3 positions sur 30, seuls les 3 nouveaux tickers
-    sont téléchargés — les 27 autres sortent du cache mémoire.
+    sont téléchargés - les 27 autres sortent du cache mémoire.
   - Les tickers manquants sont téléchargés en UN SEUL appel batch yfinance.
   - Cache disque (pickle dans .cache/prices/, clé datée) : re-runs le même
     jour → 0 appel réseau. Expiration naturelle chaque jour.
@@ -55,7 +55,7 @@ def _purge_stale_cache(max_age_days: int = 7) -> None:
     """
     Supprime les pickles de prix plus vieux que max_age_days.
     La clé de cache intègre la date du jour : les fichiers de la veille ne sont
-    plus jamais relus, mais rien ne les effaçait — le dossier grossissait
+    plus jamais relus, mais rien ne les effaçait - le dossier grossissait
     indéfiniment (défaut D9). Appelé au plus une fois par téléchargement.
     """
     import time as _time

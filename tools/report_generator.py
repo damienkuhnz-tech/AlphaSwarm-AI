@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  TOOLS / REPORT GENERATOR — GÉNÉRATEUR DE RAPPORTS HTML                     ║
+║  TOOLS / REPORT GENERATOR - GÉNÉRATEUR DE RAPPORTS HTML                     ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : produire des documents HTML autonomes (sans CDN externe) style      ║
 ║         rapport d'equity research professionnel (FinRobot-inspired).        ║
@@ -15,7 +15,7 @@
 ║    SVG builders  : _build_price_svg(), _build_pe_eps_svg(),                ║
 ║                    _build_sector_perf_svg()                                 ║
 ║    Table builder : _build_financial_table()                                 ║
-║    CSS           : _BASE_CSS (inline dans <style>) — aucun CDN nécessaire  ║
+║    CSS           : _BASE_CSS (inline dans <style>) - aucun CDN nécessaire  ║
 ║    Assembler     : generate_company_report() / generate_sector_report()     ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Principe "standalone HTML" :                                               ║
@@ -37,11 +37,11 @@ import html as html_lib
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  HELPERS — FONCTIONS UTILITAIRES                                            ║
+# ║  HELPERS - FONCTIONS UTILITAIRES                                            ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  _esc() — Échappement HTML                                                  │
+# │  _esc() - Échappement HTML                                                  │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Protège contre les caractères spéciaux HTML dans les chaînes générées par le LLM.
 # None → "N/D" (valeur d'affichage standard quand la donnée est absente).
@@ -54,7 +54,7 @@ def _esc(val: Any) -> str:
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  _fmt_num() — Formatage numérique                                           │
+# │  _fmt_num() - Formatage numérique                                           │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Formate un float avec séparateur de milliers et nombre de décimales configurables.
 # suffix : permet d'ajouter "%" après le nombre (mais _fmt_pct est plus lisible pour ça).
@@ -73,7 +73,7 @@ def _fmt_num(val: Any, decimals: int = 2, suffix: str = "") -> str:
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  _fmt_pct() — Formatage pourcentage                                         │
+# │  _fmt_pct() - Formatage pourcentage                                         │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Convertit un ratio décimal (0.15) en pourcentage affiché ("15.0%").
 # Note : multiplie par 100 → les valeurs en entrée sont des fractions (0 à 1).
@@ -89,7 +89,7 @@ def _fmt_pct(val: Any) -> str:
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  _rating_color() / _rating_bg() — Couleurs selon la recommandation         │
+# │  _rating_color() / _rating_bg() - Couleurs selon la recommandation         │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Mapping recommendation → couleurs de badge HTML.
 # Palette choisie pour lisibilité financière (vert foncé = fort buy, rouge = sell).
@@ -118,11 +118,11 @@ def _rating_bg(rating: str) -> str:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  SVG BUILDERS — GRAPHIQUES INLINE                                           ║
+# ║  SVG BUILDERS - GRAPHIQUES INLINE                                           ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  _build_price_svg() — Graphique Share Performance vs S&P 500               │
+# │  _build_price_svg() - Graphique Share Performance vs S&P 500               │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Produit un SVG ligne avec 2 courbes :
 #   - Ligne bleue (#1565c0)  : performance du ticker (base 100)
@@ -144,7 +144,7 @@ def _build_price_svg(ticker: str, series: List[Dict]) -> str:
 
     # ── BLOC 2 : Fallback si données vides ────────────────────────────────────
     if not series:
-        # SVG minimal avec message centré — n'interrompt pas le rendu du rapport
+        # SVG minimal avec message centré - n'interrompt pas le rendu du rapport
         return f'<svg width="{W}" height="{H}"><text x="50%" y="50%" text-anchor="middle" fill="#999">Donnees indisponibles</text></svg>'
 
     # ── BLOC 3 : Extraction des valeurs ───────────────────────────────────────
@@ -190,7 +190,7 @@ def _build_price_svg(ticker: str, series: List[Dict]) -> str:
 
     # ── BLOC 8 : Labels axe X (3 dates espacées régulièrement) ───────────────
     x_idx = [0, n // 2, n - 1]
-    # 3 dates : début, milieu, fin — évite le chevauchement de texte
+    # 3 dates : début, milieu, fin - évite le chevauchement de texte
     x_labels = "".join(
         f'<text x="{x_px(i):.1f}" y="{H - PAD_B + 14}" text-anchor="middle" font-size="9" fill="#666">{_esc(dates[i])}</text>'
         for i in x_idx if i < n
@@ -225,7 +225,7 @@ def _build_price_svg(ticker: str, series: List[Dict]) -> str:
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  _build_pe_eps_svg() — Graphique PE Ratio + EPS historiques                │
+# │  _build_pe_eps_svg() - Graphique PE Ratio + EPS historiques                │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Double axe Y :
 #   - Axe gauche (bleu)  : PE Ratio (ligne + points circulaires)
@@ -349,7 +349,7 @@ def _build_pe_eps_svg(company_name: str, series: List[Dict]) -> str:
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  _build_sector_perf_svg() — Performance sectorielle vs benchmark           │
+# │  _build_sector_perf_svg() - Performance sectorielle vs benchmark           │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Utilisé exclusivement par generate_sector_report() (rapport sectoriel).
 # Non utilisé en V1 de production (generate_company_report est appelé par EquityResearchAgent).
@@ -428,11 +428,11 @@ def _build_sector_perf_svg(sector_series: List[Dict]) -> str:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  TABLE BUILDER — TABLEAU FINANCIER                                          ║
+# ║  TABLE BUILDER - TABLEAU FINANCIER                                          ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  _build_financial_table() — Tableau HTML des métriques financières         │
+# │  _build_financial_table() - Tableau HTML des métriques financières         │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Construit un tableau HTML multi-colonnes avec une année par colonne.
 # Lignes : Revenue, Net Income, EPS, EBIT Margin, ROE, PE, EV/EBITDA, PB.
@@ -495,11 +495,11 @@ def _build_financial_table(metrics: List[Dict]) -> str:
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
-# ║  CSS COMMUN — STYLES INLINE (PAS DE CDN)                                   ║
+# ║  CSS COMMUN - STYLES INLINE (PAS DE CDN)                                   ║
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  _BASE_CSS — Feuille de style commune aux deux types de rapports           │
+# │  _BASE_CSS - Feuille de style commune aux deux types de rapports           │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Injecté dans <style> dans le <head> de chaque rapport HTML.
 # Conception : layout 2 colonnes (70% contenu / 30% sidebar) via CSS flexbox.
@@ -666,7 +666,7 @@ body {
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  generate_company_report() — Rapport HTML par entreprise                   │
+# │  generate_company_report() - Rapport HTML par entreprise                   │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Appelé par EquityResearchAgent._build_report_data() → generate_company_report(data).
 # Le dict "data" est construit par _build_report_data() dans equity_research_agent.py.
@@ -729,9 +729,9 @@ def generate_company_report(data: dict) -> str:
 
     # ── BLOC 4 : Données graphiques ───────────────────────────────────────────
     price_series     = data.get("price_series", [])
-    # List[{date, ticker_val, benchmark_val}] — vient de get_price_series()
+    # List[{date, ticker_val, benchmark_val}] - vient de get_price_series()
     pe_eps_series    = data.get("pe_eps_series", [])
-    # List[{year, pe, eps}] — vient de _build_pe_eps_series()
+    # List[{year, pe, eps}] - vient de _build_pe_eps_series()
     financial_metrics = data.get("financial_metrics", [])
     # List[{year, revenue, net_income, eps, ebit_margin, roe, pe_ratio, ev_ebitda, pb_ratio}]
     # vient de _build_financial_metrics() dans equity_research_agent.py
@@ -795,7 +795,7 @@ def generate_company_report(data: dict) -> str:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Equity Research — {_esc(company_name)} ({_esc(ticker)})</title>
+<title>Equity Research - {_esc(company_name)} ({_esc(ticker)})</title>
 <style>
 {_BASE_CSS}
 </style>
@@ -898,7 +898,7 @@ def generate_company_report(data: dict) -> str:
       <!-- Share Performance : courbe ticker vs benchmark du mandat, 12 mois -->
       <div class="sidebar-card">
         <h3>Share Performance</h3>
-        <div class="chart-title">{_esc(ticker)} vs {_esc(data.get("benchmark_label") or "S&P 500")} — Change % Over the Past Year</div>
+        <div class="chart-title">{_esc(ticker)} vs {_esc(data.get("benchmark_label") or "S&P 500")} - Change % Over the Past Year</div>
         {price_svg}
       </div>
 
@@ -931,7 +931,7 @@ def generate_company_report(data: dict) -> str:
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  _SECTOR_CSS_EXTRA — Styles additionnels pour rapports sectoriels          │
+# │  _SECTOR_CSS_EXTRA - Styles additionnels pour rapports sectoriels          │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Ajouté à _BASE_CSS uniquement pour generate_sector_report().
 # .sector-metric-row : ligne de métriques dans la sidebar sectorielle
@@ -959,7 +959,7 @@ _SECTOR_CSS_EXTRA = """
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  generate_sector_report() — Rapport HTML sectoriel                         │
+# │  generate_sector_report() - Rapport HTML sectoriel                         │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Non utilisé en V1 de production (réservé pour une extension future).
 # Même structure que generate_company_report() mais orienté secteur :
@@ -1027,7 +1027,7 @@ def generate_sector_report(data: dict) -> str:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sector Research — {_esc(sector_name)}</title>
+<title>Sector Research - {_esc(sector_name)}</title>
 <style>
 {_BASE_CSS}
 {_SECTOR_CSS_EXTRA}
@@ -1109,7 +1109,7 @@ def generate_sector_report(data: dict) -> str:
       <!-- Sector Performance : courbe sectorielle vs benchmark -->
       <div class="sidebar-card">
         <h3>Sector Performance</h3>
-        <div class="chart-title">{_esc(sector_name)} vs Benchmark — Change % YTD</div>
+        <div class="chart-title">{_esc(sector_name)} vs Benchmark - Change % YTD</div>
         {sector_svg}
       </div>
 

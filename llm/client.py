@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  LLM / CLIENT — FACTORY PROVIDER-AGNOSTIQUE                                 ║
+║  LLM / CLIENT - FACTORY PROVIDER-AGNOSTIQUE                                 ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : exposer une interface unique compatible avec le SDK Anthropic       ║
 ║  pour permettre aux agents d'appeler indifféremment Claude ou Llama (Groq). ║
@@ -56,7 +56,7 @@ def get_client(provider: Optional[str] = None):
 
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  get_retryable_exceptions() — TYPES D'EXCEPTIONS RETENTABLES PAR PROVIDER   │
+# │  get_retryable_exceptions() - TYPES D'EXCEPTIONS RETENTABLES PAR PROVIDER   │
 # │  Utilisé par BaseAgent._call_llm_with_retry pour être indépendant du        │
 # │  provider : selon LLM_PROVIDER, les appels lèvent des exceptions anthropic.* │
 # │  OU openai.* (Groq passe par le SDK openai). On agrège les deux familles    │

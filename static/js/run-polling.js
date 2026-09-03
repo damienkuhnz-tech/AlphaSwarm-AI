@@ -5,14 +5,14 @@
   function _pipelinePollCallbacks() {
     return {
       onDone: function() {
-        showRunBanner('Analyse terminée — données réelles chargées', 'success');
+        showRunBanner('Analyse terminée - données réelles chargées', 'success');
       },
       onError: function(d) {
         showRunBanner('Erreur agent : ' + ((d && d.error) || '?'), 'error');
       },
       onTimeout: function() {
         showRunBanner('Aucune réponse après ' + MAX_RUN_MINUTES +
-                      ' minutes — suivi interrompu. Vérifiez la console du serveur.', 'error');
+                      ' minutes - suivi interrompu. Vérifiez la console du serveur.', 'error');
       }
     };
   }
@@ -26,9 +26,9 @@
   // Le handle est desormais TOUJOURS `pollInterval`, donc toujours annulable.
   //
   // Les differences de fin de run sont portees par les callbacks :
-  //   opts.onDone(data)    — run termine avec succes
-  //   opts.onError(data)   — run termine en erreur
-  //   opts.onTimeout()     — garde-temps MAX_RUN_MINUTES depasse
+  //   opts.onDone(data)    - run termine avec succes
+  //   opts.onError(data)   - run termine en erreur
+  //   opts.onTimeout()     - garde-temps MAX_RUN_MINUTES depasse
   // Le tronc commun (arret de la boucle, purge du sessionStorage, liberation du
   // verrou agentRunning, refreshLaunchButtons) est fait ici une fois pour toutes.
   function startPolling(runId, opts) {
@@ -121,7 +121,7 @@
       }
     }
 
-    // Met à jour le badge de l'étape concernée — sans navigation automatique
+    // Met à jour le badge de l'étape concernée - sans navigation automatique
     if (stepNum > lastCompletedStep) {
       markStepDoneUI(stepNum);
       lastCompletedStep = stepNum;
@@ -129,7 +129,7 @@
       updateFooter();
     }
 
-    // Injecte les données dans chaque écran — guarded by change detection
+    // Injecte les données dans chaque écran - guarded by change detection
     var ideas    = partial.ideas    || final.ideas    || [];
     var research = partial.research || final.research || [];
     var portfolio= partial.portfolio|| final.portfolio|| null;

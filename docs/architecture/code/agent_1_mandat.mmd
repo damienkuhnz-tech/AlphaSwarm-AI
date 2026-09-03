@@ -17,8 +17,8 @@ config:
     wrappingWidth: 200
 ---
 flowchart LR
-  IN("<b>ENTRÉE</b> — state[…]<br/>strategie · capital · benchmark · horizon<br/>profil_risque · beta_min/max_override")
-  PY("<b>MandateAgent.run() — préparation</b><br/>_RISK_PARAMS[profil] : 5 enveloppes<br/>build_sector_weights(profil)<br/>get_sector_classification(profil)<br/>format_sector_directive_for_prompt()<br/><i>tools/sector_beta.py</i>")
+  IN("<b>ENTRÉE</b> - state[…]<br/>strategie · capital · benchmark · horizon<br/>profil_risque · beta_min/max_override")
+  PY("<b>MandateAgent.run() - préparation</b><br/>_RISK_PARAMS[profil] : 5 enveloppes<br/>build_sector_weights(profil)<br/>get_sector_classification(profil)<br/>format_sector_directive_for_prompt()<br/><i>tools/sector_beta.py</i>")
   L("<b>appel</b><br/>_call_llm_with_retry(user_msg)<br/>system = MANDATE_PROMPT<br/>data = _parse_json(raw)")
   FX("<b>forçage</b><br/>data['capital'] = capital du state<br/>data['profil_risque'] = profil effectif")
   OUT("<b>SORTIE</b><br/>MandateOutput(**data)<br/>@field_validator _drop_scalar_constraints<br/>return {'mandate': …}")

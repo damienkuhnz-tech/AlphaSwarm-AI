@@ -1,6 +1,6 @@
 
   // ════════════════════════════════════════════════════════════════════════
-  //  ONGLET MARCHÉ — cours de bourse quasi temps réel (/api/quotes)
+  //  ONGLET MARCHÉ - cours de bourse quasi temps réel (/api/quotes)
   // ════════════════════════════════════════════════════════════════════════
   var _marketWatchlist = ['NVDA','MSFT','LLY','ASML','AMZN','V','NVO','JPM','SAP','TSM','AAPL','GOOGL'];
   var _marketScreenPrev = null;   // étape à restaurer en quittant le marché
@@ -97,7 +97,7 @@
     if (_marketLoading) return;
     if (!_marketWatchlist.length) {
       document.getElementById('market-tbody').innerHTML =
-        '<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text-dim);">Watchlist vide — ajoutez un ticker ci-dessus.</td></tr>';
+        '<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text-dim);">Watchlist vide - ajoutez un ticker ci-dessus.</td></tr>';
       return;
     }
     _marketLoading = true;
@@ -125,7 +125,7 @@
         _marketLoading = false;
         if (lbl) lbl.textContent = '↻ Actualiser';
         document.getElementById('market-tbody').innerHTML =
-          '<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--accent-red);">API non disponible — lancez python api.py</td></tr>';
+          '<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--accent-red);">API non disponible - lancez python api.py</td></tr>';
       });
   }
 
@@ -146,8 +146,8 @@
           '<td><button type="button" class="btn-mkt-remove" onclick="removeMarketTicker(\'' + q.ticker + '\')" title="Retirer">×</button></td></tr>';
       }
       var cur = q.devise === 'EUR' ? '€' : q.devise === 'USD' ? '$' : (q.devise || '') + ' ';
-      var fmt = function(v, dec) { return (v != null) ? Number(v).toLocaleString('fr-FR', {maximumFractionDigits: dec == null ? 2 : dec}) : '—'; };
-      var prix = (q.prix != null) ? cur + fmt(q.prix) : '—';
+      var fmt = function(v, dec) { return (v != null) ? Number(v).toLocaleString('fr-FR', {maximumFractionDigits: dec == null ? 2 : dec}) : ''; };
+      var prix = (q.prix != null) ? cur + fmt(q.prix) : '';
 
       // Détection mouvement de prix (pour flash)
       var prev = _marketLastPrices[q.ticker];
@@ -160,18 +160,18 @@
       var up = (q.variation_pct != null) ? q.variation_pct >= 0 : true;
       var cls = up ? 'market-up' : 'market-down';
       var arrow = up ? '▲' : '▼';
-      var varAbs = (q.variation_abs != null) ? '<span class="' + cls + '" style="' + mono + '">' + (up ? '+' : '') + fmt(q.variation_abs) + '</span>' : '—';
-      var varPct = (q.variation_pct != null) ? '<span class="' + cls + '" style="' + mono + 'font-weight:700;">' + arrow + ' ' + (up ? '+' : '') + (q.variation_pct * 100).toFixed(2) + '%</span>' : '—';
+      var varAbs = (q.variation_abs != null) ? '<span class="' + cls + '" style="' + mono + '">' + (up ? '+' : '') + fmt(q.variation_abs) + '</span>' : '';
+      var varPct = (q.variation_pct != null) ? '<span class="' + cls + '" style="' + mono + 'font-weight:700;">' + arrow + ' ' + (up ? '+' : '') + (q.variation_pct * 100).toFixed(2) + '%</span>' : '';
 
       // 52 semaines (barre de position)
-      var range52 = '—';
+      var range52 = '';
       if (q.annee_bas && q.annee_haut && q.annee_haut > q.annee_bas) {
         var pos = Math.max(0, Math.min(100, Math.round((q.prix - q.annee_bas) / (q.annee_haut - q.annee_bas) * 100)));
         range52 = '<div style="font-size:10px;color:var(--text-dim);' + mono + '">' + fmt(q.annee_bas,0) + ' – ' + fmt(q.annee_haut,0) + '</div>' +
           '<div class="mkt-52-track"><div class="mkt-52-fill" style="width:' + pos + '%"></div></div>';
       }
       // Volume formaté (M)
-      var vol = (q.volume != null) ? (q.volume >= 1e6 ? (q.volume/1e6).toFixed(1) + 'M' : fmt(q.volume,0)) : '—';
+      var vol = (q.volume != null) ? (q.volume >= 1e6 ? (q.volume/1e6).toFixed(1) + 'M' : fmt(q.volume,0)) : '';
 
       return '<tr data-tk="' + q.ticker + '">' +
         '<td><strong style="color:var(--accent-gold);">' + q.ticker + '</strong></td>' +

@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  ALPHASWARM API — POINT D'ENTRÉE (`python api.py`)                            ║
+║  ALPHASWARM API - POINT D'ENTRÉE (`python api.py`)                            ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  L'application vit dans le package webapp/ (factory + blueprints) :          ║
 ║    webapp/__init__.py   create_app (Flask, CORS, blueprints)                 ║

@@ -28,11 +28,11 @@ flowchart TB
     P2("<b>Règles d'exécution imposées dans le prompt</b><br/>maximum 10 % du volume quotidien par ordre<br/>VWAP au-delà d'un million · TWAP si urgent<br/>ordre à cours limité en marché volatil")
   end
 
-  LLM("<b>APPEL AU MODÈLE</b> — un seul<br/>par ordre : priorité, algorithme, coûts estimés<br/>et prérequis réglementaires déduits de la géographie")
+  LLM("<b>APPEL AU MODÈLE</b> - un seul<br/>par ordre : priorité, algorithme, coûts estimés<br/>et prérequis réglementaires déduits de la géographie")
 
   VAL("<b>Validation Pydantic</b><br/>action limitée à BUY ou SELL, priorité à HIGH,<br/>NORMAL ou LOW, tous les montants en nombres")
 
-  MEM("<b>SORTIE</b> — ExecutionOutput<br/><i>objet en mémoire : rien n'est encore écrit</i>")
+  MEM("<b>SORTIE</b> - ExecutionOutput<br/><i>objet en mémoire : rien n'est encore écrit</i>")
 
   GATE{"Le gérant<br/>approuve ?"}
   FILE("<b>exports/orders_&lt;id&gt;.json</b><br/>fichier destiné à un système d'exécution externe")

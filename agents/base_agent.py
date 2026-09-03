@@ -1,6 +1,6 @@
 """
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║  AGENTS / BASE AGENT — CLASSE MÈRE DE TOUS LES AGENTS                       ║
+║  AGENTS / BASE AGENT - CLASSE MÈRE DE TOUS LES AGENTS                       ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
 ║  Rôle : factoriser la logique commune à tous les agents.                    ║
 ║  Tout agent hérite de BaseAgent et n'implémente que run().                  ║
@@ -60,7 +60,7 @@ _NETWORK_EXCS, _STATUS_EXCS = get_retryable_exceptions()
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 class BaseAgent(ABC):
-    """Classe abstraite — ne peut pas être instanciée directement."""
+    """Classe abstraite - ne peut pas être instanciée directement."""
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
     # │  ATTRIBUTS DE CLASSE (définis au niveau de la classe, pas de l'instance)│
@@ -97,7 +97,7 @@ class BaseAgent(ABC):
 
         # ── Injection du client ───────────────────────────────────────────────
         # Si l'appelant fournit un client (ex: workflow.py partage UN client global),
-        # on l'utilise — sauf si l'agent a un provider override différent du global,
+        # on l'utilise - sauf si l'agent a un provider override différent du global,
         # auquel cas on en crée un dédié pour respecter l'override.
         if client and agent_provider == settings.LLM_PROVIDER:
             self.client = client
@@ -132,7 +132,7 @@ class BaseAgent(ABC):
         pass
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _call_llm() — BOUCLE PRINCIPALE D'APPEL AU LLM                        │
+    # │  _call_llm() - BOUCLE PRINCIPALE D'APPEL AU LLM                        │
     # │  Gère : appel initial → tool use → réponse finale                      │
     # │  C'est le cœur de BaseAgent. Tous les agents passent par ici.          │
     # └─────────────────────────────────────────────────────────────────────────┘
@@ -313,7 +313,7 @@ class BaseAgent(ABC):
         return ""  # Retour de secours (atteint uniquement après le break)
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _call_llm_with_retry() — WRAPPER AVEC RETRY RÉSEAU                    │
+    # │  _call_llm_with_retry() - WRAPPER AVEC RETRY RÉSEAU                    │
     # │  Relance automatiquement _call_llm en cas d'erreur réseau temporaire.  │
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -369,12 +369,12 @@ class BaseAgent(ABC):
                     # linéaire plafonné à 60s : 15s, 30s, 45s, 60s, 60s...
                     wait = self._retry_after_seconds(e) or min(15 * attempt_throttle, 60)
                     print(
-                        f"[retry] LLM indisponible (HTTP {status}) — attente {wait:.0f}s "
+                        f"[retry] LLM indisponible (HTTP {status}) - attente {wait:.0f}s "
                         f"(essai {attempt_throttle}/{max_throttle_retries})",
                         flush=True,
                     )
                     time.sleep(wait)
-                    attempt -= 1  # Annule l'incrément — EFFECTIF dans un while
+                    attempt -= 1  # Annule l'incrément - EFFECTIF dans un while
                     continue
                 # Erreurs client 4xx (400, 401, 403...) → inutile de retenter
                 # (clé invalide, requête malformée : ça ne changera pas).
@@ -392,7 +392,7 @@ class BaseAgent(ABC):
         return ""  # Retour de secours si toutes les tentatives retournent vide
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _retry_after_seconds() — LIT L'EN-TÊTE Retry-After D'UNE ERREUR HTTP   │
+    # │  _retry_after_seconds() - LIT L'EN-TÊTE Retry-After D'UNE ERREUR HTTP   │
     # └─────────────────────────────────────────────────────────────────────────┘
 
     @staticmethod
@@ -414,7 +414,7 @@ class BaseAgent(ABC):
         return None
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _execute_tool() — DISPATCH DES OUTILS                                 │
+    # │  _execute_tool() - DISPATCH DES OUTILS                                 │
     # │  Relie le nom d'outil (string retourné par le LLM) à la fonction Python│
     # └─────────────────────────────────────────────────────────────────────────┘
 
@@ -453,7 +453,7 @@ class BaseAgent(ABC):
         return fn(tool_input) if fn else {"erreur": f"Tool inconnu: {tool_name}"}
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _parse_json() — EXTRACTION ROBUSTE DU JSON DEPUIS LA RÉPONSE LLM      │
+    # │  _parse_json() - EXTRACTION ROBUSTE DU JSON DEPUIS LA RÉPONSE LLM      │
     # │  Le LLM peut entourer le JSON de texte, markdown, explications, etc.   │
     # │  Cette méthode extrait le JSON pur même dans ces cas.                  │
     # └─────────────────────────────────────────────────────────────────────────┘
@@ -515,7 +515,7 @@ class BaseAgent(ABC):
             raise ValueError(f"JSON invalide: {e} | Reponse: {preview!r}") from e
 
     # ┌─────────────────────────────────────────────────────────────────────────┐
-    # │  _repair_truncated_json() — RÉPARATION D'UN JSON COUPÉ EN PLEIN MILIEU  │
+    # │  _repair_truncated_json() - RÉPARATION D'UN JSON COUPÉ EN PLEIN MILIEU  │
     # │  Ferme les chaînes, objets et tableaux restés ouverts par la troncature.│
     # │  Retourne une string JSON candidate, ou None si irréparable.            │
     # └─────────────────────────────────────────────────────────────────────────┘
@@ -569,7 +569,7 @@ class BaseAgent(ABC):
 # ╚═════════════════════════════════════════════════════════════════════════════╝
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  MARKET_DATA_TOOLS — Outils de données de marché                           │
+# │  MARKET_DATA_TOOLS - Outils de données de marché                           │
 # │  Utilisés par : EquityResearchAgent (via tool use)                         │
 # │  Implémentés dans : tools/market_data.py                                   │
 # └─────────────────────────────────────────────────────────────────────────────┘
@@ -620,7 +620,7 @@ MARKET_DATA_TOOLS = [
 ]
 
 # ┌─────────────────────────────────────────────────────────────────────────────┐
-# │  PORTFOLIO_TOOLS — Outil de métriques portefeuille                         │
+# │  PORTFOLIO_TOOLS - Outil de métriques portefeuille                         │
 # │  Utilisé par : RiskManagementAgent uniquement                              │
 # │  Implémenté dans : tools/financial_metrics.py                              │
 # └─────────────────────────────────────────────────────────────────────────────┘

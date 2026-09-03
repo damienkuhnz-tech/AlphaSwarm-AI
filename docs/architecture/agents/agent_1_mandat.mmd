@@ -20,7 +20,7 @@ config:
 ---
 flowchart TB
 
-  IN("<b>ENTRÉE</b> — choix du gérant<br/>stratégie · capital · benchmark · horizon<br/>profil de risque · bêta min et max · priorité")
+  IN("<b>ENTRÉE</b> - choix du gérant<br/>stratégie · capital · benchmark · horizon<br/>profil de risque · bêta min et max · priorité")
 
   subgraph AVANT["&nbsp;&nbsp;CE QUE PYTHON DÉCIDE AVANT L'APPEL&nbsp;&nbsp;"]
     direction TB
@@ -29,7 +29,7 @@ flowchart TB
     P3("<b>Classement des onze secteurs GICS</b><br/>primaire, secondaire ou exclu selon la compatibilité<br/>de leur bêta médian avec le profil retenu")
   end
 
-  LLM("<b>APPEL AU MODÈLE</b> — un seul<br/>reçoit un gabarit déjà largement pré-rempli<br/>complète l'univers, les exclusions ESG, la formulation<br/>et signale les incohérences du mandat")
+  LLM("<b>APPEL AU MODÈLE</b> - un seul<br/>reçoit un gabarit déjà largement pré-rempli<br/>complète l'univers, les exclusions ESG, la formulation<br/>et signale les incohérences du mandat")
 
   subgraph APRES["&nbsp;&nbsp;CE QUE PYTHON RÉÉCRIT APRÈS L'APPEL&nbsp;&nbsp;"]
     direction TB
@@ -37,7 +37,7 @@ flowchart TB
     R2("<b>Contraintes non conformes écartées</b><br/>les clés transversales scalaires glissées par le modèle<br/>sont retirées avant la validation Pydantic")
   end
 
-  OUT("<b>SORTIE</b> — MandateOutput<br/>lu par les quatre agents suivants")
+  OUT("<b>SORTIE</b> - MandateOutput<br/>lu par les quatre agents suivants")
 
   IN --> AVANT
   AVANT -->|"gabarit + directive sectorielle"| LLM

@@ -1,20 +1,20 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-  /* ── AlphaSwarm — charte "Chrome & papier" (style C) ──
+  /* ── AlphaSwarm - charte "Chrome & papier" (style C) ──
      Chrome vert-noir (topbar/footer/login) + corps papier clair.
      Noms de variables historiques CONSERVÉS (le reste du CSS + le JS y réfèrent) ;
      seules les VALEURS changent. #3DDC97 (vert logo) est réservé au chrome et
      aux marqueurs ; sur fond clair, l'actionnable utilise le vert encre #117B54. */
-  --bg-main:      #F7F8F7;   /* papier — fond principal */
+  --bg-main:      #F7F8F7;   /* papier - fond principal */
   --bg-card:      #FFFFFF;   /* surfaces, cartes */
   --bg-element:   #F1F4F2;   /* inputs, th */
   --bg-hover:     #EAEFEC;
   --bg-glass:     #FFFFFF;   /* plus d'effet verre : cartes opaques */
-  --accent-green: #117B54;   /* vert encre — accent actionnable sur clair */
+  --accent-green: #117B54;   /* vert encre - accent actionnable sur clair */
   --accent-blue:  #4A6157;   /* secondaire neutre-vert */
-  --accent-gold:  #B07A1E;   /* ambre encre — états "en cours" */
-  --accent-red:   #B3261E;   /* rouge encre — perte / erreur */
+  --accent-gold:  #B07A1E;   /* ambre encre - états "en cours" */
+  --accent-red:   #B3261E;   /* rouge encre - perte / erreur */
   --accent-purple:#4A6157;
   --perf-green:   #117B54;   /* vert RÉSERVÉ aux performances positives */
   --text-primary: #1A2420;   /* encre */
@@ -31,7 +31,7 @@
   --chrome-panel: #10231B;
   --chrome-text:  #F2F7F4;
   --chrome-muted: #9FB4A9;
-  --brand:        #3DDC97;   /* vert logo — chrome et marqueurs uniquement */
+  --brand:        #3DDC97;   /* vert logo - chrome et marqueurs uniquement */
   --brand-ink:    #07130D;   /* texte posé sur --brand */
   /* legacy aliases kept for compatibility */
   --bg-dark:      #F7F8F7;
