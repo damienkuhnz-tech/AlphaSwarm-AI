@@ -93,28 +93,28 @@ def _fmt_pct(val: Any) -> str:
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Mapping recommendation → couleurs de badge HTML.
 # Palette choisie pour lisibilité financière (vert foncé = fort buy, rouge = sell).
-# default : #333333 (gris neutre) si la valeur ne correspond à aucun rating connu.
+# default : #1A2420 (gris neutre) si la valeur ne correspond à aucun rating connu.
 
 def _rating_color(rating: str) -> str:
     # Couleur de texte du badge recommendation
     mapping = {
-        "strongBuy": "#1b5e20",   # Vert très foncé
-        "Buy":       "#2e7d32",   # Vert foncé
-        "Hold":      "#e65100",   # Orange
-        "Sell":      "#b71c1c",   # Rouge foncé
+        "strongBuy": "#0F7A55",   # Vert très foncé
+        "Buy":       "#2E6B54",   # Vert foncé
+        "Hold":      "#8A6116",   # Orange
+        "Sell":      "#B3261E",   # Rouge foncé
     }
-    return mapping.get(rating, "#333333")
+    return mapping.get(rating, "#1A2420")
 
 
 def _rating_bg(rating: str) -> str:
     # Couleur de fond du badge recommendation (pastel assorti au texte)
     mapping = {
-        "strongBuy": "#e8f5e9",   # Vert très pâle
-        "Buy":       "#f1f8e9",   # Vert pâle
-        "Hold":      "#fff3e0",   # Orange pâle
-        "Sell":      "#ffebee",   # Rouge pâle
+        "strongBuy": "#E3F6EC",   # Vert très pâle
+        "Buy":       "#E9F2EE",   # Vert pâle
+        "Hold":      "#FFF4DE",   # Orange pâle
+        "Sell":      "#FBE9E7",   # Rouge pâle
     }
-    return mapping.get(rating, "#f5f5f5")
+    return mapping.get(rating, "#F1F4F2")
 
 
 # ╔═════════════════════════════════════════════════════════════════════════════╗
@@ -125,7 +125,7 @@ def _rating_bg(rating: str) -> str:
 # │  _build_price_svg() - Graphique Share Performance vs S&P 500               │
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Produit un SVG ligne avec 2 courbes :
-#   - Ligne bleue (#1565c0)  : performance du ticker (base 100)
+#   - Ligne bleue (#117B54)  : performance du ticker (base 100)
 #   - Ligne grise pointillée : performance S&P 500 (base 100)
 # Les données viennent de get_price_series() dans tools/market_data.py.
 # "base 100" signifie : le premier point est normalisé à 100, les suivants
@@ -198,12 +198,12 @@ def _build_price_svg(ticker: str, series: List[Dict]) -> str:
 
     # ── BLOC 9 : Légende ──────────────────────────────────────────────────────
     legend = (
-        f'<rect x="{PAD_L}" y="{H - PAD_B + 22}" width="10" height="3" fill="#1565c0"/>'
+        f'<rect x="{PAD_L}" y="{H - PAD_B + 22}" width="10" height="3" fill="#117B54"/>'
         # Petit rectangle bleu pour le ticker
-        f'<text x="{PAD_L + 14}" y="{H - PAD_B + 27}" font-size="9" fill="#333">{_esc(ticker)}</text>'
-        f'<rect x="{PAD_L + 60}" y="{H - PAD_B + 22}" width="10" height="3" fill="#9e9e9e" stroke-dasharray="3,2"/>'
+        f'<text x="{PAD_L + 14}" y="{H - PAD_B + 27}" font-size="9" fill="#1A2420">{_esc(ticker)}</text>'
+        f'<rect x="{PAD_L + 60}" y="{H - PAD_B + 22}" width="10" height="3" fill="#8B968F" stroke-dasharray="3,2"/>'
         # Petit rectangle gris pointillé pour le benchmark
-        f'<text x="{PAD_L + 74}" y="{H - PAD_B + 27}" font-size="9" fill="#333">S&amp;P 500</text>'
+        f'<text x="{PAD_L + 74}" y="{H - PAD_B + 27}" font-size="9" fill="#1A2420">S&amp;P 500</text>'
         # &amp; : entité HTML pour "&" (nécessaire dans les attributs SVG)
     )
 
@@ -211,12 +211,12 @@ def _build_price_svg(ticker: str, series: List[Dict]) -> str:
     svg = f"""<svg width="{W}" height="{H}" xmlns="http://www.w3.org/2000/svg">
   <rect width="{W}" height="{H}" fill="white"/>
   <!-- Grille -->
-  <line x1="{PAD_L}" y1="{PAD_T}" x2="{PAD_L}" y2="{PAD_T + chart_h}" stroke="#e0e0e0" stroke-width="1"/>
-  <line x1="{PAD_L}" y1="{PAD_T + chart_h}" x2="{PAD_L + chart_w}" y2="{PAD_T + chart_h}" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="{PAD_L}" y1="{PAD_T}" x2="{PAD_L}" y2="{PAD_T + chart_h}" stroke="#E3E7E4" stroke-width="1"/>
+  <line x1="{PAD_L}" y1="{PAD_T + chart_h}" x2="{PAD_L + chart_w}" y2="{PAD_T + chart_h}" stroke="#E3E7E4" stroke-width="1"/>
   <!-- Benchmark (pointille gris) -->
-  <polyline points="{b_points}" fill="none" stroke="#9e9e9e" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <polyline points="{b_points}" fill="none" stroke="#8B968F" stroke-width="1.5" stroke-dasharray="4,3"/>
   <!-- Ticker (ligne bleue) -->
-  <polyline points="{t_points}" fill="none" stroke="#1565c0" stroke-width="2"/>
+  <polyline points="{t_points}" fill="none" stroke="#117B54" stroke-width="2"/>
   {y_labels}
   {x_labels}
   {legend}
@@ -290,14 +290,14 @@ def _build_pe_eps_svg(company_name: str, series: List[Dict]) -> str:
         bx = x_center(i) - bar_w / 2   # Coin gauche de la barre
         by = y_eps(v)                    # Sommet de la barre
         bh = PAD_T + chart_h - by       # Hauteur = distance entre sommet et axe X
-        bars += f'<rect x="{bx:.1f}" y="{by:.1f}" width="{bar_w:.1f}" height="{bh:.1f}" fill="#bdbdbd" opacity="0.8"/>'
-        # Barres grises (#bdbdbd) semi-transparentes pour ne pas masquer la ligne PE
+        bars += f'<rect x="{bx:.1f}" y="{by:.1f}" width="{bar_w:.1f}" height="{bh:.1f}" fill="#C9D3CC" opacity="0.8"/>'
+        # Barres grises (#C9D3CC) semi-transparentes pour ne pas masquer la ligne PE
 
     # ── BLOC 9 : Ligne PE + points circulaires ────────────────────────────────
     pe_pts  = " ".join(f"{x_center(i):.1f},{y_pe(v):.1f}" for i, v in enumerate(pe_vals))
-    pe_line = f'<polyline points="{pe_pts}" fill="none" stroke="#1565c0" stroke-width="2"/>'
+    pe_line = f'<polyline points="{pe_pts}" fill="none" stroke="#117B54" stroke-width="2"/>'
     pe_dots = "".join(
-        f'<circle cx="{x_center(i):.1f}" cy="{y_pe(v):.1f}" r="3" fill="#1565c0"/>'
+        f'<circle cx="{x_center(i):.1f}" cy="{y_pe(v):.1f}" r="3" fill="#117B54"/>'
         # Cercles bleus r=3 pour marquer chaque point de données sur la ligne PE
         for i, v in enumerate(pe_vals)
     )
@@ -311,7 +311,7 @@ def _build_pe_eps_svg(company_name: str, series: List[Dict]) -> str:
     # ── BLOC 11 : Labels axe Y gauche (PE) ───────────────────────────────────
     pe_levels = [pe_min, pe_max / 2, pe_max]
     y_left = "".join(
-        f'<text x="{PAD_L - 5}" y="{y_pe(v) + 4:.1f}" text-anchor="end" font-size="9" fill="#1565c0">{v:.0f}</text>'
+        f'<text x="{PAD_L - 5}" y="{y_pe(v) + 4:.1f}" text-anchor="end" font-size="9" fill="#117B54">{v:.0f}</text>'
         # Texte bleu pour l'axe PE (couleur assortie à la ligne)
         for v in pe_levels
     )
@@ -326,17 +326,17 @@ def _build_pe_eps_svg(company_name: str, series: List[Dict]) -> str:
 
     # ── BLOC 13 : Légende ─────────────────────────────────────────────────────
     legend = (
-        f'<line x1="{PAD_L}" y1="{H - PAD_B + 22}" x2="{PAD_L + 14}" y2="{H - PAD_B + 22}" stroke="#1565c0" stroke-width="2"/>'
-        f'<text x="{PAD_L + 18}" y="{H - PAD_B + 27}" font-size="9" fill="#333">PE Ratio (gauche)</text>'
-        f'<rect x="{PAD_L + 120}" y="{H - PAD_B + 18}" width="10" height="8" fill="#bdbdbd" opacity="0.8"/>'
-        f'<text x="{PAD_L + 134}" y="{H - PAD_B + 27}" font-size="9" fill="#333">EPS (droite)</text>'
+        f'<line x1="{PAD_L}" y1="{H - PAD_B + 22}" x2="{PAD_L + 14}" y2="{H - PAD_B + 22}" stroke="#117B54" stroke-width="2"/>'
+        f'<text x="{PAD_L + 18}" y="{H - PAD_B + 27}" font-size="9" fill="#1A2420">PE Ratio (gauche)</text>'
+        f'<rect x="{PAD_L + 120}" y="{H - PAD_B + 18}" width="10" height="8" fill="#C9D3CC" opacity="0.8"/>'
+        f'<text x="{PAD_L + 134}" y="{H - PAD_B + 27}" font-size="9" fill="#1A2420">EPS (droite)</text>'
     )
 
     # ── BLOC 14 : Assemblage SVG final ────────────────────────────────────────
     svg = f"""<svg width="{W}" height="{H}" xmlns="http://www.w3.org/2000/svg">
   <rect width="{W}" height="{H}" fill="white"/>
-  <line x1="{PAD_L}" y1="{PAD_T}" x2="{PAD_L}" y2="{PAD_T + chart_h}" stroke="#e0e0e0" stroke-width="1"/>
-  <line x1="{PAD_L}" y1="{PAD_T + chart_h}" x2="{PAD_L + chart_w}" y2="{PAD_T + chart_h}" stroke="#e0e0e0" stroke-width="1"/>
+  <line x1="{PAD_L}" y1="{PAD_T}" x2="{PAD_L}" y2="{PAD_T + chart_h}" stroke="#E3E7E4" stroke-width="1"/>
+  <line x1="{PAD_L}" y1="{PAD_T + chart_h}" x2="{PAD_L + chart_w}" y2="{PAD_T + chart_h}" stroke="#E3E7E4" stroke-width="1"/>
   {bars}
   {pe_line}
   {pe_dots}
@@ -353,7 +353,7 @@ def _build_pe_eps_svg(company_name: str, series: List[Dict]) -> str:
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Utilisé exclusivement par generate_sector_report() (rapport sectoriel).
 # Non utilisé en V1 de production (generate_company_report est appelé par EquityResearchAgent).
-# Même logique que _build_price_svg() mais avec la couleur mauve (#7b1fa2)
+# Même logique que _build_price_svg() mais avec la couleur mauve (#117B54)
 # pour distinguer visuellement les rapports sectoriels des rapports entreprise.
 
 def _build_sector_perf_svg(sector_series: List[Dict]) -> str:
@@ -407,20 +407,20 @@ def _build_sector_perf_svg(sector_series: List[Dict]) -> str:
 
     # ── BLOC 8 : Légende ──────────────────────────────────────────────────────
     legend = (
-        f'<rect x="{PAD_L}" y="{H - PAD_B + 22}" width="10" height="3" fill="#7b1fa2"/>'
-        # Mauve (#7b1fa2) : couleur sectorielle, distinct du bleu entreprise
-        f'<text x="{PAD_L + 14}" y="{H - PAD_B + 27}" font-size="9" fill="#333">Secteur</text>'
-        f'<rect x="{PAD_L + 70}" y="{H - PAD_B + 22}" width="10" height="3" fill="#9e9e9e"/>'
-        f'<text x="{PAD_L + 84}" y="{H - PAD_B + 27}" font-size="9" fill="#333">Benchmark</text>'
+        f'<rect x="{PAD_L}" y="{H - PAD_B + 22}" width="10" height="3" fill="#117B54"/>'
+        # Mauve (#117B54) : couleur sectorielle, distinct du bleu entreprise
+        f'<text x="{PAD_L + 14}" y="{H - PAD_B + 27}" font-size="9" fill="#1A2420">Secteur</text>'
+        f'<rect x="{PAD_L + 70}" y="{H - PAD_B + 22}" width="10" height="3" fill="#8B968F"/>'
+        f'<text x="{PAD_L + 84}" y="{H - PAD_B + 27}" font-size="9" fill="#1A2420">Benchmark</text>'
     )
 
     # ── BLOC 9 : Assemblage SVG ───────────────────────────────────────────────
     return f"""<svg width="{W}" height="{H}" xmlns="http://www.w3.org/2000/svg">
   <rect width="{W}" height="{H}" fill="white"/>
-  <line x1="{PAD_L}" y1="{PAD_T}" x2="{PAD_L}" y2="{PAD_T + chart_h}" stroke="#e0e0e0" stroke-width="1"/>
-  <line x1="{PAD_L}" y1="{PAD_T + chart_h}" x2="{PAD_L + chart_w}" y2="{PAD_T + chart_h}" stroke="#e0e0e0" stroke-width="1"/>
-  <polyline points="{b_pts}" fill="none" stroke="#9e9e9e" stroke-width="1.5" stroke-dasharray="4,3"/>
-  <polyline points="{s_pts}" fill="none" stroke="#7b1fa2" stroke-width="2"/>
+  <line x1="{PAD_L}" y1="{PAD_T}" x2="{PAD_L}" y2="{PAD_T + chart_h}" stroke="#E3E7E4" stroke-width="1"/>
+  <line x1="{PAD_L}" y1="{PAD_T + chart_h}" x2="{PAD_L + chart_w}" y2="{PAD_T + chart_h}" stroke="#E3E7E4" stroke-width="1"/>
+  <polyline points="{b_pts}" fill="none" stroke="#8B968F" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <polyline points="{s_pts}" fill="none" stroke="#117B54" stroke-width="2"/>
   {y_labels}
   {x_labels}
   {legend}
@@ -437,7 +437,7 @@ def _build_sector_perf_svg(sector_series: List[Dict]) -> str:
 # Construit un tableau HTML multi-colonnes avec une année par colonne.
 # Lignes : Revenue, Net Income, EPS, EBIT Margin, ROE, PE, EV/EBITDA, PB.
 # row() closure : génère une ligne <tr> avec les cellules formatées.
-# Alternance de fond (i%2 : #f9f9f9 / #ffffff) pour lisibilité (zebrastripes).
+# Alternance de fond (i%2 : #F7F8F7 / #ffffff) pour lisibilité (zebrastripes).
 
 def _build_financial_table(metrics: List[Dict]) -> str:
     """Construit le tableau HTML des metriques financieres historiques."""
@@ -462,10 +462,10 @@ def _build_financial_table(metrics: List[Dict]) -> str:
                 display = fmt_fn(val)
             else:
                 display = _fmt_num(val, 0) if val is not None else "N/D"
-            bg = "#f9f9f9" if i % 2 == 0 else "#ffffff"
+            bg = "#F7F8F7" if i % 2 == 0 else "#ffffff"
             # Alternance de fond par colonne (pas par ligne) pour lire horizontalement
             cells += f'<td style="background:{bg};text-align:right;padding:5px 8px;">{display}</td>'
-        return f"<tr><td style='padding:5px 8px;font-weight:500;color:#333;'>{label}</td>{cells}</tr>"
+        return f"<tr><td style='padding:5px 8px;font-weight:500;color:#1A2420;'>{label}</td>{cells}</tr>"
 
     # ── BLOC 4 : Construction des lignes du tableau ────────────────────────────
     rows = (
@@ -483,7 +483,7 @@ def _build_financial_table(metrics: List[Dict]) -> str:
     return f"""
 <table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;">
   <thead>
-    <tr style="background:#1a237e;color:white;">
+    <tr style="background:#117B54;color:white;">
       <th style="padding:7px 8px;text-align:left;">FY (USD mn)</th>
       {header_years}
     </tr>
@@ -503,7 +503,7 @@ def _build_financial_table(metrics: List[Dict]) -> str:
 # └─────────────────────────────────────────────────────────────────────────────┘
 # Injecté dans <style> dans le <head> de chaque rapport HTML.
 # Conception : layout 2 colonnes (70% contenu / 30% sidebar) via CSS flexbox.
-# Couleur principale : #1a237e (bleu navy institutionnel).
+# Couleur principale : #117B54 (bleu navy institutionnel).
 # Aucun CDN : tout est auto-contenu dans le fichier HTML pour usage offline.
 # Classes principales :
 #   .report-wrapper    : conteneur centré max 1100px avec ombre
@@ -520,10 +520,10 @@ def _build_financial_table(metrics: List[Dict]) -> str:
 _BASE_CSS = """
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
     font-size: 13px;
-    color: #333;
-    background: #f0f0f0;
+    color: #1A2420;
+    background: #F7F8F7;
     padding: 20px;
 }
 .report-wrapper {
@@ -535,7 +535,7 @@ body {
 /* Header */
 .report-header {
     background: #fff;
-    border-bottom: 3px solid #1a237e;
+    border-bottom: 3px solid #117B54;
     padding: 18px 24px 14px;
     display: flex;
     justify-content: space-between;
@@ -543,7 +543,7 @@ body {
 }
 .report-header-left h1 {
     font-size: 20px;
-    color: #1a237e;
+    color: #117B54;
     font-weight: 700;
     margin-bottom: 4px;
 }
@@ -554,11 +554,18 @@ body {
 .report-header-right {
     text-align: right;
 }
+.report-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
 .logo-text {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
-    color: #1a237e;
-    letter-spacing: 1px;
+    color: #117B54;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 .report-date {
     font-size: 11px;
@@ -573,12 +580,12 @@ body {
 .col-left {
     flex: 0 0 70%;
     padding: 20px 24px;
-    border-right: 1px solid #e0e0e0;
+    border-right: 1px solid #E3E7E4;
 }
 .col-right {
     flex: 0 0 30%;
     padding: 16px;
-    background: #fafafa;
+    background: #F1F4F2;
 }
 /* Sections narratives */
 .section {
@@ -587,8 +594,8 @@ body {
 .section h2 {
     font-size: 14px;
     font-weight: 700;
-    color: #1a237e;
-    border-bottom: 2px solid #e3e8f0;
+    color: #117B54;
+    border-bottom: 2px solid #E3E7E4;
     padding-bottom: 5px;
     margin-bottom: 9px;
     text-transform: uppercase;
@@ -596,14 +603,14 @@ body {
 }
 .section p {
     line-height: 1.65;
-    color: #333;
+    color: #1A2420;
     font-size: 13px;
 }
 /* Sidebar cards */
 .sidebar-card {
     background: #fff;
-    border: 1px solid #e0e0e0;
-    border-left: 4px solid #1a237e;
+    border: 1px solid #E3E7E4;
+    border-left: 4px solid #117B54;
     border-radius: 3px;
     padding: 12px;
     margin-bottom: 16px;
@@ -612,10 +619,10 @@ body {
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
-    color: #1a237e;
+    color: #117B54;
     letter-spacing: 0.5px;
     margin-bottom: 10px;
-    border-bottom: 1px solid #e8eaf6;
+    border-bottom: 1px solid #C4E8D5;
     padding-bottom: 5px;
 }
 .key-data-row {
@@ -651,12 +658,12 @@ body {
 }
 /* Footer */
 .report-footer {
-    border-top: 2px solid #e0e0e0;
+    border-top: 2px solid #E3E7E4;
     padding: 12px 24px;
     font-size: 11px;
     color: #777;
     text-align: center;
-    background: #fafafa;
+    background: #F1F4F2;
 }
 """
 
@@ -772,10 +779,10 @@ def generate_company_report(data: dict) -> str:
     # ── BLOC 10a : Executive Summary HTML (construit avant la f-string) ─────────
     if executive_summary:
         exec_summary_html = (
-            '<div class="section" style="background:#f0f4ff;border-left:4px solid #1a237e;'
+            '<div class="section" style="background:#E3F6EC;border-left:4px solid #117B54;'
             'padding:16px 20px;margin-bottom:18px;">'
             '<h2 style="margin-top:0;font-size:13px;text-transform:uppercase;'
-            'letter-spacing:.08em;color:#1a237e;">Executive Summary</h2>'
+            'letter-spacing:.08em;color:#117B54;">Executive Summary</h2>'
             f'<p style="white-space:pre-line;font-size:13px;line-height:1.7;">{_esc(executive_summary)}</p>'
             '</div>'
         )
@@ -810,8 +817,27 @@ def generate_company_report(data: dict) -> str:
       <div class="subtitle">{_esc(ticker)} &nbsp;|&nbsp; {_esc(source)}</div>
     </div>
     <div class="report-header-right">
-      <div class="logo-text">AlphaSwarm</div>
-      <div style="font-size:11px;color:#1a237e;font-weight:600;">alphaswarm.ai</div>
+      <div class="report-logo" aria-label="AlphaSwarm">
+        <svg viewBox="0 0 156 96" width="34" height="21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#117B54" stroke-linecap="square">
+            <path d="M14 88 L52 10 L90 88" stroke-width="12"/>
+            <path d="M32 62 H72" stroke-width="10"/>
+          </g>
+          <path d="M16 78 L100 26" stroke="#FFFFFF" stroke-width="7"/>
+          <g stroke="#3DDC97" stroke-width="2.4">
+            <line x1="107" y1="28" x2="107" y2="88"/>
+            <line x1="125" y1="14" x2="125" y2="78"/>
+            <line x1="143" y1="36" x2="143" y2="90"/>
+          </g>
+          <g fill="#3DDC97">
+            <rect x="102" y="42" width="10" height="28" rx="1"/>
+            <rect x="120" y="24" width="10" height="34" rx="1"/>
+            <rect x="138" y="50" width="10" height="24" rx="1"/>
+          </g>
+        </svg>
+        <span class="logo-text">AlphaSwarm</span>
+      </div>
+      <div style="font-size:11px;color:#117B54;font-weight:600;">alphaswarm.ai</div>
       <div class="report-date">Report date: {_esc(report_date)}</div>
     </div>
   </div>
@@ -950,8 +976,8 @@ _SECTOR_CSS_EXTRA = """
     display: inline-block;
     padding: 2px 8px;
     border-radius: 3px;
-    background: #e8eaf6;
-    color: #1a237e;
+    background: #C4E8D5;
+    color: #117B54;
     font-weight: 700;
     font-size: 12px;
 }
@@ -1043,8 +1069,27 @@ def generate_sector_report(data: dict) -> str:
       <div class="subtitle">{_esc(sector_code)} &nbsp;|&nbsp; {_esc(source)}</div>
     </div>
     <div class="report-header-right">
-      <div class="logo-text">AlphaSwarm</div>
-      <div style="font-size:11px;color:#1a237e;font-weight:600;">alphaswarm.ai</div>
+      <div class="report-logo" aria-label="AlphaSwarm">
+        <svg viewBox="0 0 156 96" width="34" height="21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="#117B54" stroke-linecap="square">
+            <path d="M14 88 L52 10 L90 88" stroke-width="12"/>
+            <path d="M32 62 H72" stroke-width="10"/>
+          </g>
+          <path d="M16 78 L100 26" stroke="#FFFFFF" stroke-width="7"/>
+          <g stroke="#3DDC97" stroke-width="2.4">
+            <line x1="107" y1="28" x2="107" y2="88"/>
+            <line x1="125" y1="14" x2="125" y2="78"/>
+            <line x1="143" y1="36" x2="143" y2="90"/>
+          </g>
+          <g fill="#3DDC97">
+            <rect x="102" y="42" width="10" height="28" rx="1"/>
+            <rect x="120" y="24" width="10" height="34" rx="1"/>
+            <rect x="138" y="50" width="10" height="24" rx="1"/>
+          </g>
+        </svg>
+        <span class="logo-text">AlphaSwarm</span>
+      </div>
+      <div style="font-size:11px;color:#117B54;font-weight:600;">alphaswarm.ai</div>
       <div class="report-date">Report date: {_esc(report_date)}</div>
     </div>
   </div>
