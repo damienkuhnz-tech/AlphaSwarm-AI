@@ -18,14 +18,14 @@ Pipeline strictement séquentiel  chaque agent consomme la sortie du précédent
 
 Modules principaux :
 
-- `agents/` — les cinq agents (LLM : API Anthropic, fallback Groq)
-- `quant/` — moteur de validation quantitative 100 % Python (voir `docs/VALIDATION_QUANTITATIVE.md`)
-- `orchestrator/` — enchaînement du pipeline et gestion d'état
-- `models/` — schémas Pydantic partagés
-- `api.py` — serveur Flask (port 5001) : API de pilotage + interface web
+- `agents/`  les cinq agents (LLM : API Anthropic, fallback Groq)
+- `quant/`  moteur de validation quantitative 100 % Python (voir `docs/VALIDATION_QUANTITATIVE.md`)
+- `orchestrator/`  enchaînement du pipeline et gestion d'état
+- `models/` schémas Pydantic partagés
+- `api.py` serveur Flask (port 5001) : API de pilotage + interface web
 - `templates/` + `static/` — interface de la plateforme (`/app`) : templates Jinja par écran, CSS/JS modulaires
-- `landing/` — page d'accueil (`/`)
-- `docs/architecture/` — diagrammes Mermaid
+- `landing/`  page d'accueil (`/`)
+- `docs/architecture/` diagrammes Mermaid
 
 ## Installation
 
