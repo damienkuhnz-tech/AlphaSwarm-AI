@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>QC</title>
+<style>html,body{margin:0;padding:0;height:100%}iframe{border:0;width:100%;height:100%}</style>
+</head><body>
+<iframe id="f" src="/app"></iframe>
+<script>
+  var params = new URLSearchParams(location.search);
+  var step = params.get('step') || '1';
+  var f = document.getElementById('f');
+  f.addEventListener('load', function () {
+    var w = f.contentWindow, d = f.contentDocument;
+    setTimeout(function () {
+      try {
+        if (step === 'login') return; // rester sur l'écran de connexion
+        var inp = d.getElementById('loginUser');
+        if (inp) { inp.value = 'QC'; w.doLogin(); }
+        setTimeout(function () {
+          if (step === 'market') { if (w.toggleMarket) w.toggleMarket(); }
+          else if (step !== '1') { w.goToStep(parseInt(step, 10), true); }
+          document.title = 'QC-READY-' + step;
+        }, 600);
+      } catch (e) { document.title = 'QC-ERROR: ' + e.message; }
+    }, 400);
+  });
+</script>
+</body></html>

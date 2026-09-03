@@ -144,7 +144,7 @@
 
   // ── Helpers loading ──
   function _loadingDiv(msg) {
-    return '<div class="agent-loading-block"><div class="spin-big"></div>' + msg + '<br><span style="font-size:11px;color:#4a5568;margin-top:6px;display:block;">Durée estimée : 2–10 min selon le mandat</span></div>';
+    return '<div class="agent-loading-block"><div class="spin-big"></div>' + msg + '<br><span style="font-size:11px;color:#8B968F;margin-top:6px;display:block;">Durée estimée : 2–10 min selon le mandat</span></div>';
   }
   function _loadingRow(msg, cols) {
     return '<tr class="loading-row"><td colspan="' + (cols||10) + '"><div class="agent-spinner"></div>' + msg + '</td></tr>';

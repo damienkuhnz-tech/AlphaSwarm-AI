@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlphaSwarm — Draft</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Serif:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* ══════════ DRAFT B — « Desk » : terminal sombre épuré ══════════ */
+    :root { color-scheme: dark; }
+
+    [data-bs-theme=dark] {
+      --bs-body-bg: #0F1513;
+      --bs-body-color: #E6EEE9;
+      --bs-border-color: #26302B;
+      --bs-secondary-color: #93A69B;
+      --bs-secondary-bg: #151C19;
+      --bs-tertiary-bg: #131A17;
+      --bs-link-color: #4ADE9C;
+      --bs-link-hover-color: #7BE8B8;
+      --bs-body-font-family: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #0F1513;
+      color: #E6EEE9;
+      font-size: 13.5px;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .as-main { flex: 1 0 auto; }
+
+    ::selection { background: #3DDC97; color: #07130D; }
+
+    :focus-visible {
+      outline: 2px solid #3DDC97;
+      outline-offset: 2px;
+    }
+    .btn:focus-visible {
+      outline: 2px solid #3DDC97;
+      outline-offset: 2px;
+      box-shadow: none;
+    }
+
+    .as-num {
+      font-family: "JetBrains Mono", monospace;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ── Topbar ── */
+    .as-topbar {
+      background: #0C110F;
+      border-bottom: 1px solid #26302B;
+      min-height: 58px;
+      padding-top: 0;
+      padding-bottom: 0;
+      align-items: stretch;
+    }
+    .as-topbar > .d-flex { padding: 10px 0; }
+
+    .as-logo-mark { color: #E6EEE9; display: flex; align-items: center; margin-right: 6px; }
+    .as-logo-cut { stroke: #0C110F; }
+    .as-logo-name {
+      font-family: "IBM Plex Sans", sans-serif;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 4px;
+      font-size: 13px;
+      line-height: 1.25;
+      color: #E6EEE9;
+    }
+    .as-logo-sub {
+      font-size: 8.5px;
+      text-transform: uppercase;
+      letter-spacing: 2.6px;
+      color: #93A69B;
+      line-height: 1.5;
+    }
+
+    .as-tabs { align-items: stretch; gap: 2px; }
+    .as-tabs .nav-item { display: flex; }
+    .as-tab {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 15px;
+      font-size: 12.5px;
+      font-weight: 500;
+      letter-spacing: .3px;
+      color: #93A69B;
+      border-top: 2px solid transparent;
+      border-bottom: 2px solid transparent;
+    }
+    .as-tab:hover { color: #E6EEE9; }
+    .as-tab.is-done { color: #A8BAAE; }
+    .as-tab-check { font-size: 10px; color: #4ADE9C; }
+    .as-tab.is-active {
+      color: #E6EEE9;
+      font-weight: 600;
+      border-bottom-color: #3DDC97;
+    }
+    .as-tab.is-locked { color: #4E5B53; pointer-events: none; }
+    .as-tab.is-market { border-left: 1px solid #26302B; margin-left: 12px; padding-left: 22px; }
+
+    /* ── En-tête de section ── */
+    .as-title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: .2px;
+      color: #E6EEE9;
+    }
+    .as-subtitle { font-size: 12.5px; color: #93A69B; }
+
+    /* ── Cartes ── */
+    .as-card {
+      background: #151C19;
+      border: 1px solid #26302B;
+      border-radius: 4px;
+      box-shadow: none;
+    }
+    .as-card .card-body { padding: 15px 16px; }
+    .as-card-header {
+      background: #131A17;
+      border-bottom: 1px solid #26302B;
+      padding: 10px 16px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #AFC0B5;
+    }
+    .as-header-meta {
+      font-family: "JetBrains Mono", monospace;
+      font-variant-numeric: tabular-nums;
+      font-size: 10.5px;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: none;
+      color: #93A69B;
+    }
+
+    /* Signature : rail d'état sur les cartes vivantes (colonne droite) */
+    .col-lg-7 > .as-card { border-left: 2px solid #3DDC97; }
+
+    /* ── KPI ── */
+    .as-kpi .card-body { padding: 13px 15px; }
+    .as-kpi-label {
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      color: #93A69B;
+      margin-bottom: 7px;
+    }
+    .as-kpi-value {
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 1.25;
+      color: #E6EEE9;
+    }
+    .as-kpi-unit { font-size: 11px; font-weight: 400; color: #93A69B; }
+    .as-kpi-sub { font-size: 11px; color: #93A69B; margin-top: 4px; }
+
+    /* ── Formulaires ── */
+    .as-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      font-weight: 600;
+      color: #93A69B;
+      margin-bottom: 5px;
+    }
+    .as-input {
+      background-color: #0F1513;
+      border: 1px solid #2C3833;
+      color: #E6EEE9;
+      border-radius: 3px;
+      font-size: 13px;
+      padding: 7px 10px;
+    }
+    .as-input::placeholder { color: #6B7B71; }
+    .as-input:focus {
+      background-color: #0F1513;
+      color: #E6EEE9;
+      border-color: #3DDC97;
+      outline: 2px solid rgba(61, 220, 151, .35);
+      outline-offset: 0;
+      box-shadow: none;
+    }
+    .as-suffix {
+      background-color: #131A17;
+      border: 1px solid #2C3833;
+      color: #93A69B;
+      font-size: 12px;
+      border-radius: 3px;
+    }
+
+    /* ── Boutons ── */
+    .as-btn-primary {
+      background: #3DDC97;
+      border: 1px solid #3DDC97;
+      color: #07130D;
+      font-weight: 600;
+      font-size: 12.5px;
+      letter-spacing: .4px;
+      border-radius: 3px;
+      padding: 7px 16px;
+    }
+    .as-btn-primary:hover { background: #33C384; border-color: #33C384; color: #07130D; }
+    .as-btn-primary:active { background: #2BAE75 !important; border-color: #2BAE75 !important; color: #07130D !important; }
+    .as-btn-ghost {
+      background: transparent;
+      border: 1px solid #37453E;
+      color: #CBD8D0;
+      font-weight: 500;
+      font-size: 12.5px;
+      border-radius: 3px;
+      padding: 7px 14px;
+    }
+    .as-btn-ghost:hover { background: #1A231F; border-color: #46554D; color: #E6EEE9; }
+
+    /* ── Chat ── */
+    .as-chat .as-msg { margin-bottom: 12px; }
+    .as-msg-sender {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+      color: #93A69B;
+      margin-bottom: 4px;
+    }
+    .as-msg-bubble {
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 9px 12px;
+      border-radius: 3px;
+      border: 1px solid #26302B;
+    }
+    .as-msg-user .as-msg-bubble { background: #1A231F; }
+    .as-msg-agent .as-msg-bubble { background: #0F1513; }
+
+    /* ── Table ── */
+    .as-table {
+      --bs-table-bg: transparent;
+      --bs-table-color: #E6EEE9;
+      --bs-table-border-color: #1F2925;
+      font-size: 13px;
+    }
+    .as-table thead th {
+      background: #131A17;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      font-weight: 600;
+      color: #93A69B;
+      border-bottom: 1px solid #26302B;
+      padding: 8px 14px;
+      white-space: nowrap;
+    }
+    .as-table tbody td {
+      padding: 8px 14px;
+      border-color: #1F2925;
+    }
+    .as-table thead th:first-child,
+    .as-table tbody td:first-child,
+    .as-table tfoot td:first-child { padding-left: 16px; }
+    .as-table thead th:last-child,
+    .as-table tbody td:last-child,
+    .as-table tfoot td:last-child { padding-right: 16px; }
+    .as-table tbody tr:hover td { background: #171F1B; }
+    .as-ticker {
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 700;
+      font-size: 12.5px;
+      letter-spacing: .3px;
+      color: #E6EEE9;
+    }
+    .as-name { font-size: 11.5px; color: #93A69B; margin-left: 6px; }
+    .as-total td {
+      background: #131A17;
+      border-top: 1px solid #26302B;
+      font-weight: 600;
+      font-size: 12.5px;
+      color: #E6EEE9;
+      padding: 9px 14px;
+    }
+
+    /* ── Badges plats ── */
+    .as-badge-pass, .as-badge-buy, .as-badge-fail, .as-badge-hold, .as-badge-running {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .6px;
+      padding: 3px 8px;
+      border-radius: 2px;
+    }
+    .as-badge-pass, .as-badge-buy {
+      color: #4ADE9C;
+      background: rgba(61, 220, 151, .08);
+      border: 1px solid rgba(74, 222, 156, .4);
+    }
+    .as-badge-fail {
+      color: #F1707B;
+      background: rgba(241, 112, 123, .08);
+      border: 1px solid rgba(241, 112, 123, .4);
+    }
+    .as-badge-hold, .as-badge-running {
+      color: #E2C36B;
+      background: rgba(226, 195, 107, .08);
+      border: 1px solid rgba(226, 195, 107, .4);
+    }
+    .as-badge-running { font-size: 10.5px; padding: 4px 10px; }
+
+    /* ── Compliance ── */
+    .as-check {
+      font-size: 13px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #1F2925;
+    }
+    .as-check:last-child { border-bottom: 0; padding-bottom: 0; }
+    .as-check-detail {
+      font-family: "JetBrains Mono", monospace;
+      font-variant-numeric: tabular-nums;
+      font-size: 11px;
+      color: #93A69B;
+      margin-left: 8px;
+    }
+    .as-alert {
+      background: rgba(226, 195, 107, .07);
+      border: 1px solid rgba(226, 195, 107, .35);
+      color: #DCE5DF;
+      border-radius: 3px;
+      font-size: 12.5px;
+      padding: 10px 14px;
+    }
+    .as-alert strong { color: #E2C36B; letter-spacing: .5px; }
+
+    /* ── Footer ── */
+    .as-footer {
+      position: sticky;
+      bottom: 0;
+      background: #0C110F;
+      border-top: 1px solid #26302B;
+      height: 56px;
+      margin-top: 8px;
+    }
+    .as-footer-step { font-size: 11.5px; letter-spacing: .5px; color: #93A69B; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ TOPBAR ══════════ -->
+<nav class="navbar as-topbar px-3">
+  <div class="d-flex align-items-center gap-2">
+    <div class="as-logo-mark" aria-label="AlphaSwarm">
+      <svg viewBox="0 0 156 96" fill="none" xmlns="http://www.w3.org/2000/svg" width="46" height="30">
+        <g stroke="currentColor" stroke-linecap="square">
+          <path d="M14 88 L52 10 L90 88" stroke-width="12"/>
+          <path d="M32 62 H72" stroke-width="10"/>
+        </g>
+        <path d="M16 78 L100 26" class="as-logo-cut" stroke-width="7"/>
+        <g stroke="#3DDC97" stroke-width="2.4">
+          <line x1="107" y1="28" x2="107" y2="88"/>
+          <line x1="125" y1="14" x2="125" y2="78"/>
+          <line x1="143" y1="36" x2="143" y2="90"/>
+        </g>
+        <g fill="#3DDC97">
+          <rect x="102" y="42" width="10" height="28" rx="1"/>
+          <rect x="120" y="24" width="10" height="34" rx="1"/>
+          <rect x="138" y="50" width="10" height="24" rx="1"/>
+        </g>
+      </svg>
+    </div>
+    <div class="d-flex flex-column">
+      <span class="as-logo-name">AlphaSwarm</span>
+      <span class="as-logo-sub">Portfolio Management</span>
+    </div>
+  </div>
+  <ul class="nav as-tabs">
+    <li class="nav-item"><a class="nav-link as-tab is-done" href="#"><span class="as-tab-check">✓</span> Mandat</a></li>
+    <li class="nav-item"><a class="nav-link as-tab is-done" href="#"><span class="as-tab-check">✓</span> Research</a></li>
+    <li class="nav-item"><a class="nav-link as-tab is-active" href="#">Portfolio</a></li>
+    <li class="nav-item"><a class="nav-link as-tab is-locked" href="#">Risque</a></li>
+    <li class="nav-item"><a class="nav-link as-tab is-locked" href="#">Exécution</a></li>
+    <li class="nav-item"><a class="nav-link as-tab is-market" href="#">Marché</a></li>
+  </ul>
+</nav>
+
+<main class="container-xxl py-4 as-main">
+
+  <!-- ══════════ SECTION HEADER ══════════ -->
+  <div class="d-flex align-items-center justify-content-between mb-4 as-section-header">
+    <div>
+      <h1 class="as-title mb-1">Portfolio Construction Agent</h1>
+      <div class="as-subtitle">Étape 3 / 5 — allocation sous contraintes du mandat</div>
+    </div>
+    <span class="badge as-badge-running">EN COURS</span>
+  </div>
+
+  <!-- ══════════ KPI CARDS ══════════ -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="card as-card as-kpi h-100"><div class="card-body">
+        <div class="as-kpi-label">Capital</div>
+        <div class="as-kpi-value as-num">100 000 000 <span class="as-kpi-unit">USD</span></div>
+        <div class="as-kpi-sub">entièrement investi hors cash</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="card as-card as-kpi h-100"><div class="card-body">
+        <div class="as-kpi-label">Positions</div>
+        <div class="as-kpi-value as-num">28 <span class="as-kpi-unit">/ cible 25–35</span></div>
+        <div class="as-kpi-sub">9 secteurs · 3 zones</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="card as-card as-kpi h-100"><div class="card-body">
+        <div class="as-kpi-label">Tracking error</div>
+        <div class="as-kpi-value as-num">3.8 <span class="as-kpi-unit">% / max 5 %</span></div>
+        <div class="as-kpi-sub">vs MSCI World</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="card as-card as-kpi h-100"><div class="card-body">
+        <div class="as-kpi-label">Beta</div>
+        <div class="as-kpi-value as-num">1.04 <span class="as-kpi-unit">[0.80 ; 1.20]</span></div>
+        <div class="as-kpi-sub">dans le budget de risque</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- ══════════ COLONNE GAUCHE : FORMULAIRE ══════════ -->
+    <div class="col-lg-5">
+      <div class="card as-card mb-4">
+        <div class="card-header as-card-header">Paramètres généraux</div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label as-label" for="d-strat">Stratégie</label>
+            <select class="form-select as-input" id="d-strat">
+              <option selected>Long-only equity global</option>
+              <option>Long/short equity</option>
+            </select>
+          </div>
+          <div class="row g-3">
+            <div class="col-6">
+              <label class="form-label as-label" for="d-capital">Capital (USD)</label>
+              <input type="text" class="form-control as-input as-num" id="d-capital" value="100 000 000">
+            </div>
+            <div class="col-6">
+              <label class="form-label as-label" for="d-bench">Benchmark</label>
+              <input type="text" class="form-control as-input" id="d-bench" value="MSCI World">
+            </div>
+          </div>
+          <div class="row g-3 mt-0">
+            <div class="col-6">
+              <label class="form-label as-label" for="d-te">Tracking error max</label>
+              <div class="input-group">
+                <input type="text" class="form-control as-input as-num" id="d-te" value="5">
+                <span class="input-group-text as-suffix">%</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <label class="form-label as-label" for="d-dd">Drawdown max</label>
+              <div class="input-group">
+                <input type="text" class="form-control as-input as-num" id="d-dd" value="20">
+                <span class="input-group-text as-suffix">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex gap-2 mt-4">
+            <button type="button" class="btn as-btn-primary">Construire le portefeuille</button>
+            <button type="button" class="btn as-btn-ghost">Réinitialiser</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ CHAT ══════════ -->
+      <div class="card as-card">
+        <div class="card-header as-card-header">Chat — Portfolio Manager</div>
+        <div class="card-body as-chat">
+          <div class="as-msg as-msg-user">
+            <div class="as-msg-sender">PM</div>
+            <div class="as-msg-bubble">Réduis l'exposition Tech sous 30 % et ajoute une position défensive.</div>
+          </div>
+          <div class="as-msg as-msg-agent">
+            <div class="as-msg-sender">Portfolio Manager Agent</div>
+            <div class="as-msg-bubble">Exposition Tech ramenée à <strong>28,4 %</strong> (−3,1 pts). J'ai renforcé <strong>PG</strong> à 2,8 % en compensation — beta portefeuille inchangé à 1,04.</div>
+          </div>
+          <div class="input-group mt-3">
+            <input type="text" class="form-control as-input" placeholder="Poser une question à l'agent…" aria-label="Message">
+            <button class="btn as-btn-primary" type="button">Envoyer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ COLONNE DROITE : TABLE + COMPLIANCE ══════════ -->
+    <div class="col-lg-7">
+      <div class="card as-card mb-4">
+        <div class="card-header as-card-header d-flex justify-content-between align-items-center">
+          <span>Portefeuille construit</span>
+          <span class="as-header-meta">28 positions · cash 3,2 %</span>
+        </div>
+        <div class="table-responsive">
+          <table class="table as-table align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Titre</th><th>Secteur</th>
+                <th class="text-end">Poids</th><th class="text-end">Valeur (USD)</th>
+                <th class="text-end">Signal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="as-ticker">NVDA</span> <span class="as-name">NVIDIA Corp</span></td>
+                <td>Technologie</td>
+                <td class="text-end as-num">6,5 %</td><td class="text-end as-num">6 500 000</td>
+                <td class="text-end"><span class="badge as-badge-buy">STRONG BUY</span></td>
+              </tr>
+              <tr>
+                <td><span class="as-ticker">MSFT</span> <span class="as-name">Microsoft</span></td>
+                <td>Technologie</td>
+                <td class="text-end as-num">5,8 %</td><td class="text-end as-num">5 800 000</td>
+                <td class="text-end"><span class="badge as-badge-buy">BUY</span></td>
+              </tr>
+              <tr>
+                <td><span class="as-ticker">ASML</span> <span class="as-name">ASML Holding</span></td>
+                <td>Technologie</td>
+                <td class="text-end as-num">4,2 %</td><td class="text-end as-num">4 200 000</td>
+                <td class="text-end"><span class="badge as-badge-buy">BUY</span></td>
+              </tr>
+              <tr>
+                <td><span class="as-ticker">LLY</span> <span class="as-name">Eli Lilly</span></td>
+                <td>Santé</td>
+                <td class="text-end as-num">3,9 %</td><td class="text-end as-num">3 900 000</td>
+                <td class="text-end"><span class="badge as-badge-hold">HOLD</span></td>
+              </tr>
+              <tr>
+                <td><span class="as-ticker">JPM</span> <span class="as-name">JPMorgan Chase</span></td>
+                <td>Finance</td>
+                <td class="text-end as-num">3,4 %</td><td class="text-end as-num">3 400 000</td>
+                <td class="text-end"><span class="badge as-badge-buy">BUY</span></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="as-total">
+                <td colspan="2">Total investi</td>
+                <td class="text-end as-num">96,8 %</td>
+                <td class="text-end as-num">96 800 000</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══════════ COMPLIANCE ══════════ -->
+      <div class="card as-card">
+        <div class="card-header as-card-header">Compliance du mandat — 11 PASS / 1 FAIL</div>
+        <div class="card-body">
+          <div class="d-flex flex-column gap-2">
+            <div class="d-flex justify-content-between align-items-center as-check">
+              <span>Volatilité annualisée <span class="as-check-detail">14,2 % · limite ≤ 18 %</span></span>
+              <span class="badge as-badge-pass">PASS</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center as-check">
+              <span>Concentration top 10 <span class="as-check-detail">41,3 % · limite ≤ 55 %</span></span>
+              <span class="badge as-badge-pass">PASS</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center as-check">
+              <span>Secteur Technologie <span class="as-check-detail">31,2 % · limite ≤ 30 %</span></span>
+              <span class="badge as-badge-fail">FAIL</span>
+            </div>
+          </div>
+          <div class="alert as-alert mt-3 mb-0" role="alert">
+            <strong>AJUSTER</strong> — 1 contrainte dépassée. Le Portfolio Agent reboucle (itération 2/3) pour repondérer le secteur Technologie.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ══════════ FOOTER NAV ══════════ -->
+<footer class="as-footer d-flex align-items-center justify-content-between px-4">
+  <button type="button" class="btn as-btn-ghost">← Précédent</button>
+  <span class="as-footer-step as-num">Étape 3 / 5</span>
+  <button type="button" class="btn as-btn-primary">Suivant →</button>
+</footer>
+
+</body>
+</html>

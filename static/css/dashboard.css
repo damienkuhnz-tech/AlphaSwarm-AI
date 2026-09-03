@@ -9,14 +9,14 @@
   .mandate-kpi-card {
     background: var(--bg-element);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 6px;
     padding: 12px 14px;
     display: flex;
     align-items: flex-start;
     gap: 10px;
     transition: border-color 0.3s;
   }
-  .mandate-kpi-card:hover { border-color: rgba(61,220,151,0.15); }
+  .mandate-kpi-card:hover { border-color: #C9D3CC; }
   .mandate-kpi-icon {
     font-size: 20px;
     flex-shrink: 0;
@@ -57,14 +57,14 @@
   .score-bar-track {
     width: 44px;
     height: 5px;
-    background: rgba(255,255,255,0.07);
+    background: #E8EDEA;
     border-radius: 3px;
     overflow: hidden;
   }
   .score-bar-fill {
     height: 100%;
     border-radius: 3px;
-    background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+    background: var(--accent-green);
   }
 
   /* ============ RESEARCH FILTER BAR ============ */
@@ -90,9 +90,9 @@
   }
   .filter-btn:hover { background: var(--bg-element); color: var(--text-primary); }
   .filter-btn.active {
-    background: rgba(61,220,151,0.1);
-    border-color: rgba(61,220,151,0.3);
-    color: var(--accent-green);
+    background: var(--accent-green);
+    border-color: var(--accent-green);
+    color: #FFFFFF;
   }
 
   /* ============ RESEARCH CARD BORDERS ============ */
@@ -112,10 +112,10 @@
 
   /* ============ TABLE TOTAL ROW ENHANCED ============ */
   .tr-total-enhanced td {
-    background: #070d1a !important;
+    background: var(--bg-element) !important;
     color: var(--text-primary);
     font-weight: 700;
-    border-top: 2px solid rgba(61,220,151,0.25);
+    border-top: 2px solid var(--accent-green);
     font-family: 'JetBrains Mono', monospace;
   }
 
@@ -127,33 +127,33 @@
   /* ============ STATUS BADGE (table cells) ============ */
   .status-badge-pass {
     display: inline-flex; align-items: center; gap: 4px;
-    padding: 2px 8px; border-radius: 20px;
-    background: rgba(61,220,151,0.1); color: var(--perf-green);
-    border: 1px solid rgba(61,220,151,0.25);
+    padding: 2px 8px; border-radius: 4px;
+    background: #E3F6EC; color: var(--perf-green);
+    border: 1px solid #C4E8D5;
     font-family: 'IBM Plex Sans', sans-serif; font-size: 10px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.5px;
   }
   .status-badge-warn {
     display: inline-flex; align-items: center; gap: 4px;
-    padding: 2px 8px; border-radius: 20px;
-    background: rgba(245,165,36,0.1); color: var(--accent-gold);
-    border: 1px solid rgba(245,165,36,0.25);
+    padding: 2px 8px; border-radius: 4px;
+    background: #FFF4DE; color: var(--accent-gold);
+    border: 1px solid #F0DFBB;
     font-family: 'IBM Plex Sans', sans-serif; font-size: 10px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.5px;
   }
   .status-badge-info {
     display: inline-flex; align-items: center; gap: 4px;
-    padding: 2px 8px; border-radius: 20px;
-    background: rgba(127,163,150,0.1); color: var(--accent-blue);
-    border: 1px solid rgba(127,163,150,0.25);
+    padding: 2px 8px; border-radius: 4px;
+    background: #EDF1EF; color: var(--accent-blue);
+    border: 1px solid #DCE3DF;
     font-family: 'IBM Plex Sans', sans-serif; font-size: 10px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.5px;
   }
   .status-badge-fail {
     display: inline-flex; align-items: center; gap: 4px;
-    padding: 2px 8px; border-radius: 20px;
-    background: rgba(255,107,107,0.1); color: var(--accent-red);
-    border: 1px solid rgba(255,107,107,0.25);
+    padding: 2px 8px; border-radius: 4px;
+    background: #FBE9E7; color: var(--accent-red);
+    border: 1px solid #F2CFCB;
     font-family: 'IBM Plex Sans', sans-serif; font-size: 10px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.5px;
   }
@@ -172,48 +172,48 @@
   /* ============ QUANT DASHBOARD (Risk / validation quantitative) ============ */
   .qd-wrap { display: flex; flex-direction: column; gap: 20px; width: 100%; }
   .qd-nav { display: flex; flex-wrap: wrap; gap: 8px; position: sticky; top: 0; z-index: 5;
-            padding: 10px 0; background: linear-gradient(180deg, #081310 75%, rgba(13,13,15,0)); }
+            padding: 10px 0; background: linear-gradient(180deg, #F7F8F7 75%, rgba(247,248,247,0)); }
   .qd-pill { padding: 6px 14px; border-radius: 999px; font-size: 11.5px; font-weight: 600;
-             color: var(--text-secondary); background: rgba(255,255,255,0.04);
-             border: 1px solid rgba(255,255,255,0.08); cursor: pointer; white-space: nowrap;
+             color: var(--text-secondary); background: #FFFFFF;
+             border: 1px solid var(--border); cursor: pointer; white-space: nowrap;
              transition: all 0.15s ease; }
-  .qd-pill:hover { color: var(--text-primary); border-color: rgba(61,220,151,0.5); }
-  .qd-pill.active { color: #081310; background: #3DDC97; border-color: #3DDC97; }
+  .qd-pill:hover { color: var(--text-primary); border-color: #9FD6BC; }
+  .qd-pill.active { color: #FFFFFF; background: #117B54; border-color: #117B54; }
   .qd-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .qd-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
   @media (max-width: 1100px) { .qd-grid-2, .qd-grid-3 { grid-template-columns: 1fr; } }
   .qd-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
-  .qd-kpi { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 10px; padding: 12px 14px; }
+  .qd-kpi { background: #FFFFFF; border: 1px solid var(--border);
+            border-radius: 6px; padding: 12px 14px; }
   .qd-kpi .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px;
                  color: var(--text-secondary); margin-bottom: 6px; }
   .qd-kpi .val { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700;
                  color: var(--text-primary); line-height: 1.1; }
   .qd-kpi .sub { font-size: 10.5px; color: var(--text-secondary); margin-top: 4px;
                  font-family: 'JetBrains Mono', monospace; }
-  .qd-kpi.good .val { color: #3DDC97; }
-  .qd-kpi.bad .val { color: #FF6B6B; }
-  .qd-kpi.accent .val { color: var(--accent-gold, #3DDC97); }
-  .qd-pass { color: #3DDC97; font-weight: 700; }
-  .qd-fail { color: #FF6B6B; font-weight: 700; }
-  .qd-na   { color: #7FA396; font-weight: 600; }
+  .qd-kpi.good .val { color: #0F7A55; }
+  .qd-kpi.bad .val { color: #B3261E; }
+  .qd-kpi.accent .val { color: var(--accent-gold, #B07A1E); }
+  .qd-pass { color: #0F7A55; font-weight: 700; }
+  .qd-fail { color: #B3261E; font-weight: 700; }
+  .qd-na   { color: #8B968F; font-weight: 600; }
   .qd-compliance-row td { padding: 8px 10px; font-size: 12px; }
-  .qd-note { font-size: 10.5px; color: #7FA396; font-style: italic; padding: 8px 4px 0;
+  .qd-note { font-size: 10.5px; color: #5F6E66; font-style: italic; padding: 8px 4px 0;
              line-height: 1.5; }
   .qd-hero { display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
-             background: linear-gradient(135deg, rgba(61,220,151,0.08), rgba(255,255,255,0.02));
-             border: 1px solid rgba(61,220,151,0.25); border-radius: 12px; padding: 18px 22px; }
+             background: #FFFFFF;
+             border: 1px solid #C4E8D5; border-radius: 6px; padding: 18px 22px; }
   .qd-hero .verdict { font-size: 26px; font-weight: 800; letter-spacing: 1px; }
-  .qd-hero .verdict.PASS { color: #3DDC97; }
-  .qd-hero .verdict.AJUSTER { color: #F5A524; }
-  .qd-hero .verdict.FAIL { color: #FF6B6B; }
+  .qd-hero .verdict.PASS { color: #0F7A55; }
+  .qd-hero .verdict.AJUSTER { color: #B07A1E; }
+  .qd-hero .verdict.FAIL { color: #B3261E; }
   .qd-section-anchor { scroll-margin-top: 70px; }
 
   /* ============ VIOLATION BLOCK ENHANCED ============ */
   .violation-card-enhanced {
-    background: rgba(245,165,36,0.06);
-    border: 1px solid rgba(245,165,36,0.3);
-    border-radius: 10px;
+    background: #FFF4DE;
+    border: 1px solid #F0DFBB;
+    border-radius: 6px;
     padding: 14px 16px;
     margin-bottom: 12px;
     position: relative;
@@ -223,7 +223,7 @@
     display: inline-block;
     margin-right: 6px;
     vertical-align: middle;
-    filter: drop-shadow(0 0 6px rgba(245,165,36,0.5));
+    filter: none;
   }
   .violation-title-enhanced {
     font-weight: 700;

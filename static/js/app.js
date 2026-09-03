@@ -40,7 +40,7 @@
   var _tabsBuilt = false;
 
   var _LOCK_SVG = '<svg width="9" height="11" viewBox="0 0 9 11" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="4.5" width="7" height="6" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M3 4.5V3a1.5 1.5 0 0 1 3 0v1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>';
-  var _CHECK_SVG = '<svg width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4.5l3 3 6-6" stroke="#3fb950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var _CHECK_SVG = '<svg width="11" height="9" viewBox="0 0 11 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 4.5l3 3 6-6" stroke="#3DDC97" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   function updateTabs() {
     var container = document.getElementById('tabBar');

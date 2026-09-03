@@ -39,7 +39,7 @@
       var geo = new THREE.BufferGeometry();
       geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(MAXP * 3), 3));
       var mat = new THREE.PointsMaterial({
-        size: 3.2, color: 0x3DDC97, transparent: true, opacity: 0.95,
+        size: 3.2, color: 0x117B54, transparent: true, opacity: 0.95,
         depthWrite: false, blending: THREE.AdditiveBlending
       });
       var points = new THREE.Points(geo, mat);
@@ -140,11 +140,11 @@
       banner.style.cssText = 'position:fixed;bottom:16px;right:16px;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;z-index:9999;max-width:420px;';
       document.body.appendChild(banner);
     }
-    var colors = { info:'#1e3a5f', success:'#0a3d2a', warn:'#3d2e00', error:'#3d0a0a' };
-    var borders = { info:'#3b82f6', success:'#22c55e', warn:'#f59e0b', error:'#ef4444' };
+    var colors = { info:'#EDF1EF', success:'#E3F6EC', warn:'#FFF4DE', error:'#FBE9E7' };
+    var borders = { info:'#4A6157', success:'#117B54', warn:'#B07A1E', error:'#B3261E' };
     banner.style.background = colors[type] || colors.info;
     banner.style.border = '1px solid ' + (borders[type] || borders.info);
-    banner.style.color = '#fff';
+    banner.style.color = '#1A2420';
     banner.textContent = msg;
     if (type === 'success') setTimeout(function() { banner.style.opacity='0'; }, 4000);
   }

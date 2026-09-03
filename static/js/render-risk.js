@@ -37,11 +37,11 @@
     var rScore = (typeof risk.score_risque_global === 'number') ? risk.score_risque_global
       : (statut === 'PASS' ? 32 : statut === 'AJUSTER' ? 62 : 85);
     var hero = '<div class="qd-hero">' +
-      '<div style="text-align:center;min-width:140px;"><div style="font-size:10px;color:#7FA396;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Verdict Risk Agent</div><div class="verdict ' + statut + '">' + statut + '</div>' +
-      '<div style="font-size:11px;color:#7FA396;margin-top:4px;">' + comp.n_pass + ' tests PASS · ' + comp.n_fail + ' FAIL</div></div>' +
+      '<div style="text-align:center;min-width:140px;"><div style="font-size:10px;color:#5F6E66;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Verdict Risk Agent</div><div class="verdict ' + statut + '">' + statut + '</div>' +
+      '<div style="font-size:11px;color:#5F6E66;margin-top:4px;">' + comp.n_pass + ' tests PASS · ' + comp.n_fail + ' FAIL</div></div>' +
       '<div style="min-width:180px;">' + CHART.gauge(rScore, 0, 100, { size: 180, display: rScore, label: rScore < 40 ? 'Risque faible' : rScore < 70 ? 'Risque modéré' : 'Risque élevé' }) + '</div>' +
-      '<div style="flex:1;min-width:240px;font-size:12.5px;color:#d4daf0;line-height:1.6;">' + _escapeHtml(risk.commentaire || '') +
-      '<div style="font-size:10.5px;color:#7FA396;margin-top:8px;">Validation sur ' + (meta.jours || '—') + ' jours (' + (meta.debut || '') + ' → ' + (meta.fin || '') + ') · benchmark ' + _escapeHtml(meta.benchmark || '') + ' · rebalancement ' + (meta.rebalancement || 'mensuel') + ' · calcul ' + (meta.duree_calcul_s != null ? meta.duree_calcul_s + 's' : '—') + '</div></div></div>';
+      '<div style="flex:1;min-width:240px;font-size:12.5px;color:#1A2420;line-height:1.6;">' + _escapeHtml(risk.commentaire || '') +
+      '<div style="font-size:10.5px;color:#5F6E66;margin-top:8px;">Validation sur ' + (meta.jours || '—') + ' jours (' + (meta.debut || '') + ' → ' + (meta.fin || '') + ') · benchmark ' + _escapeHtml(meta.benchmark || '') + ' · rebalancement ' + (meta.rebalancement || 'mensuel') + ' · calcul ' + (meta.duree_calcul_s != null ? meta.duree_calcul_s + 's' : '—') + '</div></div></div>';
     var kpis = '<div class="qd-kpis" style="margin-top:14px;">' +
       _qdKpi('CAGR', _qdPct(perf.cagr), 'bench ' + _qdPct(perf.cagr_benchmark), (perf.cagr || 0) >= (perf.cagr_benchmark || 0) ? 'good' : 'bad') +
       _qdKpi('Sharpe', _qdNum(perf.sharpe), 'Sortino ' + _qdNum(perf.sortino), 'accent') +
@@ -62,13 +62,13 @@
         vb += '<div class="table-wrap"><table><thead><tr><th>Sévérité</th><th>Violation</th><th>Action</th></tr></thead><tbody>';
         risk.violations.forEach(function (v) {
           var bc = v.severite === 'CRITIQUE' ? 'badge-red' : v.severite === 'MAJEURE' ? 'badge-orange' : 'badge-yellow';
-          vb += '<tr><td><span class="badge ' + bc + '" style="font-size:10px;">' + (v.severite || '—') + '</span></td><td style="font-size:12px;">' + _escapeHtml(v.detail || '') + '</td><td style="font-size:11.5px;color:#7FA396;">' + _escapeHtml(v.action || '') + '</td></tr>';
+          vb += '<tr><td><span class="badge ' + bc + '" style="font-size:10px;">' + (v.severite || '—') + '</span></td><td style="font-size:12px;">' + _escapeHtml(v.detail || '') + '</td><td style="font-size:11.5px;color:#5F6E66;">' + _escapeHtml(v.action || '') + '</td></tr>';
         });
         vb += '</tbody></table></div>';
       } else { vb += '<div class="qd-note">Aucune violation détectée.</div>'; }
       vb += '</div><div>';
       (risk.recommandations || []).forEach(function (r) {
-        vb += '<div style="font-size:12.5px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);color:#d4daf0;">→ ' + _escapeHtml(r) + '</div>';
+        vb += '<div style="font-size:12.5px;padding:6px 0;border-bottom:1px solid rgba(26,36,32,0.03);color:#1A2420;">→ ' + _escapeHtml(r) + '</div>';
       });
       vb += '</div></div>';
       html += _qdPanel('violations', 'Violations & Recommandations', vb);
@@ -77,13 +77,13 @@
     // ── 2. MANDATE COMPLIANCE ────────────────────────────────────────────────
     var ct = '<div style="margin-bottom:10px;">' +
       '<span class="badge ' + (comp.statut_global === 'PASS' ? 'badge-green' : 'badge-red') + '" style="font-size:12px;padding:5px 16px;">MANDAT : ' + comp.statut_global + '</span>' +
-      '<span style="font-size:11px;color:#7FA396;margin-left:12px;">' + comp.n_pass + ' PASS · ' + comp.n_fail + ' FAIL · ' + comp.n_na + ' N/A — tests calculés en Python, indépendants du LLM</span></div>';
+      '<span style="font-size:11px;color:#5F6E66;margin-left:12px;">' + comp.n_pass + ' PASS · ' + comp.n_fail + ' FAIL · ' + comp.n_na + ' N/A — tests calculés en Python, indépendants du LLM</span></div>';
     ct += '<div class="table-wrap"><table><thead><tr><th>Contrainte</th><th>Catégorie</th><th>Limite</th><th>Mesuré</th><th style="text-align:center;">Statut</th></tr></thead><tbody>';
     (comp.tests || []).forEach(function (t) {
       var cls = t.statut === 'PASS' ? 'qd-pass' : t.statut === 'FAIL' ? 'qd-fail' : 'qd-na';
       var icon = t.statut === 'PASS' ? '✓' : t.statut === 'FAIL' ? '✗' : '—';
-      ct += '<tr class="qd-compliance-row"><td>' + _escapeHtml(t.nom) + (t.detail ? '<div style="font-size:10px;color:#7FA396;">' + _escapeHtml(t.detail) + '</div>' : '') + '</td>' +
-        '<td style="color:#7FA396;font-size:11px;">' + _escapeHtml(t.categorie) + '</td>' +
+      ct += '<tr class="qd-compliance-row"><td>' + _escapeHtml(t.nom) + (t.detail ? '<div style="font-size:10px;color:#5F6E66;">' + _escapeHtml(t.detail) + '</div>' : '') + '</td>' +
+        '<td style="color:#5F6E66;font-size:11px;">' + _escapeHtml(t.categorie) + '</td>' +
         '<td style="' + _QD_MONO + 'font-size:11.5px;">' + _escapeHtml(t.limite) + '</td>' +
         '<td style="' + _QD_MONO + 'font-size:11.5px;">' + _escapeHtml(t.valeur) + '</td>' +
         '<td style="text-align:center;" class="' + cls + '">' + icon + ' ' + t.statut + '</td></tr>';
@@ -98,7 +98,7 @@
     pb += '<div class="qd-grid-2" style="margin-top:14px;"><div class="table-wrap"><table class="kv-table">' +
       '<tr><td>Rendement total</td><td style="' + _QD_MONO + '">' + _qdPctS(perf.rendement_total) + '</td></tr>' +
       '<tr><td>Rendement benchmark</td><td style="' + _QD_MONO + '">' + _qdPctS(perf.rendement_benchmark) + '</td></tr>' +
-      '<tr><td>Surperformance</td><td style="' + _QD_MONO + 'color:' + ((perf.surperformance || 0) >= 0 ? '#3DDC97' : '#FF6B6B') + ';">' + _qdPctS(perf.surperformance) + '</td></tr>' +
+      '<tr><td>Surperformance</td><td style="' + _QD_MONO + 'color:' + ((perf.surperformance || 0) >= 0 ? '#117B54' : '#B3261E') + ';">' + _qdPctS(perf.surperformance) + '</td></tr>' +
       '<tr><td>CAGR</td><td style="' + _QD_MONO + '">' + _qdPct(perf.cagr) + '</td></tr>' +
       '<tr><td>Alpha (Jensen, annualisé)</td><td style="' + _QD_MONO + '">' + _qdPctS(perf.alpha) + '</td></tr>' +
       '<tr><td>Beta</td><td style="' + _QD_MONO + '">' + _qdNum(perf.beta) + '</td></tr>' +
@@ -139,8 +139,8 @@
           '</table></div></div>';
       }
       var degrad = (isM.sharpe != null && oosM.sharpe != null) ? (oosM.sharpe - isM.sharpe) : null;
-      var tb = '<div class="qd-grid-2">' + ttCard('In-Sample (80% — ' + (tt.date_coupure ? 'jusqu\'au ' + tt.date_coupure : '') + ')', isM, '#7FA396') +
-        ttCard('Out-of-Sample (20% récents)', oosM, '#3DDC97') + '</div>' +
+      var tb = '<div class="qd-grid-2">' + ttCard('In-Sample (80% — ' + (tt.date_coupure ? 'jusqu\'au ' + tt.date_coupure : '') + ')', isM, '#5F6E66') +
+        ttCard('Out-of-Sample (20% récents)', oosM, '#117B54') + '</div>' +
         '<div class="qd-kpis" style="margin-top:14px;">' +
         _qdKpi('Δ Sharpe OOS', degrad == null ? '—' : (degrad >= 0 ? '+' : '') + degrad.toFixed(2), degrad != null && degrad >= -0.3 ? 'généralisation correcte' : 'dégradation hors échantillon', degrad != null ? (degrad >= -0.3 ? 'good' : 'bad') : '') +
         '</div>';
@@ -161,10 +161,10 @@
       wb += '<div class="table-wrap"><table><thead><tr><th>#</th><th>Période test</th><th>CAGR</th><th>Sharpe</th><th>Volatilité</th><th>Max DD</th><th>Surperf.</th></tr></thead><tbody>';
       (wf.fenetres || []).forEach(function (f) {
         wb += '<tr><td>' + f.fenetre + '</td><td style="' + _QD_MONO + 'font-size:11px;">' + (f.test_debut || '') + ' → ' + (f.test_fin || '') + '</td>' +
-          '<td style="' + _QD_MONO + 'color:' + ((f.cagr || 0) >= 0 ? '#3DDC97' : '#FF6B6B') + ';">' + _qdPctS(f.cagr) + '</td>' +
+          '<td style="' + _QD_MONO + 'color:' + ((f.cagr || 0) >= 0 ? '#117B54' : '#B3261E') + ';">' + _qdPctS(f.cagr) + '</td>' +
           '<td style="' + _QD_MONO + '">' + _qdNum(f.sharpe) + '</td>' +
           '<td style="' + _QD_MONO + '">' + _qdPct(f.volatilite) + '</td>' +
-          '<td style="' + _QD_MONO + 'color:#FF6B6B;">' + _qdPct(f.max_drawdown) + '</td>' +
+          '<td style="' + _QD_MONO + 'color:#B3261E;">' + _qdPct(f.max_drawdown) + '</td>' +
           '<td style="' + _QD_MONO + '">' + _qdPctS(f.surperformance) + '</td></tr>';
       });
       wb += '</tbody></table></div>';
@@ -176,9 +176,9 @@
     var roll = vq.rolling || {};
     if ((roll.sharpe || []).length > 3) {
       var rb = '<div class="qd-grid-3">' +
-        '<div><div style="font-size:11px;color:#7FA396;margin-bottom:6px;">Rolling Sharpe (6 mois)</div>' + CHART.dlines([{ label: 'Sharpe', color: '#3DDC97', points: roll.sharpe }], { height: 130, refLine: 0 }) + '</div>' +
-        '<div><div style="font-size:11px;color:#7FA396;margin-bottom:6px;">Rolling Beta (6 mois)</div>' + CHART.dlines([{ label: 'Beta', color: '#7CEBB8', points: roll.beta }], { height: 130, refLine: 1 }) + '</div>' +
-        '<div><div style="font-size:11px;color:#7FA396;margin-bottom:6px;">Rolling Volatilité (6 mois)</div>' + CHART.dlines([{ label: 'Volatilité', color: '#3DDC97', points: roll.volatilite }], { height: 130 }) + '</div>' +
+        '<div><div style="font-size:11px;color:#5F6E66;margin-bottom:6px;">Rolling Sharpe (6 mois)</div>' + CHART.dlines([{ label: 'Sharpe', color: '#117B54', points: roll.sharpe }], { height: 130, refLine: 0 }) + '</div>' +
+        '<div><div style="font-size:11px;color:#5F6E66;margin-bottom:6px;">Rolling Beta (6 mois)</div>' + CHART.dlines([{ label: 'Beta', color: '#117B54', points: roll.beta }], { height: 130, refLine: 1 }) + '</div>' +
+        '<div><div style="font-size:11px;color:#5F6E66;margin-bottom:6px;">Rolling Volatilité (6 mois)</div>' + CHART.dlines([{ label: 'Volatilité', color: '#117B54', points: roll.volatilite }], { height: 130 }) + '</div>' +
         '</div>';
       html += _qdPanel('rolling', 'Rolling Metrics — fenêtre glissante 126 jours', rb);
     }
@@ -191,7 +191,7 @@
         _qdKpi('Durée de chute', (ddq.duree_jours != null ? ddq.duree_jours + ' j' : '—'), 'pic → creux') +
         _qdKpi('Récupération', (ddq.recovery_jours != null ? ddq.recovery_jours + ' j' : 'en cours'), 'creux → nouveau pic', ddq.recovery_jours != null ? 'good' : 'bad') +
         '</div>';
-      db += CHART.dlines([{ label: 'Drawdown (%)', color: '#FF6B6B', points: (ddq.courbe || []).map(function (p) { return { date: p.date, valeur: p.drawdown }; }) }], { height: 160, refLine: 0 });
+      db += CHART.dlines([{ label: 'Drawdown (%)', color: '#B3261E', points: (ddq.courbe || []).map(function (p) { return { date: p.date, valeur: p.drawdown }; }) }], { height: 160, refLine: 0 });
       html += _qdPanel('drawdown', 'Drawdown Analysis', db);
     }
 
@@ -199,9 +199,9 @@
     var bs = vq.bootstrap || {};
     if (bs.statut === 'OK') {
       function bsBlock(title, d, fmt, obs) {
-        return '<div><div style="font-size:11px;color:#7FA396;margin-bottom:6px;">' + title + '</div>' +
+        return '<div><div style="font-size:11px;color:#5F6E66;margin-bottom:6px;">' + title + '</div>' +
           CHART.histogram(d.histogramme, { height: 130, format: fmt, marker: obs, markerLabel: 'observé' }) +
-          '<div style="font-size:11px;color:#d4daf0;margin-top:6px;' + _QD_MONO + '">médiane ' + fmt(d.mediane) + ' · IC95 [' + fmt(d.ci_bas) + ' ; ' + fmt(d.ci_haut) + ']</div></div>';
+          '<div style="font-size:11px;color:#1A2420;margin-top:6px;' + _QD_MONO + '">médiane ' + fmt(d.mediane) + ' · IC95 [' + fmt(d.ci_bas) + ' ; ' + fmt(d.ci_haut) + ']</div></div>';
       }
       var fmtP = function (x) { return _qdPct(x, 0); }, fmtN = function (x) { return _qdNum(x, 2); };
       var bb = '<div class="qd-kpis" style="margin-bottom:14px;">' +
@@ -229,9 +229,9 @@
         _qdKpi('VaR 95% (1 an)', _qdPct(mc.var_95_1an), 'VaR 99% : ' + _qdPct(mc.var_99_1an), 'bad') +
         _qdKpi('P(≥ ' + _qdPct(mc.rendement_cible, 0) + ')', _qdPct(mc.prob_rendement_cible, 0), 'rendement cible') +
         '</div>';
-      mb += '<div class="qd-grid-2"><div><div style="font-size:11px;color:#7FA396;margin-bottom:6px;">Éventail des trajectoires (base 100)</div>' +
+      mb += '<div class="qd-grid-2"><div><div style="font-size:11px;color:#5F6E66;margin-bottom:6px;">Éventail des trajectoires (base 100)</div>' +
         CHART.fanChart(mc.fan_chart, { height: 190 }) + '</div>' +
-        '<div><div style="font-size:11px;color:#7FA396;margin-bottom:6px;">Distribution du rendement à 1 an</div>' +
+        '<div><div style="font-size:11px;color:#5F6E66;margin-bottom:6px;">Distribution du rendement à 1 an</div>' +
         CHART.histogram(mc.histogramme, { height: 170, format: function (x) { return _qdPct(x, 0); }, marker: 0, markerLabel: '0%' }) + '</div></div>';
       html += _qdPanel('montecarlo', 'Monte Carlo — distribution des scénarios futurs', mb,
         'Trajectoires simulées par bootstrap de blocs des rendements historiques (aucune hypothèse de normalité). ' + (mc.methode || ''));
@@ -245,11 +245,11 @@
       }));
       sb += '<div class="table-wrap" style="margin-top:14px;"><table><thead><tr><th>Scénario</th><th>Période</th><th>Portefeuille</th><th>Benchmark</th><th>Max DD</th><th>Récup.</th><th>Couverture</th></tr></thead><tbody>';
       stress.forEach(function (s) {
-        sb += '<tr><td>' + _escapeHtml(s.nom) + '<div style="font-size:10px;color:#7FA396;">' + _escapeHtml(s.description || '') + '</div></td>' +
+        sb += '<tr><td>' + _escapeHtml(s.nom) + '<div style="font-size:10px;color:#5F6E66;">' + _escapeHtml(s.description || '') + '</div></td>' +
           '<td style="' + _QD_MONO + 'font-size:10.5px;">' + s.debut + ' → ' + s.fin + '</td>' +
-          '<td style="' + _QD_MONO + 'color:' + ((s.rendement || 0) >= 0 ? '#3DDC97' : '#FF6B6B') + ';">' + _qdPctS(s.rendement) + '</td>' +
+          '<td style="' + _QD_MONO + 'color:' + ((s.rendement || 0) >= 0 ? '#117B54' : '#B3261E') + ';">' + _qdPctS(s.rendement) + '</td>' +
           '<td style="' + _QD_MONO + '">' + _qdPctS(s.rendement_benchmark) + '</td>' +
-          '<td style="' + _QD_MONO + 'color:#FF6B6B;">' + _qdPct(s.max_drawdown) + '</td>' +
+          '<td style="' + _QD_MONO + 'color:#B3261E;">' + _qdPct(s.max_drawdown) + '</td>' +
           '<td style="' + _QD_MONO + '">' + (s.recovery_jours != null ? s.recovery_jours + ' j' : '—') + '</td>' +
           '<td style="' + _QD_MONO + '">' + _qdPct(s.couverture_poids, 0) + '</td></tr>';
       });
@@ -263,9 +263,9 @@
     if ((bmk.comparaisons || []).length) {
       var kb = '<div class="table-wrap"><table><thead><tr><th>Référence</th><th>Type</th><th>CAGR réf.</th><th>Surperf. ann.</th><th>TE</th><th>Info Ratio</th><th>Hit Ratio</th><th>Sharpe réf.</th></tr></thead><tbody>';
       bmk.comparaisons.forEach(function (b) {
-        kb += '<tr><td><strong>' + _escapeHtml(b.nom) + '</strong></td><td style="color:#7FA396;font-size:11px;">' + _escapeHtml(b.type) + '</td>' +
+        kb += '<tr><td><strong>' + _escapeHtml(b.nom) + '</strong></td><td style="color:#5F6E66;font-size:11px;">' + _escapeHtml(b.type) + '</td>' +
           '<td style="' + _QD_MONO + '">' + _qdPct(b.cagr) + '</td>' +
-          '<td style="' + _QD_MONO + 'color:' + ((b.surperformance_annuelle || 0) >= 0 ? '#3DDC97' : '#FF6B6B') + ';">' + _qdPctS(b.surperformance_annuelle) + '</td>' +
+          '<td style="' + _QD_MONO + 'color:' + ((b.surperformance_annuelle || 0) >= 0 ? '#117B54' : '#B3261E') + ';">' + _qdPctS(b.surperformance_annuelle) + '</td>' +
           '<td style="' + _QD_MONO + '">' + _qdPct(b.tracking_error) + '</td>' +
           '<td style="' + _QD_MONO + '">' + _qdNum(b.information_ratio) + '</td>' +
           '<td style="' + _QD_MONO + '">' + _qdPct(b.hit_ratio, 0) + '</td>' +
@@ -287,7 +287,7 @@
     // ── Commentaire méthodologique de l'agent ────────────────────────────────
     if (risk.commentaire_backtest) {
       html += _qdPanel('methodo', 'Lecture du Risk Agent — validation & limites',
-        '<div style="font-size:12.5px;color:#d4daf0;line-height:1.6;">' + _escapeHtml(risk.commentaire_backtest) + '</div>',
+        '<div style="font-size:12.5px;color:#1A2420;line-height:1.6;">' + _escapeHtml(risk.commentaire_backtest) + '</div>',
         'Backtest rétrospectif : l\'allocation actuelle est rejouée sur le passé (biais de sélection possible sur le choix des titres). Les protocoles ci-dessus (OOS, walk-forward, bootstrap, placebo) encadrent ce biais.');
     }
 
@@ -335,7 +335,7 @@
     if (risk.recommandations && risk.recommandations.length) {
       html += '<div class="panel"><div class="panel-title">Recommandations</div>';
       risk.recommandations.forEach(function(r) {
-        html += '<div style="font-size:12.5px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);color:#d4daf0;">→ ' + r + '</div>';
+        html += '<div style="font-size:12.5px;padding:6px 0;border-bottom:1px solid rgba(26,36,32,0.03);color:#1A2420;">→ ' + r + '</div>';
       });
       html += '</div>';
     }
@@ -349,7 +349,7 @@
     if (risk.metriques_risque) {
       var m = risk.metriques_risque;
       var mono = 'font-family:\'JetBrains Mono\',monospace;';
-      var benchLbl = m.benchmark_utilise ? (' <span style="color:#7FA396;font-size:10px;">vs ' + _escapeHtml(m.benchmark_utilise) + (m.periode ? ' · ' + _escapeHtml(m.periode) : '') + '</span>') : '';
+      var benchLbl = m.benchmark_utilise ? (' <span style="color:#5F6E66;font-size:10px;">vs ' + _escapeHtml(m.benchmark_utilise) + (m.periode ? ' · ' + _escapeHtml(m.periode) : '') + '</span>') : '';
       html += '<div class="panel"><div class="panel-title">Métriques calculées' + benchLbl + '</div><div class="table-wrap"><table class="kv-table">';
       if (m.volatilite_estimee)     html += '<tr><td>Volatilité</td><td style="' + mono + '">' + _escapeHtml(m.volatilite_estimee) + '</td></tr>';
       if (m.tracking_error_estimee) html += '<tr><td>Tracking Error</td><td style="' + mono + '">' + _escapeHtml(m.tracking_error_estimee) + '</td></tr>';
@@ -359,18 +359,18 @@
       html += '</table></div></div>';
       if (risk.backtest && risk.backtest.statut === 'OK') {
         var b = risk.backtest, pctB = function(x){ return (x==null) ? '—' : (x*100).toFixed(2) + '%'; };
-        var surColor = (b.surperformance||0) >= 0 ? 'var(--perf-green)' : '#FF6B6B';
-        html += '<div class="panel"><div class="panel-title">Backtest — ' + _escapeHtml(b.periode||'') + (b.benchmark_utilise ? ' <span style="color:#7FA396;font-size:10px;">vs ' + _escapeHtml(b.benchmark_utilise) + '</span>' : '') + '</div>';
+        var surColor = (b.surperformance||0) >= 0 ? 'var(--perf-green)' : '#B3261E';
+        html += '<div class="panel"><div class="panel-title">Backtest — ' + _escapeHtml(b.periode||'') + (b.benchmark_utilise ? ' <span style="color:#5F6E66;font-size:10px;">vs ' + _escapeHtml(b.benchmark_utilise) + '</span>' : '') + '</div>';
         if (b.courbe_valeur && b.courbe_valeur.length > 1) html += '<div style="margin-bottom:14px;">' + CHART.perfCurve(b.courbe_valeur, { height: 180 }) + '</div>';
         html += '<div class="table-wrap"><table class="kv-table">';
         html += '<tr><td>Rendement portefeuille</td><td style="' + mono + '">' + pctB(b.rendement_total) + '</td></tr>';
         html += '<tr><td>Rendement benchmark</td><td style="' + mono + '">' + pctB(b.rendement_benchmark) + '</td></tr>';
         html += '<tr><td>Surperformance</td><td style="' + mono + 'color:' + surColor + ';">' + ((b.surperformance||0)>=0?'+':'') + pctB(b.surperformance) + '</td></tr>';
         html += '<tr><td>Sharpe</td><td style="' + mono + '">' + (b.sharpe==null?'—':b.sharpe) + '</td></tr>';
-        html += '<tr><td>Max drawdown</td><td style="' + mono + 'color:#FF6B6B;">' + pctB(b.max_drawdown) + '</td></tr>';
+        html += '<tr><td>Max drawdown</td><td style="' + mono + 'color:#B3261E;">' + pctB(b.max_drawdown) + '</td></tr>';
         html += '</table></div>';
-        if (risk.commentaire_backtest) html += '<div style="font-size:12px;color:#d4daf0;padding:8px 4px 2px;line-height:1.5;">' + _escapeHtml(risk.commentaire_backtest) + '</div>';
-        html += '<div style="font-size:10px;color:#7FA396;padding:6px 4px 0;font-style:italic;">Rétrospectif : allocation figée appliquée au passé. Indicatif.</div></div>';
+        if (risk.commentaire_backtest) html += '<div style="font-size:12px;color:#1A2420;padding:8px 4px 2px;line-height:1.5;">' + _escapeHtml(risk.commentaire_backtest) + '</div>';
+        html += '<div style="font-size:10px;color:#5F6E66;padding:6px 4px 0;font-style:italic;">Rétrospectif : allocation figée appliquée au passé. Indicatif.</div></div>';
       }
     }
     html += '</div></div>';

@@ -5,7 +5,7 @@
     if (!tbody || !ideas.length) return;
     tbody.innerHTML = ideas.map(function(idea, i) {
       var score = idea.note_preliminary || 0;
-      var scoreColor = score >= 75 ? '#22c55e' : score >= 60 ? '#f59e0b' : '#94a3b8';
+      var scoreColor = score >= 75 ? '#117B54' : score >= 60 ? '#B07A1E' : '#64748B';
       var confBadge = idea.confiance === 'HAUTE' ? 'badge-green' : idea.confiance === 'MOYENNE-HAUTE' ? 'badge-green' : 'badge-yellow';
       return '<tr data-id="' + (i+1) + '">' +
         '<td>' + (i+1) + '</td>' +
@@ -67,7 +67,7 @@
       return '<div class="research-card ' + ratingClass + '" data-rating="' + ratingData + '" data-score="' + score + '">' +
         '<div class="research-card-header">' +
           '<span style="font-size:13px;font-weight:700;">' + _escapeHtml((r.nom || r.ticker || '?').substring(0,26)) + '</span>' +
-          '<span style="font-size:10px;color:#7FA396;margin-left:6px;font-family:\'JetBrains Mono\',monospace;">' + _escapeHtml(r.ticker||'') + '</span>' +
+          '<span style="font-size:10px;color:#5F6E66;margin-left:6px;font-family:\'JetBrains Mono\',monospace;">' + _escapeHtml(r.ticker||'') + '</span>' +
         '</div>' +
         '<div class="research-meta">' +
         '<span class="rating-badge">' + _escapeHtml(reco) + '</span>' +
@@ -75,7 +75,7 @@
         '<span class="upside-pct" style="color:var(--accent-green);font-size:13px;font-weight:700;">' + _escapeHtml(upside) + '</span>' +
         '</div>' +
         '<div class="conviction-bar-wrap"><div class="conviction-bar" style="width:' + Math.max(0, Math.min(100, Number(score) || 0)) + '%"></div></div>' +
-        '<div class="price-target" style="font-size:11px;color:#7FA396;margin:4px 0;">' + _escapeHtml(valLine) +
+        '<div class="price-target" style="font-size:11px;color:#5F6E66;margin:4px 0;">' + _escapeHtml(valLine) +
           ' &nbsp;|&nbsp; Poids suggéré : <strong style="color:var(--accent-green);">' + poids + '</strong></div>' +
         // Troncature AVANT echappement : couper apres aurait pu casser une
         // entite HTML en deux (defaut F8).
@@ -110,7 +110,7 @@
     rows += '<tr style="opacity:0.6"><td></td><td><strong>CASH</strong></td><td>—</td><td>—</td><td>—</td><td>—</td>' +
       '<td class="weight-mid">' + ((portfolio.cash_poids||0)*100).toFixed(1) + '%</td>' +
       '<td style="font-family:\'JetBrains Mono\',monospace;">$' + Math.round(portfolio.cash_valeur_usd||0).toLocaleString() + '</td>' +
-      '<td style="font-size:11px;color:#7FA396;">Liquidités</td></tr>';
+      '<td style="font-size:11px;color:#5F6E66;">Liquidités</td></tr>';
     tbody.innerHTML = rows;
 
     // ── Panneaux droite : profil et répartitions ──
@@ -137,7 +137,7 @@
     if (sectEntries.length) {
       var sectSegs = sectEntries.map(function(e){ return { label: e[0].replace(/_/g,' '), value: e[1] }; });
       var cashP = portfolio.cash_poids || 0;
-      if (cashP > 0) sectSegs.push({ label: 'Cash', value: cashP, color: '#7FA396' });
+      if (cashP > 0) sectSegs.push({ label: 'Cash', value: cashP, color: '#5F6E66' });
       var topSect = sectEntries[0];
       html += '<div class="panel"><div class="panel-title">Répartition Sectorielle</div>' +
         CHART.donut(sectSegs, { size: 168, centerLabel: (topSect[1]*100).toFixed(0) + '%', centerSub: topSect[0].replace(/_/g,' ').substring(0,10) }) + '</div>';
@@ -164,7 +164,7 @@
     if (!grid || !research || !research.length) return;
 
     var COLORS = {
-      'Technologie':'#7FA396','Sante':'#3DDC97','Santé':'#3DDC97',
+      'Technologie':'#5F6E66','Sante':'#117B54','Santé':'#117B54',
       'Finance':'#f4a742','Industrie':'#8b5cf6',
       'Consommation_courante':'#14b8a6','Consommation courante':'#14b8a6',
       'Consommation_discretionnaire':'#ef4444','Consommation discrétionnaire':'#ef4444',
@@ -202,13 +202,13 @@
 
         var compRows = comps.map(function(c) {
           var sc = c.score_conviction || 50;
-          var scColor = sc >= 75 ? '#3DDC97' : sc >= 60 ? '#f4a742' : '#94a3b8';
+          var scColor = sc >= 75 ? '#117B54' : sc >= 60 ? '#B07A1E' : '#64748B';
           var rec = (c.recommandation || 'HOLD').toUpperCase();
           var recBadge = rec === 'BUY' ? 'badge-green' : 'badge-blue';
           return '<div style="display:flex;justify-content:space-between;align-items:center;' +
-            'padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);">' +
+            'padding:5px 0;border-bottom:1px solid rgba(26,36,32,0.03);">' +
             '<span style="font-weight:700;font-size:12px;font-family:\'JetBrains Mono\',monospace;">' + (c.ticker||'') + '</span>' +
-            '<span style="font-size:11px;color:#7FA396;flex:1;padding:0 8px;">' + (c.nom||'').substring(0,16) + '</span>' +
+            '<span style="font-size:11px;color:#5F6E66;flex:1;padding:0 8px;">' + (c.nom||'').substring(0,16) + '</span>' +
             '<span class="badge ' + recBadge + '" style="font-size:9px;padding:1px 5px;margin-right:6px;">' + rec + '</span>' +
             '<span style="font-size:11px;font-weight:700;color:' + scColor + ';">' + sc + '</span>' +
             '</div>';
@@ -222,15 +222,15 @@
           '<div style="display:flex;gap:20px;margin-bottom:14px;">' +
             '<div style="text-align:center;">' +
               '<div style="font-size:22px;font-weight:800;color:' + color + ';">' + avgScore + '</div>' +
-              '<div style="font-size:10px;color:#7FA396;">Conviction</div>' +
+              '<div style="font-size:10px;color:#5F6E66;">Conviction</div>' +
             '</div>' +
             '<div style="text-align:center;">' +
-              '<div style="font-size:22px;font-weight:800;color:#e8eaf0;">' + comps.length + '</div>' +
-              '<div style="font-size:10px;color:#7FA396;">Entreprises</div>' +
+              '<div style="font-size:22px;font-weight:800;color:#1A2420;">' + comps.length + '</div>' +
+              '<div style="font-size:10px;color:#5F6E66;">Entreprises</div>' +
             '</div>' +
             '<div style="text-align:center;">' +
-              '<div style="font-size:22px;font-weight:800;color:#f4a742;">' + (totalPoids*100).toFixed(0) + '%</div>' +
-              '<div style="font-size:10px;color:#7FA396;">Poids cible</div>' +
+              '<div style="font-size:22px;font-weight:800;color:#B07A1E;">' + (totalPoids*100).toFixed(0) + '%</div>' +
+              '<div style="font-size:10px;color:#5F6E66;">Poids cible</div>' +
             '</div>' +
           '</div>' +
           '<div>' + compRows + '</div>' +

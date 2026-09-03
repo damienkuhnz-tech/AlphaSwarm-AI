@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlphaSwarm — Draft</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Serif:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* DRAFT A — Salle de recherche · clair feutré, private bank */
+    :root{
+      --as-ink:#16241E;
+      --as-ink2:#5D6F66;
+      --as-mute:#90A29A;
+      --as-bg:#F4F6F5;
+      --as-card:#FFFFFF;
+      --as-line:#E2E8E4;
+      --as-line-soft:#ECF1EE;
+      --as-field:#C9D4CE;
+      --as-action:#0F7A55;
+      --as-action-h:#0C6446;
+      --as-brand:#3DDC97;
+      --as-shadow:0 1px 2px rgba(22,36,30,.05);
+
+      --bs-body-bg:var(--as-bg);
+      --bs-body-color:var(--as-ink);
+      --bs-emphasis-color:var(--as-ink);
+      --bs-secondary-color:var(--as-ink2);
+      --bs-tertiary-color:var(--as-mute);
+      --bs-border-color:var(--as-line);
+      --bs-link-color:var(--as-action);
+      --bs-link-hover-color:var(--as-action-h);
+      --bs-link-color-rgb:15,122,85;
+      --bs-link-hover-color-rgb:12,100,70;
+      --bs-body-font-family:"IBM Plex Sans",-apple-system,"Segoe UI",sans-serif;
+      --bs-body-font-size:.875rem;
+    }
+    body{
+      background:var(--as-bg);
+      color:var(--as-ink);
+      font-family:var(--bs-body-font-family);
+      font-size:14px;
+      -webkit-font-smoothing:antialiased;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+    ::selection{background:#CDEBDD;color:var(--as-ink)}
+    :focus-visible{outline:2px solid var(--as-action);outline-offset:2px}
+
+    /* Topbar */
+    .as-topbar{
+      background:#FFFFFF;
+      border-bottom:1px solid var(--as-line);
+      min-height:58px;
+      padding-top:0;
+      padding-bottom:0;
+      align-items:stretch;
+      flex-wrap:nowrap;
+    }
+    .as-logo-mark{color:var(--as-ink);line-height:0}
+    .as-logo-cut{stroke:#FFFFFF}
+    .as-logo-name{
+      font-family:"IBM Plex Sans",sans-serif;
+      font-size:13px;font-weight:700;
+      text-transform:uppercase;letter-spacing:4px;
+      line-height:1.3;color:var(--as-ink);
+    }
+    .as-logo-sub{
+      font-size:8.5px;text-transform:uppercase;
+      letter-spacing:2.6px;color:var(--as-ink2);
+    }
+    .as-tabs{align-self:stretch;flex-wrap:nowrap}
+    .as-tabs .nav-item{display:flex}
+    .as-tab{
+      display:flex;align-items:center;gap:7px;
+      padding:0 15px;height:100%;
+      font-size:12.5px;font-weight:500;letter-spacing:.1px;
+      color:var(--as-ink2);
+      border-top:2px solid transparent;
+      border-bottom:2px solid transparent;
+    }
+    .as-tab:hover{color:var(--as-ink)}
+    .as-tab.is-active{color:var(--as-ink);font-weight:600;border-bottom-color:var(--as-action)}
+    .as-tab-check{color:var(--as-brand);font-weight:700}
+    .as-tab.is-locked{color:var(--as-mute);pointer-events:none}
+    .as-tab.is-market{margin-left:14px;border-left:1px solid var(--as-line);padding-left:19px}
+    .as-tab.is-market::before{content:"";width:6px;height:6px;border-radius:3px;background:var(--as-brand)}
+
+    /* Structure page */
+    .as-main{max-width:1264px;flex:1 0 auto}
+    .as-title{
+      font-family:"IBM Plex Serif",Georgia,serif;
+      font-weight:600;font-size:26px;line-height:1.2;letter-spacing:-.2px;
+      color:var(--as-ink);
+    }
+    .as-subtitle{font-size:13px;color:var(--as-ink2)}
+    .as-num{font-family:"JetBrains Mono",Consolas,monospace;font-variant-numeric:tabular-nums}
+
+    /* Cartes */
+    .as-card{
+      background:var(--as-card);
+      border:1px solid var(--as-line);
+      border-radius:4px;
+      box-shadow:var(--as-shadow);
+      overflow:hidden;
+    }
+    .as-card .card-body{padding:16px}
+    .as-card-header{
+      display:flex;align-items:center;gap:9px;
+      justify-content:flex-start!important;
+      background:#FFFFFF;
+      border-bottom:1px solid var(--as-line);
+      padding:11px 16px;
+      font-size:11px;font-weight:600;
+      text-transform:uppercase;letter-spacing:1.1px;
+      color:var(--as-ink);
+    }
+    /* signature : micro-motif 3 barres, rappel du logo */
+    .as-card-header::before{
+      content:"";flex:0 0 13px;height:12px;
+      background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='12'%3E%3Cg fill='%233DDC97'%3E%3Crect y='5' width='3' height='7'/%3E%3Crect x='5' y='2' width='3' height='10'/%3E%3Crect x='10' y='6' width='3' height='6'/%3E%3C/g%3E%3C/svg%3E") no-repeat;
+    }
+    .as-header-meta{
+      margin-left:auto;
+      font-size:11px;font-weight:500;letter-spacing:.3px;text-transform:none;
+      color:var(--as-ink2);
+    }
+
+    /* KPI */
+    .as-kpi .card-body{padding:13px 16px 12px}
+    .as-kpi-label{
+      font-size:10.5px;font-weight:600;
+      text-transform:uppercase;letter-spacing:1.2px;
+      color:var(--as-ink2);margin-bottom:7px;
+    }
+    .as-kpi-value{font-size:21px;font-weight:500;line-height:1.1;color:var(--as-ink)}
+    .as-kpi-unit{
+      font-family:"IBM Plex Sans",sans-serif;
+      font-size:11px;font-weight:400;letter-spacing:0;
+      color:var(--as-ink2);
+    }
+    .as-kpi-sub{font-size:11.5px;color:var(--as-ink2);margin-top:5px}
+
+    /* Formulaire */
+    .as-label{
+      font-size:10.5px;font-weight:600;
+      text-transform:uppercase;letter-spacing:1.2px;
+      color:var(--as-ink2);margin-bottom:5px;
+    }
+    .as-input{
+      border:1px solid var(--as-field);
+      border-radius:3px;
+      font-size:13.5px;color:var(--as-ink);
+      background:#FFFFFF;padding:7px 11px;
+    }
+    .as-input:focus{
+      border-color:var(--as-action);
+      box-shadow:none;
+      outline:2px solid var(--as-action);outline-offset:1px;
+    }
+    .as-suffix{
+      background:var(--as-bg);
+      border:1px solid var(--as-field);
+      color:var(--as-ink2);
+      font-size:12px;border-radius:3px;
+    }
+
+    /* Boutons */
+    .as-btn-primary{
+      background:var(--as-action);
+      border:1px solid var(--as-action);
+      color:#fff;font-size:13px;font-weight:600;letter-spacing:.2px;
+      border-radius:3px;padding:7px 16px;
+    }
+    .as-btn-primary:hover,.as-btn-primary:active,.as-btn-primary:first-child:active{
+      background:var(--as-action-h);border-color:var(--as-action-h);color:#fff;
+    }
+    .as-btn-ghost{
+      background:#FFFFFF;
+      border:1px solid var(--as-field);
+      color:var(--as-ink);font-size:13px;font-weight:500;
+      border-radius:3px;padding:7px 14px;
+    }
+    .as-btn-ghost:hover,.as-btn-ghost:active,.as-btn-ghost:first-child:active{
+      background:#EFF3F1;border-color:#AFBFB7;color:var(--as-ink);
+    }
+
+    /* Badges plats */
+    .as-badge-pass,.as-badge-fail,.as-badge-buy,.as-badge-hold,.as-badge-running{
+      font-size:10px;font-weight:600;letter-spacing:.7px;
+      padding:4px 8px;border-radius:2px;border:1px solid transparent;
+    }
+    .as-badge-pass,.as-badge-buy{background:#E3F6EC;color:#0F7A55;border-color:#C7E9D7}
+    .as-badge-fail{background:#FBE9E7;color:#B3261E;border-color:#F1D3CE}
+    .as-badge-hold,.as-badge-running{background:#FFF4DE;color:#8A6116;border-color:#EFDFBB}
+
+    /* Chat */
+    .as-chat{padding:16px}
+    .as-msg{margin-bottom:12px}
+    .as-msg-sender{
+      font-size:10px;font-weight:600;
+      text-transform:uppercase;letter-spacing:1px;
+      color:var(--as-ink2);margin-bottom:4px;
+    }
+    .as-msg-bubble{
+      font-size:13px;line-height:1.55;
+      padding:10px 13px;border-radius:4px;
+      background:#F1F3F2;border:1px solid var(--as-line);
+      color:var(--as-ink);
+    }
+    .as-msg-agent .as-msg-bubble{
+      background:#F2FAF6;border-color:#D9EDE2;
+      border-left:2px solid var(--as-brand);
+    }
+
+    /* Table */
+    .as-table{font-size:13px;margin-bottom:0;--bs-table-bg:transparent}
+    .as-table thead th{
+      font-size:10.5px;font-weight:600;
+      text-transform:uppercase;letter-spacing:1px;
+      color:var(--as-ink2);
+      border-bottom:1px solid #C4D0CA;
+      padding:9px 16px;white-space:nowrap;
+    }
+    .as-table tbody td{
+      padding:9px 16px;
+      border-bottom:1px solid var(--as-line-soft);
+      color:var(--as-ink);
+    }
+    .as-table tbody tr:hover td{background:#FAFBFA}
+    .as-ticker{font-family:"JetBrains Mono",monospace;font-weight:600;font-size:12.5px;letter-spacing:.2px}
+    .as-name{color:var(--as-ink2);font-size:12px;margin-left:4px}
+    .as-total td{
+      font-weight:600;font-size:12.5px;
+      border-top:1px solid #8CA098;border-bottom:0;
+      background:#FAFBFA;padding:9px 16px;
+    }
+
+    /* Compliance */
+    .as-check{padding:8px 0;border-bottom:1px solid var(--as-line-soft);font-size:13px}
+    .as-check:last-child{border-bottom:0;padding-bottom:2px}
+    .as-check-detail{color:var(--as-ink2);font-size:12px;margin-left:6px}
+    .as-alert{
+      background:#FFF4DE;
+      border:1px solid #EFDFBB;border-left:3px solid #8A6116;
+      color:#6B4C11;border-radius:3px;
+      font-size:13px;padding:10px 14px;
+    }
+    .as-alert strong{letter-spacing:.4px}
+
+    /* Footer */
+    .as-footer{
+      position:sticky;bottom:0;z-index:20;
+      background:#FFFFFF;
+      border-top:1px solid var(--as-line);
+      min-height:56px;margin-top:8px;
+    }
+    .as-footer-step{font-size:12px;color:var(--as-ink2);letter-spacing:.4px}
+  </style>
+</head>
+<body>
+
+<!-- ══════════ TOPBAR ══════════ -->
+<nav class="navbar as-topbar px-3">
+  <div class="d-flex align-items-center gap-2">
+    <div class="as-logo-mark" aria-label="AlphaSwarm">
+      <svg viewBox="0 0 156 96" fill="none" xmlns="http://www.w3.org/2000/svg" width="46" height="30">
+        <g stroke="currentColor" stroke-linecap="square">
+          <path d="M14 88 L52 10 L90 88" stroke-width="12"/>
+          <path d="M32 62 H72" stroke-width="10"/>
+        </g>
+        <path d="M16 78 L100 26" class="as-logo-cut" stroke-width="7"/>
+        <g stroke="#3DDC97" stroke-width="2.4">
+          <line x1="107" y1="28" x2="107" y2="88"/>
+          <line x1="125" y1="14" x2="125" y2="78"/>
+          <line x1="143" y1="36" x2="143" y2="90"/>
+        </g>
+        <g fill="#3DDC97">
+          <rect x="102" y="42" width="10" height="28" rx="1"/>
+          <rect x="120" y="24" width="10" height="34" rx="1"/>
+          <rect x="138" y="50" width="10" height="24" rx="1"/>
+        </g>
+      </svg>
+    </div>
+    <div class="d-flex flex-column">
+      <span class="as-logo-name">AlphaSwarm</span>
+      <span class="as-logo-sub">Portfolio Management</span>
+    </div>
+  </div>
+  <ul class="nav as-tabs">
+    <li class="nav-item"><a class="nav-link as-tab is-done" href="#"><span class="as-tab-check">✓</span> Mandat</a></li>
+    <li class="nav-item"><a class="nav-link as-tab is-done" href="#"><span class="as-tab-check">✓</span> Research</a></li>
+    <li class="nav-item"><a class="nav-link as-tab is-active" href="#">Portfolio</a></li>
+    <li class="nav-item"><a class="nav-link as-tab is-locked" href="#">Risque</a></li>
+    <li class="nav-item"><a class="nav-link as-tab is-locked" href="#">Exécution</a></li>
+    <li class="nav-item"><a class="nav-link as-tab is-market" href="#">Marché</a></li>
+  </ul>
+</nav>
+
+<main class="container-xxl py-4 as-main">
+
+  <!-- ══════════ SECTION HEADER ══════════ -->
+  <div class="d-flex align-items-center justify-content-between mb-4 as-section-header">
+    <div>
+      <h1 class="as-title mb-1">Portfolio Construction Agent</h1>
+      <div class="as-subtitle">Étape 3 / 5 — allocation sous contraintes du mandat</div>
+    </div>
+    <span class="badge as-badge-running">EN COURS</span>
+  </div>
+
+  <!-- ══════════ KPI CARDS ══════════ -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+      <div class="card as-card as-kpi h-100"><div class="card-body">
+        <div class="as-kpi-label">Capital</div>
+        <div class="as-kpi-value as-num">100 000 000 <span class="as-kpi-unit">USD</span></div>
+        <div class="as-kpi-sub">entièrement investi hors cash</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="card as-card as-kpi h-100"><div class="card-body">
+        <div class="as-kpi-label">Positions</div>
+        <div class="as-kpi-value as-num">28 <span class="as-kpi-unit">/ cible 25–35</span></div>
+        <div class="as-kpi-sub">9 secteurs · 3 zones</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="card as-card as-kpi h-100"><div class="card-body">
+        <div class="as-kpi-label">Tracking error</div>
+        <div class="as-kpi-value as-num">3.8 <span class="as-kpi-unit">% / max 5 %</span></div>
+        <div class="as-kpi-sub">vs MSCI World</div>
+      </div></div>
+    </div>
+    <div class="col-6 col-lg-3">
+      <div class="card as-card as-kpi h-100"><div class="card-body">
+        <div class="as-kpi-label">Beta</div>
+        <div class="as-kpi-value as-num">1.04 <span class="as-kpi-unit">[0.80 ; 1.20]</span></div>
+        <div class="as-kpi-sub">dans le budget de risque</div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- ══════════ COLONNE GAUCHE : FORMULAIRE ══════════ -->
+    <div class="col-lg-5">
+      <div class="card as-card mb-4">
+        <div class="card-header as-card-header">Paramètres généraux</div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label as-label" for="d-strat">Stratégie</label>
+            <select class="form-select as-input" id="d-strat">
+              <option selected>Long-only equity global</option>
+              <option>Long/short equity</option>
+            </select>
+          </div>
+          <div class="row g-3">
+            <div class="col-6">
+              <label class="form-label as-label" for="d-capital">Capital (USD)</label>
+              <input type="text" class="form-control as-input as-num" id="d-capital" value="100 000 000">
+            </div>
+            <div class="col-6">
+              <label class="form-label as-label" for="d-bench">Benchmark</label>
+              <input type="text" class="form-control as-input" id="d-bench" value="MSCI World">
+            </div>
+          </div>
+          <div class="row g-3 mt-0">
+            <div class="col-6">
+              <label class="form-label as-label" for="d-te">Tracking error max</label>
+              <div class="input-group">
+                <input type="text" class="form-control as-input as-num" id="d-te" value="5">
+                <span class="input-group-text as-suffix">%</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <label class="form-label as-label" for="d-dd">Drawdown max</label>
+              <div class="input-group">
+                <input type="text" class="form-control as-input as-num" id="d-dd" value="20">
+                <span class="input-group-text as-suffix">%</span>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex gap-2 mt-4">
+            <button type="button" class="btn as-btn-primary">Construire le portefeuille</button>
+            <button type="button" class="btn as-btn-ghost">Réinitialiser</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ CHAT ══════════ -->
+      <div class="card as-card">
+        <div class="card-header as-card-header">Chat — Portfolio Manager</div>
+        <div class="card-body as-chat">
+          <div class="as-msg as-msg-user">
+            <div class="as-msg-sender">PM</div>
+            <div class="as-msg-bubble">Réduis l'exposition Tech sous 30 % et ajoute une position défensive.</div>
+          </div>
+          <div class="as-msg as-msg-agent">
+            <div class="as-msg-sender">Portfolio Manager Agent</div>
+            <div class="as-msg-bubble">Exposition Tech ramenée à <strong>28,4 %</strong> (−3,1 pts). J'ai renforcé <strong>PG</strong> à 2,8 % en compensation — beta portefeuille inchangé à 1,04.</div>
+          </div>
+          <div class="input-group mt-3">
+            <input type="text" class="form-control as-input" placeholder="Poser une question à l'agent…" aria-label="Message">
+            <button class="btn as-btn-primary" type="button">Envoyer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════ COLONNE DROITE : TABLE + COMPLIANCE ══════════ -->
+    <div class="col-lg-7">
+      <div class="card as-card mb-4">
+        <div class="card-header as-card-header d-flex justify-content-between align-items-center">
+          <span>Portefeuille construit</span>
+          <span class="as-header-meta">28 positions · cash 3,2 %</span>
+        </div>
+        <div class="table-responsive">
+          <table class="table as-table align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Titre</th><th>Secteur</th>
+                <th class="text-end">Poids</th><th class="text-end">Valeur (USD)</th>
+                <th class="text-end">Signal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="as-ticker">NVDA</span> <span class="as-name">NVIDIA Corp</span></td>
+                <td>Technologie</td>
+                <td class="text-end as-num">6,5 %</td><td class="text-end as-num">6 500 000</td>
+                <td class="text-end"><span class="badge as-badge-buy">STRONG BUY</span></td>
+              </tr>
+              <tr>
+                <td><span class="as-ticker">MSFT</span> <span class="as-name">Microsoft</span></td>
+                <td>Technologie</td>
+                <td class="text-end as-num">5,8 %</td><td class="text-end as-num">5 800 000</td>
+                <td class="text-end"><span class="badge as-badge-buy">BUY</span></td>
+              </tr>
+              <tr>
+                <td><span class="as-ticker">ASML</span> <span class="as-name">ASML Holding</span></td>
+                <td>Technologie</td>
+                <td class="text-end as-num">4,2 %</td><td class="text-end as-num">4 200 000</td>
+                <td class="text-end"><span class="badge as-badge-buy">BUY</span></td>
+              </tr>
+              <tr>
+                <td><span class="as-ticker">LLY</span> <span class="as-name">Eli Lilly</span></td>
+                <td>Santé</td>
+                <td class="text-end as-num">3,9 %</td><td class="text-end as-num">3 900 000</td>
+                <td class="text-end"><span class="badge as-badge-hold">HOLD</span></td>
+              </tr>
+              <tr>
+                <td><span class="as-ticker">JPM</span> <span class="as-name">JPMorgan Chase</span></td>
+                <td>Finance</td>
+                <td class="text-end as-num">3,4 %</td><td class="text-end as-num">3 400 000</td>
+                <td class="text-end"><span class="badge as-badge-buy">BUY</span></td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="as-total">
+                <td colspan="2">Total investi</td>
+                <td class="text-end as-num">96,8 %</td>
+                <td class="text-end as-num">96 800 000</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- ══════════ COMPLIANCE ══════════ -->
+      <div class="card as-card">
+        <div class="card-header as-card-header">Compliance du mandat — 11 PASS / 1 FAIL</div>
+        <div class="card-body">
+          <div class="d-flex flex-column gap-2">
+            <div class="d-flex justify-content-between align-items-center as-check">
+              <span>Volatilité annualisée <span class="as-check-detail">14,2 % · limite ≤ 18 %</span></span>
+              <span class="badge as-badge-pass">PASS</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center as-check">
+              <span>Concentration top 10 <span class="as-check-detail">41,3 % · limite ≤ 55 %</span></span>
+              <span class="badge as-badge-pass">PASS</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center as-check">
+              <span>Secteur Technologie <span class="as-check-detail">31,2 % · limite ≤ 30 %</span></span>
+              <span class="badge as-badge-fail">FAIL</span>
+            </div>
+          </div>
+          <div class="alert as-alert mt-3 mb-0" role="alert">
+            <strong>AJUSTER</strong> — 1 contrainte dépassée. Le Portfolio Agent reboucle (itération 2/3) pour repondérer le secteur Technologie.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ══════════ FOOTER NAV ══════════ -->
+<footer class="as-footer d-flex align-items-center justify-content-between px-4">
+  <button type="button" class="btn as-btn-ghost">← Précédent</button>
+  <span class="as-footer-step as-num">Étape 3 / 5</span>
+  <button type="button" class="btn as-btn-primary">Suivant →</button>
+</footer>
+
+</body>
+</html>
