@@ -1,4 +1,4 @@
-# AlphaSwarm — Plateforme multi-agent de gestion de portefeuille
+# AlphaSwarm Plateforme multi-agent de gestion de portefeuille
 
 Travail de bachelor. AlphaSwarm orchestre cinq agents spécialisés qui couvrent
 le cycle complet de la gestion de portefeuille institutionnelle, de la
@@ -6,7 +6,7 @@ définition du mandat jusqu'à la préparation des ordres d'exécution.
 
 ## Architecture
 
-Pipeline strictement séquentiel — chaque agent consomme la sortie du précédent :
+Pipeline strictement séquentiel  chaque agent consomme la sortie du précédent :
 
 | # | Agent | Rôle |
 |---|-------|------|
